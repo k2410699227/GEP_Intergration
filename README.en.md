@@ -1,7 +1,7 @@
 # broadband-with-GEP
 
 #### Description
-使用基因表达式编程完成宽带连通性的二分类任务
+Complete the binary classification of broadband connectivity with gene expression programming
 
 #### Software Architecture
 Software architecture description
