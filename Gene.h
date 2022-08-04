@@ -11,6 +11,8 @@ class Gene{
         char getRandomElement();
         char getTerminator();
         char getNTerminator();
+        bool isFunc(char);
+        int findFunc(const int pos);
         static inline int getLength() {return gene_len;}
         std::string getContent() {return text;}
     private:

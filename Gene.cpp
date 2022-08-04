@@ -63,3 +63,23 @@ void Gene::transposition(const string& str){
 	int index = (rand() % curr_head_len) + 1;
 	text.insert(index, str);
 }
+
+int Gene::findFunc(const int pos)
+{
+	for (int i = pos; i < HEAD_LEN; i++)
+	{
+		if (isFunc(text.at(i)))
+			return i;
+	}
+	return -1;
+}
+
+bool Gene::isFunc(char elem)
+{
+	for (int i = 0; i < sizeof(NTerminator) / sizeof(char); i++)
+	{
+		if (elem == NTerminator[i])
+			return true;
+	}
+	return false;
+}

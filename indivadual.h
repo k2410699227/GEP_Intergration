@@ -11,7 +11,9 @@ class indivadual{
         void ISTransposition();
         void RISTransposition();
         void geneTransposition();
+        void recombanation();
         std::string getGene();
+        std::string content();
         void recombanation();
         void caculate();
         void fit();
