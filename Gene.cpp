@@ -38,9 +38,9 @@ char Gene::getTerminator(){
 }
 
 char Gene::getNTerminator(){
-    int length = sizeof(NTerminator)/sizeof(char);
+    int length = sizeof(Function)/sizeof(char);
     int ran = rand() % length;
-    return NTerminator[ran];
+    return Function[ran];
 }
 
 void Gene::mutation(){
@@ -76,9 +76,9 @@ int Gene::findFunc(const int pos)
 
 bool Gene::isFunc(char elem)
 {
-	for (int i = 0; i < sizeof(NTerminator) / sizeof(char); i++)
+	for (int i = 0; i < sizeof(Function) / sizeof(char); i++)
 	{
-		if (elem == NTerminator[i])
+		if (elem == Function[i])
 			return true;
 	}
 	return false;
