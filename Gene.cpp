@@ -1,12 +1,15 @@
 #include <iostream>
 #include <math.h>
 #include "Gene.h"
-#include "parallel.h"
+#include "parameter.h"
 using namespace std;
+double* Gene::dc_array = nullptr;
 
 Gene::Gene(const string& str)
 :text(str)
 {
+	int m = maxParameter();
+	tail_len = HEAD_LEN * (m - 1) + 1;
     gene_len = tail_len + head_len;
 }
 
@@ -28,7 +31,7 @@ char Gene::getRandomElement(){
 	if (index)
 		return getTerminator();
 	else
-		return getNTerminator();
+		return getFunction();
 }
 
 char Gene::getTerminator(){
@@ -37,7 +40,7 @@ char Gene::getTerminator(){
     return Terminator[ran];
 }
 
-char Gene::getNTerminator(){
+char Gene::getFunction(){
     int length = sizeof(Function)/sizeof(char);
     int ran = rand() % length;
     return Function[ran];
@@ -82,4 +85,57 @@ bool Gene::isFunc(char elem)
 			return true;
 	}
 	return false;
+}
+
+void Gene::DcInit(){
+	if (IS_OPEN_DC)
+	{
+		// 分配Dc域内存
+		dc_array = new double[DC_LEN];
+		// 初始化Dc域元素数值大小
+		int minValue = int(DC_MIN_VALUE * 1000);
+		int maxValue = int(DC_MAX_VALUE * 1000);
+		for (int i = 0; i < DC_LEN; i++)
+		{	
+			int value = (rand() % (maxValue - minValue + 1)) + minValue;
+			dc_array[i] = value / 1000.0;
+		}
+	}
+}
+
+int Gene::maxParameter(){
+	int max = 0;
+	for(int i =0;i<(sizeof(Function)/sizeof(char));i++){
+		switch(Function[i]){
+			case('+'):
+			case('-'):
+			case('*'):
+			case('/'):
+			case('<'):
+			case('>'):
+				if(max < 2){
+					max = 2;
+				}
+				break;
+		}
+	}
+	return max;
+}
+
+double Gene::randDcValue()
+{
+	int index = rand() % DC_LEN;
+	return dc_array[index];
+}
+
+void Gene::saveDcValue()
+{
+	for (string::iterator it = text.begin(); it != text.end(); ++it)
+	{
+		if (*it == '?')
+		{
+			double temp = randDcValue();
+			dc_area.push_back(temp);
+		}
+	}
 }

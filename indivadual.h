@@ -18,12 +18,13 @@ class Indivadual{
         void caculate();
         void fit();
         static inline int getLength() {return len;}
+        double getError() {return error;}
     private:
         inline int index_rand();
         Gene* gene;
         //length 
 	    static int len;
-        //适应度
+        //个体数量
         std::vector<double> result;
         //目标值 
         static std::vector<double> dependentVar;
