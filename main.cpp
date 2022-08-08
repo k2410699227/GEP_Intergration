@@ -1,5 +1,5 @@
 #include <ctime>
-#include "fileProcess.h"
+#include "dataSource.h"
 #include"test.h"
 // #include "population.h"
 // #include "Gene.h"
@@ -18,7 +18,7 @@ void clearOutputFile();
 
 int main()
 {
-	FileProcess file;
+	DataSource file;
 	for(auto f : file.independent())
 		{for(auto val : f)
 			cout<<val.first<<"	"<<val.second<<"	";

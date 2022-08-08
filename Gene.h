@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+using namespace std;
 class Gene{
     public:
         Gene(const Gene& obj);
@@ -20,6 +21,7 @@ class Gene{
         int maxParameter();
         double randDcValue();
         void saveDcValue();
+        vector<double> expressionValue(){return result;};
     private:
         std::string text;           //gene content
         const int head_len = 5;     //head length
@@ -27,4 +29,5 @@ class Gene{
         static int gene_len;
         std::vector<double> dc_area;
         static double* dc_array;
+        vector<double> result;
 };

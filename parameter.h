@@ -4,20 +4,22 @@
 
 // gene parameter
 const int HEAD_LEN = 7;
-char Function[] = {'^', '+', '|'};
-char Terminator[] = {'a','b','c'};
+const char Function[] = {'^', '+', '|'};
+const char Terminator[] = {'a','b','c'};
+/* 分类阈值*/
+const double THRESHOLD = 0.5;
 //连接符号
-char CONN = '+';
-bool IS_OPEN_DC = 0;
-int DC_LEN = 10;
-double DC_MAX_VALUE = 10.0;
-double DC_MIN_VALUE = 0.0;
+const char CONN = '+';
+const bool IS_OPEN_DC = 0;
+const int DC_LEN = 10;
+const double DC_MAX_VALUE = 10.0;
+const double DC_MIN_VALUE = 0.0;
 // individual parameter
-int GENE_NUM = 3;
-char CONNET = '+';
+const int GENE_NUM = 3;
+const char CONNET = '+';
 //population parameter
-int INDIVIDUAL_NUM = 10;
-int GENERATION = 1000;
+const int INDIVIDUAL_NUM = 10;
+const int GENERATION = 1000;
 const double MUTATION_RATE = 1;
 const double ONE_POINT_COMBA_RATE = 0.4;
 const double TWO_POINT_COMBA_RATE = 0.2;

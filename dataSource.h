@@ -8,13 +8,13 @@
 #include<unordered_map>
 #include <fstream>
 using namespace std;
-class FileProcess
+class DataSource
 {
 private:
     /** 自变量数据 */
-    vector<unordered_map<char,double>> independentVar;
+    static vector<unordered_map<char,double>> independentVar;
     /** 因变量数据 */
-    vector<double> dependentVar;
+    static vector<double> dependentVar;
 
     /** 用空格分割字符串*/
     void split(const std::string &input_str, std::vector<std::string> &output, const char *delim);
@@ -33,20 +33,20 @@ private:
 
 public:
     /**构造函数内初始化输入文件和输出文件*/
-    FileProcess();
-    // ~FileProcess()
-    // {
-    //     independentVar.clear();
-    //     dependentVar.clear();
-    // }
+    DataSource();
+    ~DataSource()
+    {
+        independentVar.clear();
+        dependentVar.clear();
+    }
 
     /** 返回自变量数据 */
-    vector<unordered_map<char,double>> independent() { return independentVar; }
+    static vector<unordered_map<char,double>> independent() { return independentVar; }
 
     /** 返回因变量数据 */
-    vector<double> dependent() { return dependentVar; }
+    static vector<double> dependent() { return dependentVar; }
 
-    int sampleCount(){return dependentVar.size();}
+    static int sampleCount(){return dependentVar.size();}
 };
 
 #endif
