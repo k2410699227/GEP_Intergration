@@ -1,5 +1,5 @@
 #include "indivadual.h"
-#include "parallel.h"
+#include "parameter.h"
 
 Indivadual::Indivadual():gene(nullptr)
 {

@@ -17,9 +17,9 @@ const double THRESHOLD = 0.5;
 /* --------------------基因配置----------------------- */
 /* 函数集 */
 // 可选函数集: +、-、*、/、A(AND)、 O(OR)、 X(XOR)、 <、 >、S(sin)、C(cos)、T(tan)、E(exp)、L(log10)、Q(sqrt)
-const char FUNC[] = { '+','-','*','/' };//, 'A', 'O', 'X', '<', '>'};
+const char FUNC[] = {'+', '-', '*', '/'}; //, 'A', 'O', 'X', '<', '>'};
 /* 终点集 */
-const char TERM[] = { 'a' };//, 'b', 'c', 'd', 'e'};
+const char TERM[] = {'a'}; //, 'b', 'c', 'd', 'e'};
 /* 头部长度 */
 const int HEAD_LEN = 7;
 /* 是否开启Dc域 */
@@ -49,11 +49,11 @@ const double PROB_MUTATION = 1;
 /* IS转座率 */
 const double PROB_IS_TRANS = 1;
 /* IS元素长度 */
-const int IS_LEN[] = { 1,2,3 };
+const int IS_LEN[] = {1, 2, 3};
 /* RIS转座率 */
 const double PROB_RIS_TRANS = 1;
 /* RIS元素长度 */
-const int RIS_LEN[] = { 1,2,3 };
+const int RIS_LEN[] = {1, 2, 3};
 /* 基因转座率 */
 const double PROB_GENE_TRANS = 1;
 /* 单点重组 */

@@ -1,7 +1,7 @@
 #ifndef _FILEPROCESS_H_
 #define _FILEPROCESS_H_
 
-#include "paramsettings.h"
+#include "parameter.h"
 #include <vector>
 #include <string>
 #include <fstream>
