@@ -24,28 +24,27 @@ vector<string> FileProcess::getFileText(const string path)
 
 void FileProcess::setIndependentData()
 {
-    vector<string>text  =getFileText(PATH_INDEPENDENT);
+    vector<string> text = getFileText(PATH_INDEPENDENT);
     for (auto line : text)
-	{
-		vector<string> result;
+    {
+        vector<string> result;
         //空格分割
-		split(line, result, " ");
-		vector<double> temp = toDouble(result);
-		independentVar.push_back(temp);
-	}
-
+        split(line, result, " ");
+        vector<double> temp = toDouble(result);
+        independentVar.push_back(temp);
+    }
 }
 
 void FileProcess::setDependentData()
 {
-    vector<string>text  =getFileText(PATH_DEPENDENT);
+    vector<string> text = getFileText(PATH_DEPENDENT);
     for (auto line : text)
-	{
-		vector<string> result;
+    {
+        vector<string> result;
         //空格分割
-		split(line, result, " ");
-		dependentVar.push_back(atof(result[0].c_str()));
-	}
+        split(line, result, " ");
+        dependentVar.push_back(atof(result[0].c_str()));
+    }
 }
 
 void FileProcess::split(const std::string &input_str, std::vector<std::string> &output, const char *delim)
