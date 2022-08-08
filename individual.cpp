@@ -44,7 +44,7 @@ void Individual::caculate()
 		double a = 0.0;
 		for (int j = 0; j < GENE_NUM; j++)
 		{
-			switch (CONN)
+			switch (CONNET)
 			{
 			case '+':
 				value += param[j].at(i);
@@ -148,4 +148,15 @@ void Individual::recombanation(const int pos, const int length, const std::strin
 		Gene temp(text.substr(i * Gene::getLength(), Gene::getLength()));
 		gene[i] = temp;
 	}
+}
+
+std::string Individual::showContent() const
+{
+	std::string str;
+	for (int i = 0; i < GENE_NUM; i++)
+	{
+		str = str + gene[i].getContent() + " ";
+	}
+	str = str + " — [" + std::to_string(error) + "]";
+	return str;
 }
