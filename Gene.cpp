@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <stack>
 #include "Gene.h"
 #include "parameter.h"
 using namespace std;
@@ -97,7 +98,13 @@ bool Gene::isFunc(char elem)
 	}
 	return false;
 }
-
+bool Gene::isTerm(char elem){
+	for(int i = 0;i< sizeof(Terminator) / sizeof(char);i++){
+		if(elem == Terminator[i])
+			return true;
+	}
+	return false;
+}
 void Gene::DcInit(){
 	if (IS_OPEN_DC)
 	{
@@ -189,4 +196,89 @@ double Gene::mathExpression(double value_l, char symbol, double value_r)
 		break;
 	}
 	return value;
+}
+
+int Gene::priority(char ch)
+{
+	if (ch == '+' || ch == '-')
+		return 0;
+	else if (ch == '*' || ch == '/')
+		return 1;
+	else if (ch == '(')
+		return 3;
+	else
+		return 2;
+}
+
+std::queue<char> Gene::infix2postfix(string expression)
+{
+	// 先将字符串表达式依次入队
+	queue<char> temp;
+	for (string::iterator it = expression.begin(); it != expression.end(); ++it)
+	{
+		temp.push(*it);
+	}
+
+	queue<char> postfix;
+	stack<char> charStack;
+	while (!temp.empty())
+	{
+		// 弹出字符串队列的队头元素
+		char ch = temp.front();
+		temp.pop();
+		if (isTerm(ch))
+		{
+			// 如果是运算数 直接入队
+			postfix.push(ch);
+		}
+		else if (ch == '(')
+		{
+			// 如果是左括号 压入堆栈
+			charStack.push(ch);
+		}
+		else if (ch == ')')
+		{
+			// 如果是右括号 弹出栈顶运算符并输出 直到遇到左括号(出栈 不输出)
+			char elem;
+			while (!charStack.empty() && (elem = charStack.top()) != '(')
+			{
+				postfix.push(elem);
+				charStack.pop();
+			}
+			// 弹出左括号
+			if(!charStack.empty())
+				charStack.pop();
+		}
+		else if (isFunc(ch))
+		{
+			// 如果是运算符
+			// 如果堆栈为空，或栈顶运算符为左括号“(”，则直接将此运算符入栈
+			// 当优先级大于栈顶运算符时，则把它压栈；
+			// 当优先级小于或等于栈顶运算符时，将栈顶运算符弹出并输出；
+			// 再比较新的栈顶运算符，直到该运算符大于栈顶运算符优先级为止，然后将该运算符压栈
+			if (charStack.empty() || charStack.top() == '(')
+			{
+				charStack.push(ch);
+			}
+			else
+			{
+				int curPriority = priority(ch);
+				int topPriority = -1;;
+				while (!charStack.empty() && curPriority <= (topPriority = priority(charStack.top())))
+				{
+					char c = charStack.top();
+					charStack.pop();
+					postfix.push(c);
+				}
+				charStack.push(ch);
+			}
+		}
+	}
+	// 最后弹出栈内剩余元素
+	while (!charStack.empty())
+	{
+		postfix.push(charStack.top());
+		charStack.pop();
+	}
+	return postfix;
 }
