@@ -1,0 +1,48 @@
+#ifndef _FILEPROCESS_H_
+#define _FILEPROCESS_H_
+
+#include "paramsettings.h"
+#include <vector>
+#include <string>
+#include <fstream>
+using namespace std;
+class FileProcess
+{
+private:
+    /** 自变量数据 */
+    vector<vector<double>> independentVar;
+    /** 因变量数据 */
+    vector<double> dependentVar;
+
+    /** 用空格分割字符串*/
+    void split(const std::string &input_str, std::vector<std::string> &output, const char *delim);
+
+    /** 将字符串数组转为浮点数*/
+    vector<double> toDouble(vector<string> &data);
+
+    /** 从参数中指定的路径获取文件内容*/
+    vector<string> getFileText(const string path);
+
+    /** 解析自变量数据*/
+    void setIndependentData();
+
+    /** 解析因变量数据*/
+    void setDependentData();
+
+public:
+    /**构造函数内初始化输入文件和输出文件*/
+    FileProcess();
+    ~FileProcess()
+    {
+        independentVar.clear();
+        dependentVar.clear();
+    }
+
+    /** 返回自变量数据 */
+    vector<vector<double>> &independent() { return independentVar; }
+
+    /** 返回因变量数据 */
+    vector<double> &dependent() { return dependentVar; }
+};
+
+#endif
