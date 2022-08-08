@@ -1,4 +1,3 @@
-#include "parameter.h"
 #include <ctime>
 #include "fileProcess.h"
 #include"test.h"

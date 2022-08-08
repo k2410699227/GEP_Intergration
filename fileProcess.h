@@ -12,9 +12,9 @@ class FileProcess
 {
 private:
     /** 自变量数据 */
-    static vector<unordered_map<char,double>> independentVar;
+    vector<unordered_map<char,double>> independentVar;
     /** 因变量数据 */
-    static vector<double> dependentVar;
+    vector<double> dependentVar;
 
     /** 用空格分割字符串*/
     void split(const std::string &input_str, std::vector<std::string> &output, const char *delim);
@@ -41,12 +41,12 @@ public:
     // }
 
     /** 返回自变量数据 */
-    vector<unordered_map<char,double>> &independent() { return independentVar; }
+    vector<unordered_map<char,double>> independent() { return independentVar; }
 
     /** 返回因变量数据 */
-    vector<double> &dependent() { return dependentVar; }
+    vector<double> dependent() { return dependentVar; }
 
-    static int sampleCount(){return dependentVar.size();}
+    int sampleCount(){return dependentVar.size();}
 };
 
 #endif
