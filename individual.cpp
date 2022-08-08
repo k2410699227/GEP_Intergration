@@ -1,13 +1,13 @@
-#include "indivadual.h"
-#include "parallel.h"
+#include "individual.h"
+#include "parameter.h"
 
-Indivadual::Indivadual():gene(nullptr)
+Individual::Individual():gene(nullptr)
 {
     gene = new Gene[GENE_NUM];
     len = GENE_NUM * Gene::getLength();
 };
 
-Indivadual::Indivadual(const Indivadual& obj)
+Individual::Individual(const Individual& obj)
 : gene(new Gene[GENE_NUM])
 {
     for (int i = 0; i < GENE_NUM; i++)
@@ -16,13 +16,13 @@ Indivadual::Indivadual(const Indivadual& obj)
 	}
 }
 
-Indivadual::~Indivadual(){
+Individual::~Individual(){
     if(!gene){
         delete[] gene;
     }
 }
 
-void Indivadual::initialize(){
+void Individual::initialize(){
     for(int i = 0;i<GENE_NUM;i++){
         gene[i].initialize();
     }
@@ -30,19 +30,19 @@ void Indivadual::initialize(){
     fit();
 }
 
-void Indivadual::caculate(){}
-void Indivadual::fit(){
+void Individual::caculate(){}
+void Individual::fit(){
     //if n > Cp,then Fn = n;else Fi = 0;
 }
-int Indivadual::index_rand()
+int Individual::index_rand()
 {
 	return rand() % GENE_NUM;
 }
-void Indivadual::mutation(){
+void Individual::mutation(){
     int index = index_rand();
 	gene[index].mutation();
 }
-void Indivadual::ISTransposition(){
+void Individual::ISTransposition(){
     // 随机选取转座长度
 	int len_array = sizeof(IS_ELEM_LEN) / sizeof(int);
 	int index = rand() % len_array;
@@ -54,7 +54,7 @@ void Indivadual::ISTransposition(){
 	index = index_rand();
 	gene[index].transposition(str);
 }
-void Indivadual::RISTransposition(){
+void Individual::RISTransposition(){
     // 随机选择基因
 	int index = index_rand();
 	// 在头中随机选取一点
@@ -74,7 +74,7 @@ void Indivadual::RISTransposition(){
 	gene[index].transposition(str);
 }
 
-std::string Indivadual::content(){
+std::string Individual::content(){
     std::string content;
     for(int i = 0;i<GENE_NUM;i++){
         content += gene[i].getContent();
@@ -82,7 +82,7 @@ std::string Indivadual::content(){
     return content;
 }
 
-void Indivadual::geneTransposition(){
+void Individual::geneTransposition(){
     if(GENE_NUM > 1){
         int index1=0,index2 = 0;
         while(index1 == index2){
@@ -94,7 +94,7 @@ void Indivadual::geneTransposition(){
         gene[index2] = temp;
     }
 }
-void Indivadual::recombanation(const int pos, const int length, const std::string& str){
+void Individual::recombanation(const int pos, const int length, const std::string& str){
     std::string text = content();
 	text.replace(pos, length, str);
 	for (int i = 0; i < GENE_NUM; i++)

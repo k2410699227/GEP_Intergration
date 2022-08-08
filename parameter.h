@@ -10,7 +10,7 @@ double DC_MIN_VALUE = 0.0;
 int GENE_NUM = 3;
 char CONNET = '+';
 //population parameter
-int INDIVADUAL_NUM = 10;
+int INDIVIDUAL_NUM = 10;
 int GENERATION = 1000;
 const double MUTATION_RATE = 1;
 const double ONE_POINT_COMBA_RATE = 0.4;

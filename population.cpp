@@ -1,26 +1,26 @@
 #include <vector>
-#include "indivadual.h"
+#include "individual.h"
 #include "population.h"
-#include "parallel.h"
+#include "parameter.h"
 
 Population::Population(const int num):num(num)
 {
-    indivadual = new Indivadual[num];
+    individual = new Individual[num];
 }
 Population::~Population(){
-    if (!indivadual)
-		delete[] indivadual;
+    if (!individual)
+		delete[] individual;
 }
 void Population::initialize(){
     for (int i = 0;i<num;i++){
-        indivadual[i].initialize();
+        individual[i].initialize();
     }
 }
 void Population::mutation(){
     for(int i =0;i<num;i++){
         double prob = rand() % 100 / 100;
         if(prob < MUTATION_RATE){
-            indivadual[i].mutation();
+            individual[i].mutation();
         }
     }
 }
@@ -28,7 +28,7 @@ void Population::ISTransposition(){
     for(int i =0;i<num;i++){
         double prob = rand() % 100 / 100;
         if(prob < MUTATION_RATE){
-            indivadual[i].ISTransposition();
+            individual[i].ISTransposition();
         }
     }
 }
@@ -36,7 +36,7 @@ void Population::RISTrasposition(){
     for(int i =0;i<num;i++){
         double prob = rand() % 100 / 100;
         if(prob < MUTATION_RATE){
-            indivadual[i].RISTransposition();
+            individual[i].RISTransposition();
         }
     }
 }
@@ -44,7 +44,7 @@ void Population::geneTransposition(){
     for(int i = 0;i<num;i++){
         double prob = rand() / double(RAND_MAX);
         if(prob < GENE_TRANS_RATE){
-            indivadual[i].geneTransposition();
+            individual[i].geneTransposition();
         }
     }
 }
@@ -58,10 +58,10 @@ void Population::geneRecombination(){
             index2 = rand() % num;
         }
         int geneIndex = rand() % GENE_NUM;
-        std::string subStr1 = indivadual[index1].content().substr(geneIndex * Gene::getLength(),Gene::getLength());
-        std::string subStr2 = indivadual[index2].content().substr(geneIndex * Gene::getLength(),Gene::getLength());
-        indivadual[index1].recombanation(geneIndex * Gene::getLength(),Gene::getLength(),subStr2);
-        indivadual[index2].recombanation(geneIndex * Gene::getLength(),Gene::getLength(),subStr1);
+        std::string subStr1 = individual[index1].content().substr(geneIndex * Gene::getLength(),Gene::getLength());
+        std::string subStr2 = individual[index2].content().substr(geneIndex * Gene::getLength(),Gene::getLength());
+        individual[index1].recombanation(geneIndex * Gene::getLength(),Gene::getLength(),subStr2);
+        individual[index2].recombanation(geneIndex * Gene::getLength(),Gene::getLength(),subStr1);
     }
 }
 void Population::onePointRecombination(){
@@ -77,12 +77,12 @@ void Population::onePointRecombination(){
 			index2 = rand() % num;
         }
 		// 随机选取重组点
-		int pos = rand() % Indivadual::getLength();
-		std::string subStr1 = indivadual[index1].content().substr(0,pos);
-		std::string subStr2 = indivadual[index2].content().substr(0,pos);
+		int pos = rand() % Individual::getLength();
+		std::string subStr1 = individual[index1].content().substr(0,pos);
+		std::string subStr2 = individual[index2].content().substr(0,pos);
 		// 交换两个染色体的片段
-		indivadual[index1].recombanation(0, pos, subStr2);
-		indivadual[index2].recombanation(0, pos, subStr1);
+		individual[index1].recombanation(0, pos, subStr2);
+		individual[index2].recombanation(0, pos, subStr1);
 	}
 }
 void Population::twoPointRecombination(){
@@ -94,47 +94,47 @@ void Population::twoPointRecombination(){
             index1 = rand() % num;
             index2 = rand() % num;
         }
-        int pos1 = rand() % Indivadual::getLength();
-        int pos2 = rand() % (Indivadual::getLength() - pos1) + pos1;
+        int pos1 = rand() % Individual::getLength();
+        int pos2 = rand() % (Individual::getLength() - pos1) + pos1;
         int len = pos2-pos1+1;
-        std::string subStr1 = indivadual[index1].content().substr(pos1,len);
-        std::string subStr2 = indivadual[index2].content().substr(pos1,len);
-        indivadual[index1].recombanation(pos1,len,subStr2);
-        indivadual[index2].recombanation(pos1,len,subStr1);
+        std::string subStr1 = individual[index1].content().substr(pos1,len);
+        std::string subStr2 = individual[index2].content().substr(pos1,len);
+        individual[index1].recombanation(pos1,len,subStr2);
+        individual[index2].recombanation(pos1,len,subStr1);
     }
 }
 void Population::evolution(){
     double sumOfFit = 0.0;
-    for(int i = 0;i < INDIVADUAL_NUM;i++){
-        sumOfFit += indivadual[i].getError();
+    for(int i = 0;i < INDIVIDUAL_NUM;i++){
+        sumOfFit += individual[i].getError();
     }
     std::vector<double> gambleRate;
-    for(int i =0;i < INDIVADUAL_NUM;i++){
-        gambleRate.push_back(indivadual[i].getError() / sumOfFit);
+    for(int i =0;i < INDIVIDUAL_NUM;i++){
+        gambleRate.push_back(individual[i].getError() / sumOfFit);
     }
     //选择个体
     // 左值为左区间 右值为右区间
 	std::vector<std::pair<double,double> > section;
 	// 将概率展开为长度为1的线段 划分每个个体所占区间
 	double temp = 0.0;
-	for (int i = 0; i < INDIVADUAL_NUM - 1; i++)
+	for (int i = 0; i < INDIVIDUAL_NUM - 1; i++)
 	{
 		section.push_back(std::pair<double, double>(temp, temp + gambleRate[i]));
-		if(i < INDIVADUAL_NUM -2)
+		if(i < INDIVIDUAL_NUM -2)
 			temp += gambleRate[i];
 	}
 	section.push_back(std::pair<double, double>(temp, 1.0)); 
 	std::vector<std::string> context = {};
-	for (int i = 0; i < INDIVADUAL_NUM; i++)
+	for (int i = 0; i < INDIVIDUAL_NUM; i++)
 	{
 		// 生成0~1间的随机算子
 		double prob = rand() / double(RAND_MAX);
-		for (int j = 0; j < INDIVADUAL_NUM; j++)
+		for (int j = 0; j < INDIVIDUAL_NUM; j++)
 		{
 			// 如果落在该区间内 则加入该个体
 			if (prob >= section[j].first && prob <= section[j].second)
 			{
-				context.push_back(indivadual[j].content());
+				context.push_back(individual[j].content());
 				break;
 			}
 		}
