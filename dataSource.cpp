@@ -1,14 +1,16 @@
-#include "fileProcess.h"
+#include "dataSource.h"
 #include <cstring>
 #include <cstdlib>
 
-FileProcess::FileProcess()
+vector<unordered_map<char, double>> DataSource::independentVar = {};
+vector<double> DataSource::dependentVar = {};
+DataSource::DataSource()
 {
     setDependentData();
     setIndependentData();
 }
 
-vector<string> FileProcess::getFileText(const string path)
+vector<string> DataSource::getFileText(const string path)
 {
     ifstream inFile;
     vector<string> res;
@@ -22,7 +24,7 @@ vector<string> FileProcess::getFileText(const string path)
     return res;
 }
 
-void FileProcess::setIndependentData()
+void DataSource::setIndependentData()
 {
     vector<string> text = getFileText(PATH_INDEPENDENT);
     for (auto line : text)
@@ -30,17 +32,17 @@ void FileProcess::setIndependentData()
         vector<string> result;
         //空格分割
         split(line, result, " ");      
-        assert(result.size()>=(sizeof(Function)/sizeof(char)));
+        assert(result.size()>=(sizeof(Terminator)/sizeof(char)));
 
         vector<double> temp = toDouble(result);
         unordered_map<char,double>single;
         for(int i = 0;i<temp.size();i++)
-            single[Function[i]]=temp[i];
+            single[Terminator[i]]=temp[i];
         independentVar.push_back(single);
     }
 }
 
-void FileProcess::setDependentData()
+void DataSource::setDependentData()
 {
     vector<string> text = getFileText(PATH_DEPENDENT);
     for (auto line : text)
@@ -52,7 +54,7 @@ void FileProcess::setDependentData()
     }
 }
 
-void FileProcess::split(const std::string &input_str, std::vector<std::string> &output, const char *delim)
+void DataSource::split(const std::string &input_str, std::vector<std::string> &output, const char *delim)
 {
     int pos = 0;
     int npos = 0;
@@ -66,7 +68,7 @@ void FileProcess::split(const std::string &input_str, std::vector<std::string> &
     output.push_back(input_str.substr(pos, input_str.length() - pos));
 }
 
-vector<double> FileProcess::toDouble(vector<string> &data)
+vector<double> DataSource::toDouble(vector<string> &data)
 {
     vector<double> temp;
     for (auto it : data)

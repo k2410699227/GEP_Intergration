@@ -1,6 +1,9 @@
 #include "Gene.h"
 #include <string>
 #include <vector>
+#include<cmath>
+#include "parameter.h"
+#include "dataSource.h"
 class Individual{
     public:
         Individual();
@@ -18,6 +21,7 @@ class Individual{
         void caculate();
         void fit();
         static inline int getLength() {return len;}
+        double getFitness() {return fitness;}
         double getError() {return error;}
         std::string showContent() const;
     private:
@@ -29,6 +33,6 @@ class Individual{
         std::vector<double> result;
         //目标值 
         static std::vector<double> dependentVar;
-        //error
-        double error;
+        //适应度
+        double fitness;
 };

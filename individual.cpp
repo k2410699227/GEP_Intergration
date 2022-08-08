@@ -1,5 +1,4 @@
 #include "individual.h"
-#include "parameter.h"
 
 Individual::Individual():gene(nullptr)
 {
@@ -38,7 +37,7 @@ void Individual::caculate()
 		param.push_back(gene[i].expressionValue());
 	}
 
-	int len = Gene::sampleCount();
+	int len = DataSource::sampleCount();
 	for (int i = 0; i < len; ++i)
 	{
 		double value = 0.0;
@@ -73,6 +72,13 @@ void Individual::caculate()
 
 void Individual::fit(){
     //if n > Cp,then Fn = n;else Fi = 0;
+	int num = DataSource::sampleCount();
+	int temp = 0;
+	for (int i = 0; i < num; i++)
+	{
+		temp += (result[i] == DataSource::dependent()[i]) ? 1 : 0;
+	}
+	fitness = temp > (num / 2) ? temp : 1;
 }
 int Individual::index_rand()
 {

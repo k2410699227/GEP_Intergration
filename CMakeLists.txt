@@ -6,8 +6,8 @@ cmake_minimum_required (VERSION 3.8)
 project ("GeneExpressionProgramming")
 
 #将当前目录(.)下的所有文件添加到编译器
-aux_source_directory(. SourcePath)
-set(SourcePath main.cpp test.h test.cpp parameter.h fileProcess.h fileProcess.cpp)
+# aux_source_directory(. SourcePath)
+set(SourcePath main.cpp test.h test.cpp parameter.h dataSource.h dataSource.cpp)
 # 将源代码添加到此项目的可执行文件。
 add_executable (GeneExpressionProgramming ${SourcePath})  
 

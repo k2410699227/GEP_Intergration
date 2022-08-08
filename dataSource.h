@@ -8,7 +8,7 @@
 #include<unordered_map>
 #include <fstream>
 using namespace std;
-class FileProcess
+class DataSource
 {
 private:
     /** 自变量数据 */
@@ -33,18 +33,18 @@ private:
 
 public:
     /**构造函数内初始化输入文件和输出文件*/
-    FileProcess();
-    // ~FileProcess()
-    // {
-    //     independentVar.clear();
-    //     dependentVar.clear();
-    // }
+    DataSource();
+    ~DataSource()
+    {
+        independentVar.clear();
+        dependentVar.clear();
+    }
 
     /** 返回自变量数据 */
-    vector<unordered_map<char,double>> &independent() { return independentVar; }
+    static vector<unordered_map<char,double>> independent() { return independentVar; }
 
     /** 返回因变量数据 */
-    vector<double> &dependent() { return dependentVar; }
+    static vector<double> dependent() { return dependentVar; }
 
     static int sampleCount(){return dependentVar.size();}
 };

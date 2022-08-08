@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+using namespace std;
 class Gene{
     public:
         Gene(const Gene& obj);
@@ -22,6 +23,7 @@ class Gene{
         int maxParameter();
         double randDcValue();
         void saveDcValue();
+        vector<double> expressionValue(){return result;};
         void destroyDc();
         double mathExpression(double value_l, char symbol, double value_r);
         int sampleCount();
@@ -34,4 +36,5 @@ class Gene{
         static int gene_len;
         std::vector<double> dc_area;
         static double* dc_array;
+        vector<double> result;
 };
