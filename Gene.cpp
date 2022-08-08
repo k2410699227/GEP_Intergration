@@ -28,7 +28,7 @@ char Gene::getRandomElement(){
 	if (index)
 		return getTerminator();
 	else
-		return getNTerminator();
+		return getFunction();
 }
 
 char Gene::getTerminator(){
@@ -37,7 +37,7 @@ char Gene::getTerminator(){
     return Terminator[ran];
 }
 
-char Gene::getNTerminator(){
+char Gene::getFunction(){
     int length = sizeof(Function)/sizeof(char);
     int ran = rand() % length;
     return Function[ran];
@@ -82,4 +82,20 @@ bool Gene::isFunc(char elem)
 			return true;
 	}
 	return false;
+}
+
+void Gene::DCInit(){
+	if (IS_OPEN_DC)
+	{
+		// 分配Dc域内存
+		dc_array = new double[DC_LEN];
+		// 初始化Dc域元素数值大小
+		int minValue = int(DC_MIN_VALUE * 1000);
+		int maxValue = int(DC_MAX_VALUE * 1000);
+		for (int i = 0; i < DC_LEN; i++)
+		{	
+			int value = (rand() % (maxValue - minValue + 1)) + minValue;
+			dc_array[i] = value / 1000.0;
+		}
+	}
 }

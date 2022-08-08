@@ -1,3 +1,4 @@
+#include <vector>
 #include "indivadual.h"
 #include "population.h"
 #include "parallel.h"
@@ -103,5 +104,48 @@ void Population::twoPointRecombination(){
     }
 }
 void Population::evolution(){
-    
+    double sumOfFit = 0.0;
+    for(int i = 0;i < INDIVADUAL_NUM;i++){
+        sumOfFit += indivadual[i].getError();
+    }
+    std::vector<double> gambleRate;
+    for(int i =0;i < INDIVADUAL_NUM;i++){
+        gambleRate.push_back(indivadual[i].getError() / sumOfFit);
+    }
+    //选择个体
+    // 左值为左区间 右值为右区间
+	std::vector<std::pair<double,double> > section;
+	// 将概率展开为长度为1的线段 划分每个个体所占区间
+	double temp = 0.0;
+	for (int i = 0; i < INDIVADUAL_NUM - 1; i++)
+	{
+		section.push_back(std::pair<double, double>(temp, temp + gambleRate[i]));
+		if(i < INDIVADUAL_NUM -2)
+			temp += gambleRate[i];
+	}
+	section.push_back(std::pair<double, double>(temp, 1.0)); 
+	std::vector<std::string> context = {};
+	for (int i = 0; i < INDIVADUAL_NUM; i++)
+	{
+		// 生成0~1间的随机算子
+		double prob = rand() / double(RAND_MAX);
+		for (int j = 0; j < INDIVADUAL_NUM; j++)
+		{
+			// 如果落在该区间内 则加入该个体
+			if (prob >= section[j].first && prob <= section[j].second)
+			{
+				context.push_back(indivadual[j].content());
+				break;
+			}
+		}
+    }
+    //补齐中间步骤
+    this->mutation();
+    this->ISTransposition();
+    this->RISTrasposition();
+    this->geneTransposition();
+    this->onePointRecombination();
+    this->twoPointRecombination();
+    this->geneRecombination();
+
 }
