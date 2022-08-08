@@ -1,4 +1,4 @@
-//gene parallel
+//gene parameter
 const int HEAD_LEN = 7;
 char Function[] = {'^','+','|'};
 char Terminator[] = {'a'};
@@ -6,10 +6,10 @@ bool IS_OPEN_DC = 0;
 int DC_LEN = 10;
 double DC_MAX_VALUE = 10.0;
 double DC_MIN_VALUE = 0.0;
-//individual parallel
+//individual parameter
 int GENE_NUM = 3;
 char CONNET = '+';
-//population parallel
+//population parameter
 int INDIVADUAL_NUM = 10;
 int GENERATION = 1000;
 const double MUTATION_RATE = 1;

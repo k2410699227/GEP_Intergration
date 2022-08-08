@@ -16,7 +16,10 @@ class Gene{
         int findFunc(const int pos);
         static inline int getLength() {return gene_len;}
         std::string getContent() {return text;}
-        void DCInit();
+        void DcInit();
+        int maxParameter();
+        double randDcValue();
+        void saveDcValue();
     private:
         std::string text;           //gene content
         const int head_len = 5;     //head length
