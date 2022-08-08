@@ -21,6 +21,8 @@ void Gene::initialize(){
         text += getTerminator();
     }
     //dc next
+	if(IS_OPEN_DC)
+		saveDcValue();
 }
 
 Gene::Gene(const Gene& obj):text(obj.text)
