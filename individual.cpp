@@ -30,7 +30,47 @@ void Individual::initialize(){
     fit();
 }
 
-void Individual::caculate(){}
+void Individual::caculate()
+{
+	std::vector<std::vector<double>> param = {};
+	for (int i = 0; i < GENE_NUM; i++)
+	{
+		param.push_back(gene[i].expressionValue());
+	}
+
+	int len = Gene::sampleCount();
+	for (int i = 0; i < len; ++i)
+	{
+		double value = 0.0;
+		double a = 0.0;
+		for (int j = 0; j < GENE_NUM; j++)
+		{
+			switch (CONN)
+			{
+			case '+':
+				value += param[j].at(i);
+				break;
+			case '-':
+				value -= param[j].at(i);
+				break;
+			case '*':
+				value *= param[j].at(i);
+				break;
+			case '/':
+				value /= param[j].at(i);
+				if (isnan(value) || isinf(value))
+					value = 0.0;
+				break;
+			default:
+				break;
+			}
+		}
+		//当表达式大于阈值，分类结果是1，否则为0；
+		value = value > THRESHOLD ? 1 : 0;
+		result.push_back(value);
+	}
+}
+
 void Individual::fit(){
     //if n > Cp,then Fn = n;else Fi = 0;
 }
