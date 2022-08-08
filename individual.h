@@ -1,11 +1,11 @@
 #include "Gene.h"
 #include <string>
 #include <vector>
-class Indivadual{
+class Individual{
     public:
-        Indivadual();
-        ~Indivadual();
-        Indivadual& operator= (const Indivadual& ind);
+        Individual();
+        ~Individual();
+        Individual& operator= (const Individual& ind);
         void initialize();
         void mutation();
         void ISTransposition();

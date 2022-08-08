@@ -1,4 +1,4 @@
-#include "indivadual.h"
+#include "individual.h"
 class Population{
     public:
         Population(const int num);
@@ -14,6 +14,6 @@ class Population{
         void twoPointRecombination();
         void geneRecombination();
 
-        Indivadual* indivadual;
+        Individual* individual;
         int num;
 };
