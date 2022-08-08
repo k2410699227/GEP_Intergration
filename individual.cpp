@@ -103,3 +103,14 @@ void Individual::recombanation(const int pos, const int length, const std::strin
 		gene[i] = temp;
 	}
 }
+
+std::string Individual::showContent() const
+{
+	std::string str;
+	for (int i = 0; i < GENE_NUM; i++)
+	{
+		str = str + gene[i].getContent() + " ";
+	}
+	str = str + " — [" + std::to_string(error) + "]";
+	return str;
+}

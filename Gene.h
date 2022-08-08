@@ -20,6 +20,9 @@ class Gene{
         int maxParameter();
         double randDcValue();
         void saveDcValue();
+        void destroyDc();
+        double mathExpression(double value_l, char symbol, double value_r);
+    
     private:
         std::string text;           //gene content
         const int head_len = 5;     //head length

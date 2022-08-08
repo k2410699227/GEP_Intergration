@@ -13,6 +13,18 @@ Gene::Gene(const string& str)
     gene_len = tail_len + head_len;
 }
 
+Gene& Gene::operator=(const Gene& obj)
+{
+	if (this != &obj)
+	{
+		this->text = obj.text;
+		dc_area = obj.dc_area;
+	}
+	return *this;
+}
+Gene::Gene(const Gene& obj):text(obj.text),dc_area(obj.dc_area)
+{}
+
 void Gene::initialize(){
     for (int i = 0;i<head_len;i++){
         text += getRandomElement();
@@ -23,8 +35,7 @@ void Gene::initialize(){
     //dc next
 }
 
-Gene::Gene(const Gene& obj):text(obj.text)
-{}
+Gene::~Gene(){}
 
 char Gene::getRandomElement(){
     int index = rand() % 2;
@@ -107,12 +118,12 @@ int Gene::maxParameter(){
 	int max = 0;
 	for(int i =0;i<(sizeof(Function)/sizeof(char));i++){
 		switch(Function[i]){
-			case('+'):
-			case('-'):
-			case('*'):
-			case('/'):
-			case('<'):
-			case('>'):
+			case '+':
+			case '-':
+			case '*':
+			case '/':
+			case '<':
+			case '>':
 				if(max < 2){
 					max = 2;
 				}
@@ -138,4 +149,44 @@ void Gene::saveDcValue()
 			dc_area.push_back(temp);
 		}
 	}
+}
+
+void Gene::destroyDc()
+{
+	if (dc_array != nullptr)
+		delete[] dc_array;
+}
+
+double Gene::mathExpression(double value_l, char symbol, double value_r)
+{
+	double value = 0.0;
+	switch (symbol)
+	{
+	case '+':
+		value = value_l + value_r;
+		break;
+	case '-':
+		value = value_l - value_r;
+		break;
+	case '*':
+		value = value_l * value_r;
+		break;
+	case '/':
+		if(value_l == 0.0)
+		{
+			value = 0.0;
+			break;
+		}
+		value = value_r / value_l;
+		break;
+	case '>':
+		value = value_l > value_r ? 1 : 0;
+		break;
+	case '<':
+		value = value_l < value_r ? 1 : 0;
+		break;
+	default:
+		break;
+	}
+	return value;
 }

@@ -19,6 +19,7 @@ class Individual{
         void fit();
         static inline int getLength() {return len;}
         double getError() {return error;}
+        std::string showContent() const;
     private:
         inline int index_rand();
         Gene* gene;
