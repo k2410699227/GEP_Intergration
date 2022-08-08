@@ -1,7 +1,13 @@
+#ifndef _PARAMETER_H_
+#define _PARAMETER_H_
+#include <string>
+
 // gene parameter
 const int HEAD_LEN = 7;
 char Function[] = {'^', '+', '|'};
-char Terminator[] = {'a'};
+char Terminator[] = {'a','b','c'};
+//连接符号
+char CONN = '+';
 bool IS_OPEN_DC = 0;
 int DC_LEN = 10;
 double DC_MAX_VALUE = 10.0;
@@ -26,3 +32,5 @@ const int RIS_ELEM_LEN[] = {1, 2, 3}; // random length set for RIS transposition
 const std::string PATH_INDEPENDENT = "data/input.txt";
 /* 因变量存储文件 */
 const std::string PATH_DEPENDENT = "data/output.txt";
+
+#endif

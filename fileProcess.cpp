@@ -29,9 +29,14 @@ void FileProcess::setIndependentData()
     {
         vector<string> result;
         //空格分割
-        split(line, result, " ");
+        split(line, result, " ");      
+        assert(result.size()>=(sizeof(Function)/sizeof(char)));
+
         vector<double> temp = toDouble(result);
-        independentVar.push_back(temp);
+        unordered_map<char,double>single;
+        for(int i = 0;i<temp.size();i++)
+            single[Function[i]]=temp[i];
+        independentVar.push_back(single);
     }
 }
 

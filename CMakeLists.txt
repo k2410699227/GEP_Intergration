@@ -7,7 +7,7 @@ project ("GeneExpressionProgramming")
 
 #将当前目录(.)下的所有文件添加到编译器
 aux_source_directory(. SourcePath)
-set(SourcePath main.cpp test.h test.cpp paramsettings.h fileProcess.h fileProcess.cpp)
+set(SourcePath main.cpp test.h test.cpp parameter.h fileProcess.h fileProcess.cpp)
 # 将源代码添加到此项目的可执行文件。
 add_executable (GeneExpressionProgramming ${SourcePath})  
 
