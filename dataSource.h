@@ -1,5 +1,5 @@
-#ifndef _FILEPROCESS_H_
-#define _FILEPROCESS_H_
+#ifndef DATASOURCE_H
+#define DATASOURCE_H
 
 #include "parameter.h"
 #include<assert.h>

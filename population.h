@@ -1,3 +1,5 @@
+#ifndef POPULATION_H
+#define POPULATION_H
 #include "individual.h"
 #include "parameter.h"
 class Population{
@@ -19,3 +21,5 @@ class Population{
         Individual* individual;
         int num;
 };
+
+#endif
