@@ -19,14 +19,7 @@ int main()
 {
 	//获取样本数据
 	DataSource file;
-	
-	/* =======================设置训练样本====================== */
-	
 	srand((int)time(0));
-	// // 设置自变量
-	// Gene::setData(file.independent());
-	// // 设置因变量
-	// Individual::setDependentVar(file.dependent());
 
 	/* =======================设置Dc域====================== */
 	Gene::DcInit();
@@ -41,14 +34,14 @@ int main()
 		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 			num_generaton = i + 1;
 		
-		// cout << "------------------------第" << i+1 << "代------------------------" << endl;
-		// cout << endl;
-		// parent.context();
-		// cout << endl;
+		cout << "------------------------第" << i+1 << "代------------------------" << endl;
+		cout << endl;
+		parent.display();
+		cout << endl;
 		parent.evolution();
 	}
 	cout << "------------------------第" << GENERATION << "代------------------------" << endl;
-	// parent.getContext();
+	parent.display();
 	if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 		num_generaton = 1000;
 	cout << endl;
