@@ -14,7 +14,7 @@ Gene::Gene(const string &str)
 {
 	int m = maxParameter();
 	tail_len = HEAD_LEN * (m - 1) + 1;
-	gene_len = tail_len + head_len;
+	gene_len = tail_len + HEAD_LEN;
 }
 
 Gene &Gene::operator=(const Gene &obj)
@@ -32,7 +32,7 @@ Gene::Gene(const Gene &obj) : text(obj.text), dc_area(obj.dc_area), tree(NULL)
 
 void Gene::initialize()
 {
-	for (int i = 0; i < head_len; i++)
+	for (int i = 0; i < HEAD_LEN; i++)
 	{
 		text += getRandomElement();
 	}

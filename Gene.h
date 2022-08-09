@@ -42,7 +42,6 @@ class Gene{
         double calculate(queue<char> postfix, unordered_map<char, double> value);     //计算基因的数值  
     private:
         std::string text;           //gene content
-        const int head_len = 5;     //head length
         static int tail_len;     //tail length
         static int gene_len;
         BinaryTree* tree;   //以二叉树形式储存生成的表达式
