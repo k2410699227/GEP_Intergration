@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <algorithm>
 #include "dataSource.h"
 #include "BinaryTree.h"
 using namespace std;

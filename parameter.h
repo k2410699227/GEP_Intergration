@@ -4,8 +4,9 @@
 
 // gene parameter
 const int HEAD_LEN = 7;
-const char Function[] = {'-', '+', '*','/','>','<'};
-const char Terminator[] = {'a','b','c'};
+// 可选函数集: +、-、*、/、<、 >、&(AND)、|(OR)、 X(XOR)、S(sin)、C(cos)、T(tan)、E(exp)、L(log10)、Q(sqrt)
+const char Function[] = {'-', '+', '*','/','>','<','&','|','X','^'};
+const char Terminator[] = {'a'};
 /* 分类阈值*/
 const double THRESHOLD = 0.5;
 //连接符号

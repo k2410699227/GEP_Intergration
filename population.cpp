@@ -168,7 +168,7 @@ bool Population::excellentIndiv(double& maxValue, int& index, string& content,
 	if (temp >= maxValue)
 	{
 		index = idx + 1;
-		content = individual[idx].content();
+		content = individual[idx].showContent();
 		contentWithDc = individual[idx].infixExpressionWithDc();
 		maxValue = individual[idx].getFitness();
 		return true;

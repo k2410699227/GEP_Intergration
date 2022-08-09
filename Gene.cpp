@@ -26,8 +26,9 @@ Gene &Gene::operator=(const Gene &obj)
 	}
 	return *this;
 }
-Gene::Gene(const Gene& obj):text(obj.text),dc_value(obj.dc_value)
-{}
+Gene::Gene(const Gene &obj) : text(obj.text), dc_value(obj.dc_value)
+{
+}
 
 void Gene::initialize()
 {
@@ -144,11 +145,11 @@ bool Gene::isTerm(char elem)
 	for (int i = 0; i < sizeof(Terminator) / sizeof(char); i++)
 	{
 		if (elem == Terminator[i])
-			return true;		
+			return true;
 	}
 	if (IS_OPEN_DC && elem == '?')
 		return true;
-		
+
 	return false;
 }
 void Gene::DcInit()
@@ -168,33 +169,38 @@ void Gene::DcInit()
 	}
 }
 
-int Gene::maxParameter(){
+int Gene::maxParameter()
+{
 	//获取最大参数个数
-	// int max = 0;
-	// for (int i = 0; i < (sizeof(Function) / sizeof(char)); i++)
-	// {
-	// 	switch (Function[i])
-	// 	{
-	// 	case '+':
-	// 	case '-':
-	// 	case '*':
-	// 	case '/':
-	// 	case '<':
-	// 	case '>':
-	// 		if (max < 2)
-	// 		{
-	// 			max = 2;
-	// 		}
-	// 		break;
-	// 	}
-	// }
-	// return max;
+	int count = 0;
+
 	for (int i = 0; i < HEAD_LEN; i++)
 	{
-		if (Function[i] == '+' || Function[i] == '*' || Function[i] == '-' || Function[i] == '/')
-			return 2;
+		switch (Function[i])
+		{
+		case '+':
+		case '-':
+		case '*':
+		case '/':
+		case '<':
+		case '>':
+		case '&':
+		case '|':
+		case 'X':
+			count = max(count, 2);
+			break;
+		case '^': // false
+		case 'S': // sin
+		case 'C': // cos
+		case 'T': // tan
+		case 'Q': // sqrt
+		case 'E': // exp
+		case 'L': // log10
+			count = max(count, 1);
+			break;
+		}
 	}
-	return 1;
+	return count;
 }
 
 int Gene::parameterCount(char c)
@@ -207,7 +213,19 @@ int Gene::parameterCount(char c)
 	case '/':
 	case '<':
 	case '>':
+	case '&':
+	case '|':
+	case 'X':
 		return 2;
+		break;
+	case '^': // false
+	case 'S': // sin
+	case 'C': // cos
+	case 'T': // tan
+	case 'Q': // sqrt
+	case 'E': // exp
+	case 'L': // log10
+		return 1;
 		break;
 	}
 	return 1;
@@ -243,6 +261,8 @@ double Gene::mathExpression(char symbol, double value_r)
 	double value = 0.0;
 	switch (symbol)
 	{
+	case '^':
+		value = value_r > 0.0 ? 0.0 : 1.0;
 	case 'S': // sin
 		value = sin(value_r);
 		break;
@@ -293,10 +313,19 @@ double Gene::mathExpression(double value_l, char symbol, double value_r)
 		value = value_r / value_l;
 		break;
 	case '>':
-		value = value_l > value_r ? 1 : 0;
+		value = value_l > value_r ? 1.0 : 0.0;
 		break;
 	case '<':
-		value = value_l < value_r ? 1 : 0;
+		value = value_l < value_r ? 1.0 : 0.0;
+		break;
+	case '&':
+		value = (value_l > 0.0 && value_r > 0.0) ? 1.0 : 0.0;
+		break;
+	case '|':
+		value = (value_l == 0.0 && value_r == 0.0) ? 0.0 : 1.0;
+		break;
+	case 'X':
+		value = ((value_l > 0.0 && value_r > 0.0) || (value_l == 0.0 && value_r == 0.0)) ? 0.0 : 1.0;
 		break;
 	default:
 		break;
