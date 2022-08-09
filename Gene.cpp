@@ -5,12 +5,12 @@
 #include "parameter.h"
 using namespace std;
 double *Gene::dc_array = nullptr;
-int Gene::tail_len = 0;     //tail length
+int Gene::tail_len = 0; // tail length
 int Gene::gene_len = 0;
 
 Gene::Gene(const string &str)
 	: text(str),
-	tree(NULL)
+	  tree(NULL)
 {
 	int m = maxParameter();
 	tail_len = HEAD_LEN * (m - 1) + 1;
@@ -71,8 +71,24 @@ char Gene::getRandomElement()
 char Gene::getTerminator()
 {
 	int length = sizeof(Terminator) / sizeof(char);
-	int ran = rand() % length;
-	return Terminator[ran];
+	if (!IS_OPEN_DC)
+	{
+
+		int ran = rand() % length;
+		return Terminator[ran];
+	}
+	else
+	{
+		// 如果开启了Dc域 长度加1
+		vector<char> dc_term;
+		for (int i = 0; i < length; i++)
+		{
+			dc_term.push_back(Terminator[i]);
+		}
+		dc_term.push_back('?');
+		int index = rand() % (length + 1);
+		return dc_term[index];
+	}
 }
 
 char Gene::getFunction()
@@ -219,22 +235,22 @@ double Gene::mathExpression(char symbol, double value_r)
 	double value = 0.0;
 	switch (symbol)
 	{
-	case 'S':	// sin
+	case 'S': // sin
 		value = sin(value_r);
 		break;
-	case 'C':	// cos
+	case 'C': // cos
 		value = cos(value_r);
 		break;
-	case 'T':	// tan
+	case 'T': // tan
 		value = tan(value_r);
 		break;
-	case 'Q':	// sqrt
+	case 'Q': // sqrt
 		value = sqrt(fabs(value_r));
 		break;
-	case 'E':	// exp
+	case 'E': // exp
 		value = exp(value_r);
 		break;
-	case 'L':	// log10
+	case 'L': // log10
 		value = log10(fabs(value_r));
 		break;
 	default:
