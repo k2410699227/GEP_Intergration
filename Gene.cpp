@@ -408,7 +408,7 @@ string Gene::decodeWithDc()
 	string::size_type index;
 	while ((index = expression.find('?')) != string::npos)
 	{
-		string temp = std::to_string(dc_area[flag++]);
+		string temp = std::to_string(dc_value[flag++]);
 		expression.replace(expression.find('?'), 1, temp);
 	}
 	return expression;
@@ -427,7 +427,7 @@ double Gene::calculate(queue<char> postfix, unordered_map<char, double> value)
 			// 如果是“?”则从存储的Dc域数据中选择其值
 			if (IS_OPEN_DC && ch == '?')
 			{
-				temp.push(dc_area[flag++]);
+				temp.push(dc_value[flag++]);
 			}
 			else
 			{

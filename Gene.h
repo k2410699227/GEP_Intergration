@@ -46,7 +46,7 @@ class Gene{
         static int tail_len;     //tail length
         static int gene_len;
         BinaryTree* tree;   //以二叉树形式储存生成的表达式
-        std::vector<double> dc_area;
+        std::vector<double> dc_value;
         static double* dc_array;
         vector<double> result;
 };
