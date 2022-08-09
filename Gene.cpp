@@ -19,11 +19,11 @@ Gene& Gene::operator=(const Gene& obj)
 	if (this != &obj)
 	{
 		this->text = obj.text;
-		dc_area = obj.dc_area;
+		dc_value = obj.dc_value;
 	}
 	return *this;
 }
-Gene::Gene(const Gene& obj):text(obj.text),dc_area(obj.dc_area)
+Gene::Gene(const Gene& obj):text(obj.text),dc_value(obj.dc_value)
 {}
 
 void Gene::initialize(){
@@ -34,6 +34,9 @@ void Gene::initialize(){
         text += getTerminator();
     }
     //dc next
+	if(IS_OPEN_DC){
+		saveDcValue();
+	}
 }
 
 Gene::~Gene(){}
@@ -122,6 +125,7 @@ void Gene::DcInit(){
 }
 
 int Gene::maxParameter(){
+	//获取最大参数个数
 	int max = 0;
 	for(int i =0;i<(sizeof(Function)/sizeof(char));i++){
 		switch(Function[i]){
@@ -153,7 +157,7 @@ void Gene::saveDcValue()
 		if (*it == '?')
 		{
 			double temp = randDcValue();
-			dc_area.push_back(temp);
+			dc_value.push_back(temp);
 		}
 	}
 }

@@ -34,7 +34,7 @@ class Gene{
         const int head_len = 5;     //head length
         static int tail_len;     //tail length
         static int gene_len;
-        std::vector<double> dc_area;
+        std::vector<double> dc_value;
         static double* dc_array;
         vector<double> result;
 };
