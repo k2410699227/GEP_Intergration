@@ -32,8 +32,8 @@ const double RIS_TRANS_RATE = 1;
 const int RIS_ELEM_LEN[] = {1, 2, 3}; // random length set for RIS transposition
 
 /* 自变量存储文件 */
-const std::string PATH_INDEPENDENT = "../data/input.txt";
+const std::string PATH_INDEPENDENT = "./data/input.txt";
 /* 因变量存储文件 */
-const std::string PATH_DEPENDENT = "../data/output.txt";
+const std::string PATH_DEPENDENT = "./data/output.txt";
 
 #endif
