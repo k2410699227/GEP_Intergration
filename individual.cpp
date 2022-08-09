@@ -1,5 +1,5 @@
 #include "individual.h"
-
+int Individual::len = 0;
 Individual::Individual():gene(nullptr)
 {
     gene = new Gene[GENE_NUM];
@@ -159,4 +159,17 @@ std::string Individual::showContent() const
 	}
 	str = str + " — [" + std::to_string(fitness) + "]";
 	return str;
+}
+
+string Individual::infixExpressionWithDc()
+{
+	string expression = "";
+	for (int i = 0; i < GENE_NUM; i++)
+	{
+		if (i < GENE_NUM - 1)
+			expression = expression + gene[i].decodeWithDc() + CONN;
+		else
+			expression = expression + gene[i].decodeWithDc();
+	}
+	return expression;
 }

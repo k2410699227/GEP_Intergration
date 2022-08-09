@@ -10,7 +10,7 @@ const char Terminator[] = {'a','b','c'};
 const double THRESHOLD = 0.5;
 //连接符号
 const char CONN = '+';
-const bool IS_OPEN_DC = 0;
+const bool IS_OPEN_DC = 1;
 const int DC_LEN = 10;
 const double DC_MAX_VALUE = 10.0;
 const double DC_MIN_VALUE = 0.0;

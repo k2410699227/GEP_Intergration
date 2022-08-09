@@ -8,6 +8,7 @@ DataSource::DataSource()
 {
     setDependentData();
     setIndependentData();
+    assert(independentVar.size()<=dependentVar.size());
 }
 
 vector<string> DataSource::getFileText(const string path)
