@@ -24,7 +24,7 @@ set(SourcePath
               population.h)
 # 将源代码添加到此项目的可执行文件。
 add_executable (GeneExpressionProgramming ${SourcePath})  
-
+set(EXECUTABLE_OUTPUT_PATH ../)
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET GeneExpressionProgramming PROPERTY CXX_STANDARD 11)
 endif()
