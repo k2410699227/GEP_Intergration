@@ -144,8 +144,11 @@ bool Gene::isTerm(char elem)
 	for (int i = 0; i < sizeof(Terminator) / sizeof(char); i++)
 	{
 		if (elem == Terminator[i])
-			return true;
+			return true;		
 	}
+	if (IS_OPEN_DC && elem == '?')
+		return true;
+		
 	return false;
 }
 void Gene::DcInit()
@@ -167,25 +170,31 @@ void Gene::DcInit()
 
 int Gene::maxParameter(){
 	//获取最大参数个数
-	int max = 0;
-	for (int i = 0; i < (sizeof(Function) / sizeof(char)); i++)
+	// int max = 0;
+	// for (int i = 0; i < (sizeof(Function) / sizeof(char)); i++)
+	// {
+	// 	switch (Function[i])
+	// 	{
+	// 	case '+':
+	// 	case '-':
+	// 	case '*':
+	// 	case '/':
+	// 	case '<':
+	// 	case '>':
+	// 		if (max < 2)
+	// 		{
+	// 			max = 2;
+	// 		}
+	// 		break;
+	// 	}
+	// }
+	// return max;
+	for (int i = 0; i < HEAD_LEN; i++)
 	{
-		switch (Function[i])
-		{
-		case '+':
-		case '-':
-		case '*':
-		case '/':
-		case '<':
-		case '>':
-			if (max < 2)
-			{
-				max = 2;
-			}
-			break;
-		}
+		if (Function[i] == '+' || Function[i] == '*' || Function[i] == '-' || Function[i] == '/')
+			return 2;
 	}
-	return max;
+	return 1;
 }
 
 int Gene::parameterCount(char c)
