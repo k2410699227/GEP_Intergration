@@ -22,13 +22,12 @@ Gene &Gene::operator=(const Gene &obj)
 	if (this != &obj)
 	{
 		this->text = obj.text;
-		dc_area = obj.dc_area;
+		dc_value = obj.dc_value;
 	}
 	return *this;
 }
-Gene::Gene(const Gene &obj) : text(obj.text), dc_area(obj.dc_area), tree(NULL)
-{
-}
+Gene::Gene(const Gene& obj):text(obj.text),dc_value(obj.dc_value)
+{}
 
 void Gene::initialize()
 {
@@ -150,8 +149,8 @@ void Gene::DcInit()
 	}
 }
 
-int Gene::maxParameter()
-{
+int Gene::maxParameter(){
+	//获取最大参数个数
 	int max = 0;
 	for (int i = 0; i < (sizeof(Function) / sizeof(char)); i++)
 	{
@@ -202,7 +201,7 @@ void Gene::saveDcValue()
 		if (*it == '?')
 		{
 			double temp = randDcValue();
-			dc_area.push_back(temp);
+			dc_value.push_back(temp);
 		}
 	}
 }
@@ -409,7 +408,7 @@ string Gene::decodeWithDc()
 	string::size_type index;
 	while ((index = expression.find('?')) != string::npos)
 	{
-		string temp = std::to_string(dc_area[flag++]);
+		string temp = std::to_string(dc_value[flag++]);
 		expression.replace(expression.find('?'), 1, temp);
 	}
 	return expression;
@@ -428,7 +427,7 @@ double Gene::calculate(queue<char> postfix, unordered_map<char, double> value)
 			// 如果是“?”则从存储的Dc域数据中选择其值
 			if (IS_OPEN_DC && ch == '?')
 			{
-				temp.push(dc_area[flag++]);
+				temp.push(dc_value[flag++]);
 			}
 			else
 			{
