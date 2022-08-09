@@ -106,11 +106,11 @@ void Population::twoPointRecombination(){
 void Population::evolution(){
     double sumOfFit = 0.0;
     for(int i = 0;i < INDIVIDUAL_NUM;i++){
-        sumOfFit += individual[i].getError();
+        sumOfFit += individual[i].getFitness();
     }
     std::vector<double> gambleRate;
     for(int i =0;i < INDIVIDUAL_NUM;i++){
-        gambleRate.push_back(individual[i].getError() / sumOfFit);
+        gambleRate.push_back(individual[i].getFitness() / sumOfFit);
     }
     //选择个体
     // 左值为左区间 右值为右区间
@@ -148,4 +148,30 @@ void Population::evolution(){
     this->twoPointRecombination();
     this->geneRecombination();
 
+}
+
+bool Population::excellentIndiv(double& maxValue, int& index, string& content, 
+	string& contentWithDc)
+{
+	double temp = individual[0].getFitness();
+	int idx = 0;
+	// 找寻适宜度最高的个体
+	for (int i = 1; i < INDIVIDUAL_NUM; i++)
+	{
+		if (individual[i].getFitness() >= temp)
+		{
+			temp = individual[i].getFitness();
+			idx = i;
+		}
+	}
+
+	if (temp >= maxValue)
+	{
+		index = idx + 1;
+		content = individual[idx].content();
+		contentWithDc = individual[idx].infixExpressionWithDc();
+		maxValue = individual[idx].getFitness();
+		return true;
+	}
+	return false;
 }

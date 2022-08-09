@@ -1,3 +1,5 @@
+#ifndef INDIVIDUAL_H
+#define INDIVIDUAL_H
 #include "Gene.h"
 #include <string>
 #include <vector>
@@ -7,6 +9,7 @@
 class Individual{
     public:
         Individual();
+        Individual(const Individual& obj);
         ~Individual();
         Individual& operator= (const Individual& ind);
         void initialize();
@@ -22,8 +25,8 @@ class Individual{
         void fit();
         static inline int getLength() {return len;}
         double getFitness() {return fitness;}
-        double getError() {return error;}
         std::string showContent() const;
+        string infixExpressionWithDc();     //返回含常数真实值的表达式
     private:
         inline int index_rand();
         Gene* gene;
@@ -36,3 +39,5 @@ class Individual{
         //适应度
         double fitness;
 };
+
+#endif

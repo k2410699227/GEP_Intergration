@@ -4,17 +4,20 @@
 #include "Gene.h"
 #include "parameter.h"
 using namespace std;
-double* Gene::dc_array = nullptr;
+double *Gene::dc_array = nullptr;
+int Gene::tail_len = 0;     //tail length
+int Gene::gene_len = 0;
 
-Gene::Gene(const string& str)
-:text(str)
+Gene::Gene(const string &str)
+	: text(str),
+	tree(NULL)
 {
 	int m = maxParameter();
 	tail_len = HEAD_LEN * (m - 1) + 1;
-    gene_len = tail_len + head_len;
+	gene_len = tail_len + head_len;
 }
 
-Gene& Gene::operator=(const Gene& obj)
+Gene &Gene::operator=(const Gene &obj)
 {
 	if (this != &obj)
 	{
@@ -23,45 +26,65 @@ Gene& Gene::operator=(const Gene& obj)
 	}
 	return *this;
 }
-Gene::Gene(const Gene& obj):text(obj.text),dc_area(obj.dc_area)
-{}
-
-void Gene::initialize(){
-    for (int i = 0;i<head_len;i++){
-        text += getRandomElement();
-    }
-    for (int i= 0;i<tail_len;i++){
-        text += getTerminator();
-    }
-    //dc next
-	if(IS_OPEN_DC)
-		saveDcValue();
+Gene::Gene(const Gene &obj) : text(obj.text), dc_area(obj.dc_area), tree(NULL)
+{
 }
 
-Gene::~Gene(){}
+void Gene::initialize()
+{
+	for (int i = 0; i < head_len; i++)
+	{
+		text += getRandomElement();
+	}
+	for (int i = 0; i < tail_len; i++)
+	{
+		text += getTerminator();
+	}
+	// dc next
+	if (IS_OPEN_DC)
+		saveDcValue();
 
-char Gene::getRandomElement(){
-    int index = rand() % 2;
+	// 解码表达式为中缀表达式
+	string expression = decode();
+	// 中缀转后缀
+	queue<char> postfix_str = infix2postfix(expression);
+	// 后缀计算 计算训练样本
+	int len_inden = DataSource::independent().size();
+	for (int i = 0; i < len_inden; i++)
+	{
+		double value_practise = calculate(postfix_str, DataSource::independent()[i]);
+		result.push_back(value_practise);
+	}
+}
+
+Gene::~Gene() {}
+
+char Gene::getRandomElement()
+{
+	int index = rand() % 2;
 	if (index)
 		return getTerminator();
 	else
 		return getFunction();
 }
 
-char Gene::getTerminator(){
-    int length = sizeof(Terminator)/sizeof(char);
-    int ran = rand() % length;
-    return Terminator[ran];
+char Gene::getTerminator()
+{
+	int length = sizeof(Terminator) / sizeof(char);
+	int ran = rand() % length;
+	return Terminator[ran];
 }
 
-char Gene::getFunction(){
-    int length = sizeof(Function)/sizeof(char);
-    int ran = rand() % length;
-    return Function[ran];
+char Gene::getFunction()
+{
+	int length = sizeof(Function) / sizeof(char);
+	int ran = rand() % length;
+	return Function[ran];
 }
 
-void Gene::mutation(){
-    int index = rand() % gene_len;
+void Gene::mutation()
+{
+	int index = rand() % gene_len;
 	char ch;
 	if (index < HEAD_LEN)
 		ch = getRandomElement();
@@ -70,8 +93,9 @@ void Gene::mutation(){
 	text[index] = ch;
 }
 
-void Gene::transposition(const string& str){
-    int len = str.length();
+void Gene::transposition(const string &str)
+{
+	int len = str.length();
 	// 先删除头部结尾处len个长度的字符
 	text.erase(HEAD_LEN - len, len);
 	// 获取目前基因的头部长度
@@ -100,14 +124,17 @@ bool Gene::isFunc(char elem)
 	}
 	return false;
 }
-bool Gene::isTerm(char elem){
-	for(int i = 0;i< sizeof(Terminator) / sizeof(char);i++){
-		if(elem == Terminator[i])
+bool Gene::isTerm(char elem)
+{
+	for (int i = 0; i < sizeof(Terminator) / sizeof(char); i++)
+	{
+		if (elem == Terminator[i])
 			return true;
 	}
 	return false;
 }
-void Gene::DcInit(){
+void Gene::DcInit()
+{
 	if (IS_OPEN_DC)
 	{
 		// 分配Dc域内存
@@ -116,30 +143,50 @@ void Gene::DcInit(){
 		int minValue = int(DC_MIN_VALUE * 1000);
 		int maxValue = int(DC_MAX_VALUE * 1000);
 		for (int i = 0; i < DC_LEN; i++)
-		{	
+		{
 			int value = (rand() % (maxValue - minValue + 1)) + minValue;
 			dc_array[i] = value / 1000.0;
 		}
 	}
 }
 
-int Gene::maxParameter(){
+int Gene::maxParameter()
+{
 	int max = 0;
-	for(int i =0;i<(sizeof(Function)/sizeof(char));i++){
-		switch(Function[i]){
-			case '+':
-			case '-':
-			case '*':
-			case '/':
-			case '<':
-			case '>':
-				if(max < 2){
-					max = 2;
-				}
-				break;
+	for (int i = 0; i < (sizeof(Function) / sizeof(char)); i++)
+	{
+		switch (Function[i])
+		{
+		case '+':
+		case '-':
+		case '*':
+		case '/':
+		case '<':
+		case '>':
+			if (max < 2)
+			{
+				max = 2;
+			}
+			break;
 		}
 	}
 	return max;
+}
+
+int Gene::parameterCount(char c)
+{
+	switch (c)
+	{
+	case '+':
+	case '-':
+	case '*':
+	case '/':
+	case '<':
+	case '>':
+		return 2;
+		break;
+	}
+	return 1;
 }
 
 double Gene::randDcValue()
@@ -166,6 +213,39 @@ void Gene::destroyDc()
 		delete[] dc_array;
 }
 
+//单参数函数值计算
+double Gene::mathExpression(char symbol, double value_r)
+{
+	double value = 0.0;
+	switch (symbol)
+	{
+	case 'S':	// sin
+		value = sin(value_r);
+		break;
+	case 'C':	// cos
+		value = cos(value_r);
+		break;
+	case 'T':	// tan
+		value = tan(value_r);
+		break;
+	case 'Q':	// sqrt
+		value = sqrt(fabs(value_r));
+		break;
+	case 'E':	// exp
+		value = exp(value_r);
+		break;
+	case 'L':	// log10
+		value = log10(fabs(value_r));
+		break;
+	default:
+		break;
+	}
+	if (isfinite(value) || isinf(value) || isnan(value))
+		value = 0.0;
+	return value;
+}
+
+//双参数函数输出值计算
 double Gene::mathExpression(double value_l, char symbol, double value_r)
 {
 	double value = 0.0;
@@ -181,7 +261,7 @@ double Gene::mathExpression(double value_l, char symbol, double value_r)
 		value = value_l * value_r;
 		break;
 	case '/':
-		if(value_l == 0.0)
+		if (value_l == 0.0)
 		{
 			value = 0.0;
 			break;
@@ -248,7 +328,7 @@ std::queue<char> Gene::infix2postfix(string expression)
 				charStack.pop();
 			}
 			// 弹出左括号
-			if(!charStack.empty())
+			if (!charStack.empty())
 				charStack.pop();
 		}
 		else if (isFunc(ch))
@@ -265,7 +345,8 @@ std::queue<char> Gene::infix2postfix(string expression)
 			else
 			{
 				int curPriority = priority(ch);
-				int topPriority = -1;;
+				int topPriority = -1;
+				;
 				while (!charStack.empty() && curPriority <= (topPriority = priority(charStack.top())))
 				{
 					char c = charStack.top();
@@ -283,4 +364,100 @@ std::queue<char> Gene::infix2postfix(string expression)
 		charStack.pop();
 	}
 	return postfix;
+}
+
+string Gene::decode()
+{
+	queue<char> queue = {};
+	int index = 0; // 基因片段字符串的下标索引
+	tree = new BinaryTree(text.at(index));
+	queue.push(text.at(index));
+	index++;
+	// 构造二叉树
+	while (!queue.empty())
+	{
+		char ch = queue.front();
+		queue.pop();
+		if (isTerm(ch))
+			continue;
+		else
+		{
+			int count = parameterCount(ch);
+			BinaryTreeNode *parent = tree->Find(ch);
+			for (int i = 0; i < count; i++)
+			{
+				char value = text.at(index);
+				if (count == 1)
+					tree->Insert(parent, value, false);
+				else
+					tree->Insert(parent, value);
+				index++;
+				queue.push(value);
+			}
+		}
+	}
+	// 中序遍历二叉树
+	string result = tree->Output();
+	delete tree;
+	return result;
+}
+
+string Gene::decodeWithDc()
+{
+	string expression = decode();
+	int flag = 0;
+	string::size_type index;
+	while ((index = expression.find('?')) != string::npos)
+	{
+		string temp = std::to_string(dc_area[flag++]);
+		expression.replace(expression.find('?'), 1, temp);
+	}
+	return expression;
+}
+
+double Gene::calculate(queue<char> postfix, unordered_map<char, double> value)
+{
+	stack<double> temp;
+	double result = 0.0;
+	int flag = 0;
+	while (!postfix.empty())
+	{
+		char ch = postfix.front();
+		if (isTerm(ch))
+		{
+			// 如果是“?”则从存储的Dc域数据中选择其值
+			if (IS_OPEN_DC && ch == '?')
+			{
+				temp.push(dc_area[flag++]);
+			}
+			else
+			{
+				// 若是数字则进栈
+				temp.push(value.at(ch));
+			}
+		}
+		else if (isFunc(ch))
+		{
+			// 如果是运算符 则弹出n个其需要的数字
+			int num = parameterCount(ch);
+			if (num == 1)
+			{
+				double value = temp.top();
+				temp.pop();
+				result = mathExpression(ch, value);
+			}
+			else if (num == 2)
+			{
+				double valuer = temp.top();
+				temp.pop();
+				double valuel = temp.top();
+				temp.pop();
+				result = mathExpression(valuel, ch, valuer);
+			}
+			// 运算结果进栈
+			temp.push(result);
+		}
+		postfix.pop();
+	}
+	return result;
 }
