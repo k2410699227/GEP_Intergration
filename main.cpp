@@ -41,10 +41,10 @@ int main()
 		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 			num_generaton = i + 1;
 		
-		cout << "------------------------第" << i+1 << "代------------------------" << endl;
-		cout << endl;
-		//parent.context();
-		cout << endl;
+		// cout << "------------------------第" << i+1 << "代------------------------" << endl;
+		// cout << endl;
+		// parent.context();
+		// cout << endl;
 		parent.evolution();
 	}
 	cout << "------------------------第" << GENERATION << "代------------------------" << endl;
