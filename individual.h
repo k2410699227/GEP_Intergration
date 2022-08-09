@@ -22,7 +22,6 @@ class Individual{
         void fit();
         static inline int getLength() {return len;}
         double getFitness() {return fitness;}
-        double getError() {return error;}
         std::string showContent() const;
     private:
         inline int index_rand();
