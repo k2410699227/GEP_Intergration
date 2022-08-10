@@ -1,6 +1,6 @@
 #include "BinaryTree.h"
 
-bool BinaryTree::Insert(Node*& parent, const char value, bool left)
+bool BinaryTree::Insert(Node *&parent, const char value, bool left)
 {
 	if (parent != NULL)
 	{
@@ -9,13 +9,13 @@ bool BinaryTree::Insert(Node*& parent, const char value, bool left)
 		{
 			if (parent->leftChild == NULL)
 			{
-				Node* new_node = new Node(value);
+				Node *new_node = new Node(value);
 				parent->leftChild = new_node;
 				return true;
 			}
 			else if (parent->rightChild == NULL)
 			{
-				Node* new_node = new Node(value);
+				Node *new_node = new Node(value);
 				parent->rightChild = new_node;
 				return true;
 			}
@@ -24,13 +24,13 @@ bool BinaryTree::Insert(Node*& parent, const char value, bool left)
 		{
 			if (parent->rightChild == NULL)
 			{
-				Node* new_node = new Node(value);
+				Node *new_node = new Node(value);
 				parent->rightChild = new_node;
 				return true;
 			}
 			else if (parent->leftChild == NULL)
 			{
-				Node* new_node = new Node(value);
+				Node *new_node = new Node(value);
 				parent->leftChild = new_node;
 				return true;
 			}
@@ -39,22 +39,32 @@ bool BinaryTree::Insert(Node*& parent, const char value, bool left)
 	return false;
 }
 
-string BinaryTree::Output(Node*& subTree)
+string BinaryTree::Output(Node *&subTree)
 {
 	if (subTree != NULL)
 	{
-		data += "(";
-		Output(subTree->leftChild);
-		data += string(1,subTree->data);
-		Output(subTree->rightChild);
-		data += ")";
+		if (subTree->leftChild == NULL | subTree->rightChild == NULL)
+		{
+			Output(subTree->leftChild);
+			data += string(1, subTree->data);
+			Output(subTree->rightChild);
+		}
+		else
+		{
+			data += "(";
+			Output(subTree->leftChild);
+			data += string(1, subTree->data);
+			Output(subTree->rightChild);
+			data += ")";
+		}
 	}
+
 	return data;
 }
 
-BinaryTree::Node* BinaryTree::Find(Node*& subTree, const char value)
+BinaryTree::Node *BinaryTree::Find(Node *&subTree, const char value)
 {
-	Node* target = NULL;
+	Node *target = NULL;
 	if (subTree != NULL)
 	{
 		if (subTree->data == value && !subTree->leftChild && !subTree->rightChild)
@@ -73,7 +83,7 @@ BinaryTree::Node* BinaryTree::Find(Node*& subTree, const char value)
 		return NULL;
 }
 
-void BinaryTree::Destory(Node* subTree)
+void BinaryTree::Destory(Node *subTree)
 {
 	if (subTree != NULL)
 	{
@@ -84,7 +94,7 @@ void BinaryTree::Destory(Node* subTree)
 	}
 }
 
-BinaryTree::Node* BinaryTree::Parent(Node* subTree, Node* current)
+BinaryTree::Node *BinaryTree::Parent(Node *subTree, Node *current)
 {
 	{
 		if (subTree == NULL)
@@ -95,7 +105,7 @@ BinaryTree::Node* BinaryTree::Parent(Node* subTree, Node* current)
 		{
 			return subTree;
 		}
-		Node* p;
+		Node *p;
 		if ((p = Parent(subTree->leftChild, current)) != NULL) //递归在左子树中搜索
 		{
 			return p;

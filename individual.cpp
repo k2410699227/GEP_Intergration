@@ -97,12 +97,12 @@ void Individual::fit()
 			if (AbsoluteError)
 			{
 				// 采用绝对误差：选择范围 - |适应度值 - 目标值|
-				temp = RANGE - abs(result[i] - dependentVar[i]);
+				temp = RANGE - abs(result[i] - DataSource::dependent()[i]);
 			}
 			else
 			{
 				// 采用相对误差：选择范围 - |（适应度值 - 目标值）/ 目标值 * 100|
-				temp = RANGE - abs(100 * (result[i] - dependentVar[i]) / dependentVar[i]);
+				temp = RANGE - abs(100 * (result[i] - DataSource::dependent()[i]) / DataSource::dependent()[i]);
 			}
 			if (temp <= 0)
 				temp = 0.1; // 方便轮盘赌计算

@@ -12,7 +12,7 @@ const double RANGE = 100.0;
 const char Function[] = {'-', '+', '*','/'};//,'>','<','&','|','X','^'};
 const char Terminator[] = {'a'};
 /* 分类阈值*/
-const bool CLASSIFICATION = true;
+const bool CLASSIFICATION = false;
 const double THRESHOLD = 0.5;
 //连接符号
 const char CONN = '+';
