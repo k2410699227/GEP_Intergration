@@ -8,6 +8,7 @@ const int HEAD_LEN = 7;
 const char Function[] = {'-', '+', '*','/','>','<','&','|','X','^'};
 const char Terminator[] = {'a'};
 /* 分类阈值*/
+const bool CLASSIFICATION = true;
 const double THRESHOLD = 0.5;
 //连接符号
 const char CONN = '+';
