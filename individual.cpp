@@ -157,7 +157,7 @@ std::string Individual::showContent() const
 	{
 		str = str + gene[i].getContent() + " ";
 	}
-	str = str + " — [" + std::to_string(fitness) + "]";
+	str = str + " [" + std::to_string(fitness) + "]";
 	return str;
 }
 

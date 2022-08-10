@@ -34,22 +34,22 @@ int main()
 		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 			num_generaton = i + 1;
 		
-		cout << "------------------------第" << i+1 << "代------------------------" << endl;
+		cout << "------------------------NO." << i+1 << "generation------------------------" << endl;
 		cout << endl;
 		parent.display();
 		cout << endl;
 		parent.evolution();
 	}
-	cout << "------------------------第" << GENERATION << "代------------------------" << endl;
+	cout << "------------------------No." << GENERATION << "generation------------------------" << endl;
 	parent.display();
 	if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 		num_generaton = 1000;
 	cout << endl;
-	cout << endl << "迭代完成..." << endl;
-	cout << "当前代最优秀个体基因如下: " << endl;
-	cout << "第" << num_generaton << "代的第" << num_index << "个个体：" << endl;
-	cout << "基因：" << excellGene << endl;
-	cout << "中缀表达式: " << excellInfix << endl;
+	cout << endl << "iterate finished..." << endl;
+	cout << "best gene: " << endl;
+	cout << "No." << num_generaton << "generation, No." << num_index << "individual:" << endl;
+	cout << "gene:" << excellGene << endl;
+	cout << "infix expression" << excellInfix << endl;
 
 	Gene::destroyDc();
 
