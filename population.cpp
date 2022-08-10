@@ -164,6 +164,10 @@ void Population::evolution()
             }
         }
     }
+    for (int i = 0; i < num; i++)
+	{
+		individual[i].modifyContent(context[i]);
+	}
     //补齐中间步骤
     this->mutation();
     this->ISTransposition();
@@ -172,6 +176,10 @@ void Population::evolution()
     this->onePointRecombination();
     this->twoPointRecombination();
     this->geneRecombination();
+    for (int i = 0; i < num; i++)
+	{
+		individual[i].recalculate();
+	}
 }
 
 bool Population::excellentIndiv(double &maxValue, int &index, string &content,
@@ -189,7 +197,7 @@ bool Population::excellentIndiv(double &maxValue, int &index, string &content,
         }
     }
 
-    if (temp >= maxValue)
+    if (temp > maxValue)
     {
         index = idx + 1;
         content = individual[idx].showContent();

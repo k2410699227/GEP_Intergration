@@ -22,6 +22,7 @@ class Gene{
         bool isFunc(char);
         bool isTerm(char);
         int findFunc(const int pos);
+        void setContent(const string& content) { text = content; }
         static inline int getLength() {return gene_len;}
         std::string getContent() {return text;}
         static void DcInit();
@@ -36,6 +37,7 @@ class Gene{
         double mathExpression(double value_l, char symbol, double value_r);
         int sampleCount();
         int priority(char ch);
+        void update();
         
         std::queue<char> infix2postfix(string expression);  //中序转为后序表达式
         string decode();    //将进化出的层序表达式解码为中序表达

@@ -43,7 +43,7 @@ int main()
 	cout << "------------------------No." << GENERATION << "generation------------------------" << endl;
 	parent.display();
 	if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
-		num_generaton = 1000;
+		num_generaton = GENERATION;
 	cout << endl;
 	cout << endl << "iterate finished..." << endl;
 	cout << "best gene: " << endl;

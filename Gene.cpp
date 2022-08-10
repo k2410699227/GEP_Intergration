@@ -1,6 +1,7 @@
 #include <iostream>
 #include <math.h>
 #include <stack>
+#include <map>
 #include "Gene.h"
 #include "parameter.h"
 using namespace std;
@@ -467,7 +468,26 @@ string Gene::decodeWithDc()
 	}
 	return expression;
 }
+void Gene::update()
+{
+	result.clear();
 
+	// 生成并存储Dc域数据
+	if (IS_OPEN_DC)
+		saveDcValue();
+
+	// 解码表达式为中缀表达式
+	string expression = decode();
+	// 中缀转后缀
+	queue<char> postfix_str = infix2postfix(expression);
+	// 后缀计算
+	int len_inden = DataSource::independent().size();
+	for (int i = 0; i < len_inden; i++)
+	{
+		double value_practise = calculate(postfix_str, DataSource::independent()[i]);
+		result.push_back(value_practise);
+	}
+}
 double Gene::calculate(queue<char> postfix, unordered_map<char, double> value)
 {
 	stack<double> temp;

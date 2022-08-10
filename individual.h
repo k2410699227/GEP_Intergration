@@ -21,7 +21,9 @@ class Individual{
         std::string getGene();
         std::string content();
         void recombanation();
+        void modifyContent(string content);
         void caculate();
+        void recalculate();
         void fit();
         static inline int getLength() {return len;}
         double getFitness() {return fitness;}

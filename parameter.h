@@ -3,7 +3,7 @@
 #include <string>
 
 // gene parameter
-const int HEAD_LEN = 7;
+const int HEAD_LEN = 6;
 /* 默认采用绝对误差，flase即为相对误差 */
 const bool AbsoluteError = true;
 /* 选择范围 */
@@ -16,24 +16,24 @@ const bool CLASSIFICATION = false;
 const double THRESHOLD = 0.5;
 //连接符号
 const char CONN = '+';
-const bool IS_OPEN_DC = 1;
+const bool IS_OPEN_DC = 0;
 const int DC_LEN = 10;
 const double DC_MAX_VALUE = 10.0;
 const double DC_MIN_VALUE = 0.0;
 // individual parameter
-const int GENE_NUM = 3;
+const int GENE_NUM = 4;
 const char CONNET = '+';
 //population parameter
-const int INDIVIDUAL_NUM = 10;
-const int GENERATION = 1000;
-const double MUTATION_RATE = 1;
-const double ONE_POINT_COMBA_RATE = 0.4;
-const double TWO_POINT_COMBA_RATE = 0.2;
+const int INDIVIDUAL_NUM = 30;
+const int GENERATION = 10;
+const double MUTATION_RATE = 0.0385;
+const double ONE_POINT_COMBA_RATE = 0.3;
+const double TWO_POINT_COMBA_RATE = 0.3;
 const double GENE_COMBA_RATE = 0.1;
 const double GENE_TRANS_RATE = 0.1;
 const double IS_TRANS_RATE = 0.1;
 const int IS_ELEM_LEN[] = {1, 2, 3}; // random length set for IS transposition
-const double RIS_TRANS_RATE = 1;
+const double RIS_TRANS_RATE = 0.1;
 const int RIS_ELEM_LEN[] = {1, 2, 3}; // random length set for RIS transposition
 
 /* 自变量存储文件 */

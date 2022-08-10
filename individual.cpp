@@ -111,6 +111,30 @@ void Individual::fit()
 	}
 }
 
+void Individual::modifyContent(string content)
+{
+	string text[GENE_NUM];
+	for (int i = 0; i < GENE_NUM; i++)
+	{
+		text[i] = content.substr(i * Gene::getLength(), Gene::getLength());
+		gene[i].setContent(text[i]);
+	}
+}
+void Individual::recalculate()
+{
+	for (int i = 0; i < GENE_NUM; i++)
+	{
+		gene[i].update();
+	}
+	
+	result.clear();
+	fitness = 0.0;
+	// 计算表达式数值
+	caculate();
+	// 计算拟合误差
+	fit();
+}
+
 int Individual::index_rand()
 {
 	return rand() % GENE_NUM;
