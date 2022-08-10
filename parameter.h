@@ -4,8 +4,12 @@
 
 // gene parameter
 const int HEAD_LEN = 7;
+/* 默认采用绝对误差，flase即为相对误差 */
+const bool AbsoluteError = true;
+/* 选择范围 */
+const double RANGE = 100.0;
 // 可选函数集: +、-、*、/、<、 >、&(AND)、|(OR)、 X(XOR)、S(sin)、C(cos)、T(tan)、E(exp)、L(log10)、Q(sqrt)
-const char Function[] = {'-', '+', '*','/','>','<','&','|','X','^'};
+const char Function[] = {'-', '+', '*','/'};//,'>','<','&','|','X','^'};
 const char Terminator[] = {'a'};
 /* 分类阈值*/
 const bool CLASSIFICATION = true;

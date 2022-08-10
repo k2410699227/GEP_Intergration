@@ -106,7 +106,7 @@ void Individual::fit()
 			}
 			if (temp <= 0)
 				temp = 0.1; // 方便轮盘赌计算
-			error += temp;
+			fitness += temp;
 		}
 	}
 }
