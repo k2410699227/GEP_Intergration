@@ -493,6 +493,9 @@ double Gene::calculate(queue<char> postfix, unordered_map<char, double> value)
 	stack<double> temp;
 	double result = 0.0;
 	int flag = 0;
+	char ch = postfix.front();
+	if(postfix.size()==1)	//单元素基因
+		return postfix.front();
 	while (!postfix.empty())
 	{
 		char ch = postfix.front();
@@ -521,9 +524,9 @@ double Gene::calculate(queue<char> postfix, unordered_map<char, double> value)
 			}
 			else if (num == 2)
 			{
-				double valuer = temp.top();
-				temp.pop();
 				double valuel = temp.top();
+				temp.pop();
+				double valuer = temp.top();
 				temp.pop();
 				result = mathExpression(valuel, ch, valuer);
 			}

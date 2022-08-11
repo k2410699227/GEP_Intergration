@@ -34,22 +34,22 @@ int main()
 		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 			num_generaton = i + 1;
 		
-		cout << "------------------------NO." << i+1 << "generation------------------------" << endl;
+		cout << "-----------------------Generation " << i+1 << "------------------------" << endl;
 		cout << endl;
 		parent.display();
 		cout << endl;
 		parent.evolution();
 	}
-	cout << "------------------------No." << GENERATION << "generation------------------------" << endl;
+	cout << "------------------------Generation " << GENERATION << "------------------------" << endl;
 	parent.display();
 	if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 		num_generaton = GENERATION;
 	cout << endl;
-	cout << endl << "iterate finished..." << endl;
+	cout << endl << "iteration finished..." << endl;
 	cout << "best gene: " << endl;
-	cout << "No." << num_generaton << "generation, No." << num_index << "individual:" << endl;
-	cout << "gene:" << excellGene << endl;
-	cout << "infix expression" << excellInfix << endl;
+	cout << "No." << num_generaton << " generation, No." << num_index << " individual:" << endl;
+	cout << "gene: " << excellGene << endl;
+	cout << "infix expression: " << excellInfix << endl;
 
 	Gene::destroyDc();
 
