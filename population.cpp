@@ -150,7 +150,9 @@ void Population::evolution()
     }
     section.push_back(std::pair<double, double>(temp, 1.0));
     std::vector<std::string> context = {};
-    for (int i = 0; i < INDIVIDUAL_NUM; i++)
+    // 保留最优个体，其余进行轮盘赌（包括最优个体）
+    context.push_back(bestIndiv());
+    for (int i = 0; i < INDIVIDUAL_NUM-1; i++)
     {
         // 生成0~1间的随机算子
         double prob = rand() / double(RAND_MAX);
@@ -206,6 +208,21 @@ bool Population::excellentIndiv(double &maxValue, int &index, string &content,
         return true;
     }
     return false;
+}
+
+string Population::bestIndiv(){
+    double temp = individual[0].getFitness();
+    int idx = 0;
+    for (int i = 1; i < INDIVIDUAL_NUM; i++)
+    {
+        if (individual[i].getFitness() >= temp)
+        {
+            temp = individual[i].getFitness();
+            idx = i;
+        }
+    }
+    string ans = individual[idx].content();
+    return ans;
 }
 
 void Population::display() const
