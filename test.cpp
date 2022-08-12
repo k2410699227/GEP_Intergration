@@ -6,7 +6,7 @@ using namespace std;
 
 int main(){
 	Gene test("+a*babba");
-	vector<char> ve = test.caculateValidLength();
+	vector<char> ve = test.validGene();
 	for(vector<char>::iterator it = ve.begin();it != ve.end();++it){
 		cout << *it;
 	}

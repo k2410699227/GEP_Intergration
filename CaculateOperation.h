@@ -38,6 +38,7 @@ namespace CaculatiOperation{
     /* bool twoAnd(double a,double b){
         if(a > 0)
     } */
+    //返回操作符所需的参数个数
     int paramNum(char ch){
         switch(ch){
             case '+':
@@ -46,7 +47,31 @@ namespace CaculatiOperation{
             case '/':
                 return 2;
                 break;
+            default:
+                return 0;
         }
     }
+    //单目运算
     double caculation(char ch,double a){}
+    //双目运算
+    double caculation(char ch,double a,double b){
+        switch (ch)
+        {
+        case '+':
+            twoAdd(a,b);
+            break;
+        case '-':
+            twoSubtract(a,b);
+            break;
+        case '*':
+            twoMultiply(a,b);
+            break;;
+        case '/':
+            twoDivide(a,b);
+        default:
+            break;
+        }
+    }
+    //三目运算
+    double caculation(char ch,double a,double b,double c){}
 };

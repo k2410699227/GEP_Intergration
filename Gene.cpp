@@ -4,7 +4,9 @@
 #include <map>
 #include "Gene.h"
 #include "parameter.h"
+#include "CaculateOperation.h"
 using namespace std;
+using namespace CaculatiOperation;
 double *Gene::dc_array = nullptr;
 int Gene::tail_len = 0; // tail length
 int Gene::gene_len = 0;
@@ -354,14 +356,7 @@ vector<char> Gene::validGene(){
 	string::iterator p = text.begin();
 	cout << "p = " << *p << endl;
 	while (distance(p,text.begin()) <= HEAD_LEN){
-		switch(*p){
-			case '+':
-			case '-':
-			case '*':
-			case '/':
-				e = e+2;
-				break;;
-		}
+		e = e+(paramNum(*p));
 		p++;
 		if(p>e){
 			break;
