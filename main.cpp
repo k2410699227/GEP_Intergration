@@ -7,22 +7,22 @@
 using namespace std;
 
 /* 迭代过程中最优秀个体 */
-int num_generaton = 0;	// 代数
-int num_index = 0;		// 个体索引
-string excellGene = "";	// 基因
-string excellInfix = "";	// 中缀表达式
-double maxFitness = 0.0;	// 最大适宜度
+// int num_generaton = 0;	// 代数
+// int num_index = 0;		// 个体索引
+// string excellGene = "";	// 基因
+// string excellInfix = "";	// 中缀表达式
+// double maxFitness = 0.0;	// 最大适宜度
 
-void clearOutputFile();
+// void clearOutputFile();
 
-int main()
-{
-	//获取样本数据
-	DataSource file;
-	srand((int)time(0));
+// int main()
+// {
+// 	//获取样本数据
+// 	DataSource file;
+// 	srand((int)time(0));
 
-	/* =======================设置Dc域====================== */
-	Gene::DcInit();
+// 	/* =======================设置Dc域====================== */
+// 	Gene::DcInit();
 	
 	/* =======================迭代开始====================== */
 	Population parent(INDIVIDUAL_NUM);

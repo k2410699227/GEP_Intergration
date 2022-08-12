@@ -4,7 +4,9 @@
 #include <map>
 #include "Gene.h"
 #include "parameter.h"
+#include "CaculateOperation.h"
 using namespace std;
+using namespace CaculatiOperation;
 double *Gene::dc_array = nullptr;
 int Gene::tail_len = 0; // tail length
 int Gene::gene_len = 0;
@@ -344,6 +346,32 @@ int Gene::priority(char ch)
 		return 3;
 	else
 		return 2;
+}
+
+vector<char> Gene::validGene(){
+	vector<char> validGene;
+	cout << "caclulating valid length:" <<endl;
+	string::iterator e = text.begin();
+	cout << "e = " << *e << endl;
+	string::iterator p = text.begin();
+	cout << "p = " << *p << endl;
+	while (distance(p,text.begin()) <= HEAD_LEN){
+		e = e+(paramNum(*p));
+		p++;
+		if(p>e){
+			break;
+		}
+		
+	}
+	for(string::iterator it = text.begin();it != e;++it){
+		validGene.push_back(*it);
+		cout << "push back:" << *it << endl;
+	}
+	validGene.push_back(*e);
+	cout << "push back:" << *e << endl;
+	//return e;
+	//return distance(e,text.begin());
+	return validGene;
 }
 
 std::queue<char> Gene::infix2postfix(string expression)

@@ -1,9 +1,13 @@
 #include<iostream>
 #include"test.h"
+#include <vector>
 using namespace std;
+#include "Gene.h"
 
-void hello(string str)
-{
-	cout << "Hello," << str << endl;
+int main(){
+	Gene test("+a*babba");
+	vector<char> ve = test.validGene();
+	for(vector<char>::iterator it = ve.begin();it != ve.end();++it){
+		cout << *it;
+	}
 }
-
