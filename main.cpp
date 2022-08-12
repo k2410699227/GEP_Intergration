@@ -29,22 +29,33 @@ int main()
 	// 初始化种群
 	parent.initialize();
 
-	for (int i = 0; i < GENERATION - 1; i++)
+	for (int i = 0; i < GENERATION; i++)
 	{
-		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
-			num_generaton = i + 1;
+		
 		
 		cout << "-----------------------Generation " << i+1 << "------------------------" << endl;
 		cout << endl;
 		parent.display();
 		cout << endl;
+		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
+			{
+				num_generaton = i + 1;
+				if(maxFitness==RANGE*DataSource::dependent().size())
+				{
+					for(auto i : parent.getIndividual()[num_index-1].getResult())
+						cout<<i<<endl;
+					cout<<parent.getIndividual()[num_index-1].showContent();
+					break;
+				}
+			}
 		parent.evolution();
 	}
-	cout << "------------------------Generation " << GENERATION << "------------------------" << endl;
-	parent.display();
-	if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
-		num_generaton = GENERATION;
-	cout << endl;
+	
+	// cout << "------------------------Generation " << GENERATION << "------------------------" << endl;
+	// parent.display();
+	// if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
+	// 	num_generaton = GENERATION;
+	// cout << endl;
 	cout << endl << "iteration finished..." << endl;
 	cout << "best gene: " << endl;
 	cout << "No." << num_generaton << " generation, No." << num_index << " individual:" << endl;

@@ -29,6 +29,7 @@ class Individual{
         double getFitness() {return fitness;}
         std::string showContent() const;
         string infixExpressionWithDc();     //返回含常数真实值的表达式
+        std::vector<double> getResult(){return result;}
     private:
         inline int index_rand();
         Gene* gene;

@@ -77,17 +77,16 @@ void Individual::caculate()
 
 void Individual::fit()
 {
-	// if n > Cp,then Fn = n;else Fi = 0;
 	int num = DataSource::sampleCount();
 	
 	if (CLASSIFICATION)
 	{	
-		int temp = 0;
+		int t = 0;
 		for (int i = 0; i < num; i++)
 		{
-			temp += (result[i] == DataSource::dependent()[i]) ? 1 : 0;
+			t += (result[i] == DataSource::dependent()[i]) ? 1 : 0;
 		}
-		fitness = temp > (num / 2) ? temp : 1;
+		fitness = t > (num / 2) ? t : 1;
 	}
 	else
 	{
@@ -99,7 +98,7 @@ void Individual::fit()
 				// 采用绝对误差：选择范围 - |适应度值 - 目标值|
 				temp = RANGE - abs(result[i] - DataSource::dependent()[i]);
 			}
-			else
+			else 
 			{
 				// 采用相对误差：选择范围 - |（适应度值 - 目标值）/ 目标值 * 100|
 				temp = RANGE - abs(100 * (result[i] - DataSource::dependent()[i]) / DataSource::dependent()[i]);
