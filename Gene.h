@@ -51,6 +51,7 @@ class Gene{
         std::vector<double> dc_value;
         static double* dc_array;
         vector<double> result;
+        vector<int> validLength; //有效长度
 };
 
 #endif
