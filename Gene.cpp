@@ -346,6 +346,39 @@ int Gene::priority(char ch)
 		return 2;
 }
 
+vector<char> Gene::validGene(){
+	vector<char> validGene;
+	cout << "caclulating valid length:" <<endl;
+	string::iterator e = text.begin();
+	cout << "e = " << *e << endl;
+	string::iterator p = text.begin();
+	cout << "p = " << *p << endl;
+	while (distance(p,text.begin()) <= HEAD_LEN){
+		switch(*p){
+			case '+':
+			case '-':
+			case '*':
+			case '/':
+				e = e+2;
+				break;;
+		}
+		p++;
+		if(p>e){
+			break;
+		}
+		
+	}
+	for(string::iterator it = text.begin();it != e;++it){
+		validGene.push_back(*it);
+		cout << "push back:" << *it << endl;
+	}
+	validGene.push_back(*e);
+	cout << "push back:" << *e << endl;
+	//return e;
+	//return distance(e,text.begin());
+	return validGene;
+}
+
 std::queue<char> Gene::infix2postfix(string expression)
 {
 	// 先将字符串表达式依次入队

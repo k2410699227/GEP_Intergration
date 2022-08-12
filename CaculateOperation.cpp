@@ -38,4 +38,15 @@ namespace CaculatiOperation{
     /* bool twoAnd(double a,double b){
         if(a > 0)
     } */
+    int paramNum(char ch){
+        switch(ch){
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+                return 2;
+                break;
+        }
+    }
+    double caculation(char ch,double a){}
 };

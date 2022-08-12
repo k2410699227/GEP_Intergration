@@ -38,6 +38,8 @@ class Gene{
         int sampleCount();
         int priority(char ch);
         void update();
+
+        vector<char> validGene();
         
         std::queue<char> infix2postfix(string expression);  //中序转为后序表达式
         string decode();    //将进化出的层序表达式解码为中序表达
