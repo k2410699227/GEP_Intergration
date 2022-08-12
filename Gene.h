@@ -43,6 +43,7 @@ class Gene{
         string decode();    //将进化出的层序表达式解码为中序表达
         string decodeWithDc();
         double calculate(queue<char> postfix, unordered_map<char, double> value);     //计算基因的数值  
+        double geneExpressing(unordered_map<char, double>);
     private:
         std::string text;           //gene content
         static int tail_len;     //tail length
