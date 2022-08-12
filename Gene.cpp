@@ -496,6 +496,25 @@ string Gene::decodeWithDc()
 	}
 	return expression;
 }
+
+double Gene::geneExpressing(unordered_map<char, double>termToValue)
+{
+	vector<char>validSegment;
+	vector<pair<string,double>>temp;	//以(表达式，数值)的格式储存当前各节点的信息
+	for(auto v : validSegment)		//初始化各节点信息
+	{
+
+	}
+	
+	vector<pair<string,double>>::iterator nonTerm = temp.rend(),term = temp.rend();
+	while(temp.size()!=1)
+	{
+
+	}
+	
+
+}
+
 void Gene::update()
 {
 	result.clear();

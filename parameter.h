@@ -24,7 +24,7 @@ const double DC_MIN_VALUE = 0.0;
 const int GENE_NUM = 3;
 const char CONNET = '+';
 //population parameter
-const int INDIVIDUAL_NUM = 50;
+const int INDIVIDUAL_NUM = 30;
 const int GENERATION = 100;
 const double MUTATION_RATE = 0.0385;
 const double ONE_POINT_COMBA_RATE = 0.3;

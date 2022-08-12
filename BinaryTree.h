@@ -10,7 +10,7 @@ struct BinaryTreeNode
 	BinaryTreeNode *leftChild;	/* 左子树 */
 	BinaryTreeNode *rightChild; /* 右子树 */
 
-	BinaryTreeNode() : data(NULL), leftChild(NULL), rightChild(NULL) {}
+	BinaryTreeNode() : data((char)NULL), leftChild((BinaryTreeNode*)NULL), rightChild((BinaryTreeNode*)NULL) {}
 	BinaryTreeNode(char x, BinaryTreeNode *l = NULL, BinaryTreeNode *r = NULL)
 		: data(x), leftChild(l), rightChild(r) {}
 };

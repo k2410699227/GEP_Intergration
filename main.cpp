@@ -24,34 +24,47 @@ using namespace std;
 // 	/* =======================设置Dc域====================== */
 // 	Gene::DcInit();
 	
-// 	/* =======================迭代开始====================== */
-// 	Population parent(INDIVIDUAL_NUM);
-// 	// 初始化种群
-// 	parent.initialize();
+	/* =======================迭代开始====================== */
+	Population parent(INDIVIDUAL_NUM);
+	// 初始化种群
+	parent.initialize();
 
-// 	for (int i = 0; i < GENERATION - 1; i++)
-// 	{
-// 		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
-// 			num_generaton = i + 1;
+	for (int i = 0; i < GENERATION; i++)
+	{
 		
-// 		cout << "-----------------------Generation " << i+1 << "------------------------" << endl;
-// 		cout << endl;
-// 		parent.display();
-// 		cout << endl;
-// 		parent.evolution();
-// 	}
-// 	cout << "------------------------Generation " << GENERATION << "------------------------" << endl;
-// 	parent.display();
-// 	if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
-// 		num_generaton = GENERATION;
-// 	cout << endl;
-// 	cout << endl << "iteration finished..." << endl;
-// 	cout << "best gene: " << endl;
-// 	cout << "No." << num_generaton << " generation, No." << num_index << " individual:" << endl;
-// 	cout << "gene: " << excellGene << endl;
-// 	cout << "infix expression: " << excellInfix << endl;
+		
+		cout << "-----------------------Generation " << i+1 << "------------------------" << endl;
+		cout << endl;
+		parent.display();
+		cout << endl;
+		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
+			{
+				num_generaton = i + 1;
+				if(maxFitness==RANGE*DataSource::dependent().size())
+				{
+					for(auto i : parent.getIndividual()[num_index-1].getResult())
+						cout<<i<<endl;
+					cout<<parent.getIndividual()[num_index-1].showContent();
+					break;
+				}
+			}
+		parent.evolution();
+	}
+	
+	// cout << "------------------------Generation " << GENERATION << "------------------------" << endl;
+	// parent.display();
+	// if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
+	// 	num_generaton = GENERATION;
+	// cout << endl;
+	cout << endl << "iteration finished..." << endl;
+	cout << "best gene: " << endl;
+	cout << "No." << num_generaton << " generation, No." << num_index << " individual:" << endl;
+	cout << "gene: " << excellGene << endl;
+	cout << "infix expression: " << excellInfix << endl;
 
-// 	Gene::destroyDc();
+	Gene::destroyDc();
 
-// 	return 0;
-// } 
+	return 0;
+}
+
+
