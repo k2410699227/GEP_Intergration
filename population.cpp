@@ -232,7 +232,7 @@ void Population::display() const
 {
     for (int i = 0; i < num; ++i)
     {
-        std::cout << "[" <<setw(2);
+        std::cout << "[" <<setiosflags(ios::left)<<setw(2);
         cout.fill('0');
         cout<< i + 1 << "] " << individual[i].showContent() << endl;
     }

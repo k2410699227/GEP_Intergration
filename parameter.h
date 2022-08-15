@@ -10,7 +10,7 @@ const bool AbsoluteError = true;
 const double RANGE = 100.0;
 // 可选函数集: +、-、*、/、<、 >、&(AND)、|(OR)、 X(XOR)、S(sin)、C(cos)、T(tan)、E(exp)、L(log10)、Q(sqrt)
 const char Function[] = {'-', '+', '*', '/'}; //,'>','<','&','|','X','^'};
-const char Terminator[] = {'a'};              //,'b','c','d','e','f','g','h','i','j'};
+const char Terminator[] = {'a','b','c','d','e','f','g','h','i','j'};
 /* 分类阈值*/
 const bool CLASSIFICATION = false;
 const double THRESHOLD = 0.5;
@@ -24,9 +24,9 @@ const double DC_MIN_VALUE = 0.0;
 const int GENE_NUM = 4;
 const char CONNET = '+';
 // population parameter
-const int INDIVIDUAL_NUM = 30;
-const int GENERATION = 100;
-const double MUTATION_RATE = 0.0385;
+const int INDIVIDUAL_NUM = 100;
+const int GENERATION = 1000;
+const double MUTATION_RATE = 0.044;
 const double ONE_POINT_COMBA_RATE = 0.3;
 const double TWO_POINT_COMBA_RATE = 0.3;
 const double GENE_COMBA_RATE = 0.1;
@@ -37,8 +37,8 @@ const double RIS_TRANS_RATE = 0.1;
 const int RIS_ELEM_LEN[] = {1, 2, 3}; // random length set for RIS transposition
 
 /* 自变量存储文件 */
-const std::string PATH_INDEPENDENT = "./data/input.txt";
+const std::string PATH_INDEPENDENT = "./data/sunInput.txt";
 /* 因变量存储文件 */
-const std::string PATH_DEPENDENT = "./data/output.txt";
+const std::string PATH_DEPENDENT = "./data/sunOutput.txt";
 
 #endif

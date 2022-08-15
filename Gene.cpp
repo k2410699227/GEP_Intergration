@@ -536,7 +536,7 @@ double Gene::geneExpressing(unordered_map<char, double> termToValue)
 		default:
 			break;
 		}
-		if (isinf(res)) //除数为零，表达式无意义，标记为致死基因
+		if (isinf(res)||isnan(res)) //除数为零，表达式无意义，标记为致死基因
 		{
 			this->deadly = true;
 			return 0;
