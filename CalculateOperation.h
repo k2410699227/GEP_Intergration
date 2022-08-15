@@ -1,3 +1,4 @@
+#include <string>
 namespace CaculatiOperation{
     double twoAdd(double a,double b){
         return a+b;
@@ -52,9 +53,9 @@ namespace CaculatiOperation{
         }
     }
     //单目运算
-    double caculation(char ch,double a){}
+    double calculation(char ch,double a){}
     //双目运算
-    double caculation(char ch,double a,double b){
+    double calculation(char ch,double a,double b){
         switch (ch)
         {
         case '+':
@@ -73,5 +74,19 @@ namespace CaculatiOperation{
         }
     }
     //三目运算
-    double caculation(char ch,double a,double b,double c){}
+    double calculation(char ch,double a,double b,double c){}
+    //返回用于校验的表达式字符串
+    std::string showString(char ch,std::string a,std::string b){
+        switch (ch)
+        {
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+            return a+ch+b;
+            break;
+        default:
+            break;
+        }
+    }
 };
