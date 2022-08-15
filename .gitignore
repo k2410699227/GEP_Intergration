@@ -1,6 +1,5 @@
 .vscode
 build
-data/calculate.py
 data/.idea
 GeneExpressionProgramming
 GeneExpressionProgramming.exe

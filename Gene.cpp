@@ -5,7 +5,7 @@
 #include <map>
 #include "Gene.h"
 #include "parameter.h"
-#include "CaculateOperation.h"
+#include "CalculateOperation.h"
 using namespace std;
 using namespace CaculatiOperation;
 double *Gene::dc_array = nullptr;
@@ -518,17 +518,17 @@ double Gene::geneExpressing(unordered_map<char, double> termToValue)
 		switch (paramNum(nonTerm->first))
 		{
 		case 1:
-			res = caculation(nonTerm->first, (term--)->second);
+			res = calculation(nonTerm->first, (term--)->second);
 			temp.pop_back();
 			break;
 		case 2:
 			// if(nonTerm->first=='/')
-			res = caculation(nonTerm->first, (term--)->second, (term--)->second);
+			res = calculation(nonTerm->first, (term--)->second, (term--)->second);
 			temp.pop_back();
 			temp.pop_back();
 			break;
 		case 3:
-			res = caculation(nonTerm->first, (term--)->second, (term--)->second, (term--)->second);
+			res = calculation(nonTerm->first, (term--)->second, (term--)->second, (term--)->second);
 			temp.pop_back();
 			temp.pop_back();
 			temp.pop_back();

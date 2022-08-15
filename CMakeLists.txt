@@ -21,7 +21,8 @@ set(SourcePath
               individual.cpp
               individual.h
               population.cpp
-              population.h)
+              population.h
+              CalculateOperation.h)
 # 将源代码添加到此项目的可执行文件。
 add_executable (GeneExpressionProgramming ${SourcePath})  
 set(EXECUTABLE_OUTPUT_PATH ../)
