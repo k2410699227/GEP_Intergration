@@ -18,7 +18,7 @@ void clearOutputFile();
 
 int main()
 {
-	// termToValue.insert(make_pair('a',1.2));
+	termToValue.insert(make_pair('a',1.2));
 	// termToValue.insert(make_pair('b',6.4));
 	// Gene g;
 	// g.geneExpressing(termToValue);
