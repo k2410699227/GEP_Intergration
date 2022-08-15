@@ -2,17 +2,17 @@
 #define DATASOURCE_H
 
 #include "parameter.h"
-#include<assert.h>
+#include <assert.h>
 #include <vector>
 #include <string>
-#include<unordered_map>
+#include <unordered_map>
 #include <fstream>
 using namespace std;
 class DataSource
 {
 private:
     /** 自变量数据 */
-    static vector<unordered_map<char,double>> independentVar;
+    static vector<unordered_map<char, double>> independentVar;
     /** 因变量数据 */
     static vector<double> dependentVar;
 
@@ -41,12 +41,12 @@ public:
     }
 
     /** 返回自变量数据 */
-    static vector<unordered_map<char,double>> independent() { return independentVar; }
+    static vector<unordered_map<char, double>> independent() { return independentVar; }
 
     /** 返回因变量数据 */
     static vector<double> dependent() { return dependentVar; }
 
-    static int sampleCount(){return dependentVar.size();}
+    static int sampleCount() { return dependentVar.size(); }
 };
 
 #endif

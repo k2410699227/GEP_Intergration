@@ -1,4 +1,5 @@
 #include <vector>
+#include<iomanip>
 #include "individual.h"
 #include "population.h"
 #include "parameter.h"
@@ -152,7 +153,7 @@ void Population::evolution()
     std::vector<std::string> context = {};
     // 保留最优个体，其余进行轮盘赌（包括最优个体）
     context.push_back(bestIndiv());
-    for (int i = 0; i < INDIVIDUAL_NUM-1; i++)
+    for (int i = 0; i < INDIVIDUAL_NUM - 1; i++)
     {
         // 生成0~1间的随机算子
         double prob = rand() / double(RAND_MAX);
@@ -167,9 +168,10 @@ void Population::evolution()
         }
     }
     for (int i = 0; i < num; i++)
-	{
-		individual[i].modifyContent(context[i]);
-	}
+    {
+        individual[i].modifyContent(context[i]);
+        individual[i].setDeadly(false); //重置致死性
+    }
     //补齐中间步骤
     this->mutation();
     this->ISTransposition();
@@ -179,9 +181,9 @@ void Population::evolution()
     this->twoPointRecombination();
     this->geneRecombination();
     for (int i = 0; i < num; i++)
-	{
-		individual[i].recalculate();
-	}
+    {
+        individual[i].recalculate();
+    }
 }
 
 bool Population::excellentIndiv(double &maxValue, int &index, string &content,
@@ -210,7 +212,8 @@ bool Population::excellentIndiv(double &maxValue, int &index, string &content,
     return false;
 }
 
-string Population::bestIndiv(){
+string Population::bestIndiv()
+{
     double temp = individual[0].getFitness();
     int idx = 0;
     for (int i = 1; i < INDIVIDUAL_NUM; i++)
@@ -229,6 +232,8 @@ void Population::display() const
 {
     for (int i = 0; i < num; ++i)
     {
-        std::cout << "[" << i + 1 << "] " << individual[i].showContent() << endl;
+        std::cout << "[" <<setw(2);
+        cout.fill('0');
+        cout<< i + 1 << "] " << individual[i].showContent() << endl;
     }
 }

@@ -38,6 +38,9 @@ void Individual::caculate()
 	std::vector<std::vector<double>> param = {};
 	for (int i = 0; i < GENE_NUM; i++)
 	{
+		//判断是否有致死基因
+		if (gene[i].isDeadly())
+			this->deadly = true;
 		param.push_back(gene[i].expressionValue());
 	}
 
@@ -77,10 +80,16 @@ void Individual::caculate()
 
 void Individual::fit()
 {
+	//致死个体适应度为0，在轮盘赌时不会被选择,
+	if (this->isDeadly())
+	{
+		fitness = 0.0;
+		return;
+	}
 	int num = DataSource::sampleCount();
-	
+
 	if (CLASSIFICATION)
-	{	
+	{
 		int t = 0;
 		for (int i = 0; i < num; i++)
 		{
@@ -98,13 +107,14 @@ void Individual::fit()
 				// 采用绝对误差：选择范围 - |适应度值 - 目标值|
 				temp = RANGE - abs(result[i] - DataSource::dependent()[i]);
 			}
-			else 
+			else
 			{
 				// 采用相对误差：选择范围 - |（适应度值 - 目标值）/ 目标值 * 100|
 				temp = RANGE - abs(100 * (result[i] - DataSource::dependent()[i]) / DataSource::dependent()[i]);
 			}
 			if (temp <= 0)
 				temp = 0.1; // 方便轮盘赌计算
+
 			fitness += temp;
 		}
 	}
@@ -117,6 +127,7 @@ void Individual::modifyContent(string content)
 	{
 		text[i] = content.substr(i * Gene::getLength(), Gene::getLength());
 		gene[i].setContent(text[i]);
+		gene[i].setDeadly(false); //重置致死性
 	}
 }
 void Individual::recalculate()
@@ -125,7 +136,7 @@ void Individual::recalculate()
 	{
 		gene[i].update();
 	}
-	
+
 	result.clear();
 	fitness = 0.0;
 	// 计算表达式数值
@@ -220,7 +231,10 @@ std::string Individual::showContent() const
 	{
 		str = str + gene[i].getContent() + " ";
 	}
-	str = str + " [" + std::to_string(fitness) + "]";
+	if(this->deadly)
+		str = str + "  dead";
+	else
+		str = str + " [" + std::to_string(fitness) + "]";
 	return str;
 }
 
@@ -230,7 +244,7 @@ string Individual::infixExpressionWithDc()
 	for (int i = 0; i < GENE_NUM; i++)
 	{
 		if (i < GENE_NUM - 1)
-			expression = expression + gene[i].decodeWithDc() +' '+ CONN+' ';
+			expression = expression + gene[i].decodeWithDc() + ' ' + CONN + ' ';
 		else
 			expression = expression + gene[i].decodeWithDc();
 	}

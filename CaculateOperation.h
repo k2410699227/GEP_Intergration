@@ -58,16 +58,16 @@ namespace CaculatiOperation{
         switch (ch)
         {
         case '+':
-            twoAdd(a,b);
+            return twoAdd(a,b);
             break;
         case '-':
-            twoSubtract(a,b);
+            return twoSubtract(a,b);
             break;
         case '*':
-            twoMultiply(a,b);
+            return twoMultiply(a,b);
             break;;
         case '/':
-            twoDivide(a,b);
+            return twoDivide(a,b);
         default:
             break;
         }

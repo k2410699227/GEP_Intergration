@@ -8,7 +8,7 @@ DataSource::DataSource()
 {
     setDependentData();
     setIndependentData();
-    assert(independentVar.size()==dependentVar.size());
+    assert(independentVar.size() == dependentVar.size());
 }
 
 vector<string> DataSource::getFileText(const string path)
@@ -32,13 +32,13 @@ void DataSource::setIndependentData()
     {
         vector<string> result;
         //空格分割
-        split(line, result, " ");      
-        assert(result.size()>=(sizeof(Terminator)/sizeof(char)));
+        split(line, result, " ");
+        assert(result.size() >= (sizeof(Terminator) / sizeof(char)));
 
         vector<double> temp = toDouble(result);
-        unordered_map<char,double>single;
-        for(int i = 0;i<temp.size();i++)
-            single[Terminator[i]]=temp[i];
+        unordered_map<char, double> single;
+        for (int i = 0; i < temp.size(); i++)
+            single[Terminator[i]] = temp[i];
         independentVar.push_back(single);
     }
 }

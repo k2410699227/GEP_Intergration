@@ -1,6 +1,7 @@
 #include <iostream>
 #include <math.h>
 #include <stack>
+#include <vector>
 #include <map>
 #include "Gene.h"
 #include "parameter.h"
@@ -13,7 +14,8 @@ int Gene::gene_len = 0;
 
 Gene::Gene(const string &str)
 	: text(str),
-	  tree(NULL)
+	  tree(NULL),
+	  deadly(false)
 {
 	int m = maxParameter();
 	tail_len = HEAD_LEN * (m - 1) + 1;
@@ -29,7 +31,7 @@ Gene &Gene::operator=(const Gene &obj)
 	}
 	return *this;
 }
-Gene::Gene(const Gene &obj) : text(obj.text), dc_value(obj.dc_value)
+Gene::Gene(const Gene &obj) : text(obj.text), dc_value(obj.dc_value), deadly(false)
 {
 }
 
@@ -47,15 +49,15 @@ void Gene::initialize()
 	if (IS_OPEN_DC)
 		saveDcValue();
 
-	// 解码表达式为中缀表达式
-	string expression = decode();
-	// 中缀转后缀
-	queue<char> postfix_str = infix2postfix(expression);
-	// 后缀计算 计算训练样本
-	int len_inden = DataSource::independent().size();
+	// // 解码表达式为中缀表达式
+	// string expression = decode();
+	// // 中缀转后缀
+	// queue<char> postfix_str = infix2postfix(expression);
+	// 计算训练样本
+	int len_inden = DataSource::sampleCount();
 	for (int i = 0; i < len_inden; i++)
 	{
-		double value_practise = calculate(postfix_str, DataSource::independent()[i]);
+		double value_practise = geneExpressing(DataSource::independent()[i]);
 		result.push_back(value_practise);
 	}
 }
@@ -348,29 +350,25 @@ int Gene::priority(char ch)
 		return 2;
 }
 
-vector<char> Gene::validGene(){
+vector<char> Gene::validGene()
+{
 	vector<char> validGene;
-	cout << "caclulating valid length:" <<endl;
 	string::iterator e = text.begin();
-	cout << "e = " << *e << endl;
 	string::iterator p = text.begin();
-	cout << "p = " << *p << endl;
-	while (distance(p,text.begin()) <= HEAD_LEN){
-		e = e+(paramNum(*p));
+	while (distance(p, text.begin()) <= HEAD_LEN)
+	{
+		e = e + (paramNum(*p));
 		p++;
-		if(p>e){
+		if (p > e)
+		{
 			break;
 		}
-		
 	}
-	for(string::iterator it = text.begin();it != e;++it){
+	for (string::iterator it = text.begin(); it != e; ++it)
+	{
 		validGene.push_back(*it);
-		cout << "push back:" << *it << endl;
 	}
 	validGene.push_back(*e);
-	cout << "push back:" << *e << endl;
-	//return e;
-	//return distance(e,text.begin());
 	return validGene;
 }
 
@@ -497,22 +495,58 @@ string Gene::decodeWithDc()
 	return expression;
 }
 
-double Gene::geneExpressing(unordered_map<char, double>termToValue)
+double Gene::geneExpressing(unordered_map<char, double> termToValue)
 {
-	vector<char>validSegment;
-	vector<pair<string,double>>temp;	//以(表达式，数值)的格式储存当前各节点的信息
-	for(auto v : validSegment)		//初始化各节点信息
+	// vector<char>validSegment = {'/','a','-','a','a'};
+	// vector<char>validSegment = this->validGene();
+	vector<pair<char, double>> temp; //以(表达式，数值)的格式储存当前各节点的信息
+	for (auto v : validGene())		 //初始化各节点信息
 	{
-
+		if (isTerm(v))
+			temp.push_back(pair<char, double>(v, termToValue[v])); //终结符的值为真实值
+		else
+			temp.push_back(pair<char, double>(v, 0)); //非终结符的值为0;
 	}
-	
-	vector<pair<string,double>>::iterator nonTerm = temp.rend(),term = temp.rend();
-	while(temp.size()!=1)
+
+	auto nonTerm = --temp.end(), term = --temp.end();
+
+	while (temp.size() != 1)
 	{
+		while (isTerm(nonTerm->first))
+			--nonTerm;
+		double res = 0.0;
+		switch (paramNum(nonTerm->first))
+		{
+		case 1:
+			res = caculation(nonTerm->first, (term--)->second);
+			temp.pop_back();
+			break;
+		case 2:
+			// if(nonTerm->first=='/')
+			res = caculation(nonTerm->first, (term--)->second, (term--)->second);
+			temp.pop_back();
+			temp.pop_back();
+			break;
+		case 3:
+			res = caculation(nonTerm->first, (term--)->second, (term--)->second, (term--)->second);
+			temp.pop_back();
+			temp.pop_back();
+			temp.pop_back();
+			break;
+		default:
+			break;
+		}
+		if (isinf(res)) //除数为零，表达式无意义，标记为致死基因
+		{
+			this->deadly = true;
+			return 0;
+		}
+		nonTerm->second = res;
 
+		nonTerm = --(--temp.end());
+		term = --temp.end();
 	}
-	
-
+	return temp.begin()->second;
 }
 
 void Gene::update()
@@ -523,15 +557,15 @@ void Gene::update()
 	if (IS_OPEN_DC)
 		saveDcValue();
 
-	// 解码表达式为中缀表达式
-	string expression = decode();
-	// 中缀转后缀
-	queue<char> postfix_str = infix2postfix(expression);
+	// // 解码表达式为中缀表达式
+	// string expression = decode();
+	// // 中缀转后缀
+	// queue<char> postfix_str = infix2postfix(expression);
 	// 后缀计算
-	int len_inden = DataSource::independent().size();
+	int len_inden = DataSource::sampleCount();
 	for (int i = 0; i < len_inden; i++)
 	{
-		double value_practise = calculate(postfix_str, DataSource::independent()[i]);
+		double value_practise = geneExpressing(DataSource::independent()[i]);
 		result.push_back(value_practise);
 	}
 }
@@ -541,7 +575,7 @@ double Gene::calculate(queue<char> postfix, unordered_map<char, double> value)
 	double result = 0.0;
 	int flag = 0;
 	char ch = postfix.front();
-	if(postfix.size()==1)	//单元素基因
+	if (postfix.size() == 1) //单元素基因
 		return postfix.front();
 	while (!postfix.empty())
 	{
