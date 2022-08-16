@@ -1,5 +1,5 @@
 #include <vector>
-#include<iomanip>
+#include <iomanip>
 #include "individual.h"
 #include "population.h"
 #include "parameter.h"
@@ -22,14 +22,14 @@ void Population::initialize()
 }
 void Population::mutation()
 {
-    double sumOfFit = 0.0,rate = 0.0;
+    double sumOfFit = 0.0, rate = 0.0;
     for (int i = 0; i < INDIVIDUAL_NUM; i++)
     {
         sumOfFit += individual[i].getFitness();
     }
     for (int i = 0; i < num; i++)
     {
-        rate = 1 - individual[i].getFitness()/sumOfFit;
+        rate = 1 - individual[i].getFitness() / sumOfFit;
         individual[i].mutation(rate);
     }
 }
@@ -130,10 +130,11 @@ void Population::twoPointRecombination()
 }
 void Population::evolution()
 {
-    double sumOfFit = 0.0;
+    double sumOfFit = 0.0, fitMax = 0.0;
     for (int i = 0; i < INDIVIDUAL_NUM; i++)
     {
         sumOfFit += individual[i].getFitness();
+        fitMax = fitMax > individual[i].getFitness() ? fitMax : individual[i].getFitness();
     }
     std::vector<double> gambleRate;
     for (int i = 0; i < INDIVIDUAL_NUM; i++)
@@ -152,11 +153,9 @@ void Population::evolution()
             temp += gambleRate[i];
     }
     section.push_back(std::pair<double, double>(temp, 1.0));
-    std::vector<std::string> context = {};
-    // 保留最优个体，其余进行轮盘赌（包括最优个体）
-    string bestOne = bestIndiv();
-    context.push_back(bestIndiv());
-    for (int i = 0; i < INDIVIDUAL_NUM - 1; i++)
+    std::vector<pair<std::string, double>> context = {};
+
+    for (int i = 0; i < INDIVIDUAL_NUM; i++)
     {
         // 生成0~1间的随机算子
         double prob = rand() / double(RAND_MAX);
@@ -165,7 +164,8 @@ void Population::evolution()
             // 如果落在该区间内 则加入该个体
             if (prob >= section[j].first && prob <= section[j].second)
             {
-                context.push_back(individual[j].content());
+                //选择个体时，传入进化系数
+                context.push_back(pair<std::string, double>(individual[j].content(), 1 - individual->getFitness() / fitMax));
                 break;
             }
         }
@@ -183,8 +183,6 @@ void Population::evolution()
     this->onePointRecombination();
     this->twoPointRecombination();
     this->geneRecombination();
-    individual[0].modifyContent(bestOne);
-    individual[0].setDeadly(false);
     for (int i = 0; i < num; i++)
     {
         individual[i].recalculate();
@@ -199,7 +197,7 @@ bool Population::excellentIndiv(double &maxValue, int &index, string &content,
     // 找寻适宜度最高的个体
     for (int i = 1; i < INDIVIDUAL_NUM; i++)
     {
-        if ((individual[i].getFitness() >= temp)&&(!individual[i].isDeadly()))
+        if ((individual[i].getFitness() >= temp) && (!individual[i].isDeadly()))
         {
             temp = individual[i].getFitness();
             idx = i;
@@ -223,7 +221,7 @@ string Population::bestIndiv()
     int idx = 0;
     for (int i = 1; i < INDIVIDUAL_NUM; i++)
     {
-        if ((individual[i].getFitness() >= temp)&&(!individual[i].isDeadly()))
+        if ((individual[i].getFitness() >= temp) && (!individual[i].isDeadly()))
         {
             temp = individual[i].getFitness();
             idx = i;
@@ -237,8 +235,8 @@ void Population::display() const
 {
     for (int i = 0; i < num; ++i)
     {
-        std::cout << "[" <<setiosflags(ios::left)<<setw(2);
+        std::cout << "[" << setiosflags(ios::left) << setw(2);
         cout.fill('0');
-        cout<< i + 1 << "] " << individual[i].showContent() << endl;
+        cout << i + 1 << "] " << individual[i].showContent() << endl;
     }
 }

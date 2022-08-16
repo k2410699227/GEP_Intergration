@@ -22,7 +22,7 @@ public:
     std::string getGene();
     std::string content();
     void recombanation();
-    void modifyContent(string content);
+    void modifyContent(pair<std::string, double> content);
     void calculate();
     void recalculate();
     void fit();
@@ -32,7 +32,8 @@ public:
     string infixExpressionWithDc(); //返回含常数真实值的表达式
     std::vector<double> getResult() { return result; }
     bool isDeadly() { return this->deadly; }
-    void setDeadly(bool status) { deadly = status; } //重置致死性
+    void setDeadly(bool status) { deadly = status; }                       //重置致死性
+    void setEvolutionRatio(double ratio) { this->evolutionRatio = ratio; } //设置进化系数
 
 private:
     inline int index_rand();
@@ -47,6 +48,8 @@ private:
     double fitness;
     //是否致死
     bool deadly = false;
+    //进化系数（进化的程度）
+    double evolutionRatio;
 };
 
 #endif

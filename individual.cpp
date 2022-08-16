@@ -120,12 +120,13 @@ void Individual::fit()
 	}
 }
 
-void Individual::modifyContent(string content)
+void Individual::modifyContent(pair<std::string,double>content)
 {
+	evolutionRatio = content.second;
 	string text[GENE_NUM];
 	for (int i = 0; i < GENE_NUM; i++)
 	{
-		text[i] = content.substr(i * Gene::getLength(), Gene::getLength());
+		text[i] = content.first.substr(i * Gene::getLength(), Gene::getLength());
 		gene[i].setContent(text[i]);
 		gene[i].setDeadly(false); //重置致死性
 	}
