@@ -32,7 +32,7 @@ void Population::ISTransposition()
     for (int i = 0; i < num; i++)
     {
         double prob = rand() % 100 / 100;
-        if (prob < MUTATION_RATE)
+        if (prob < IS_TRANS_RATE)
         {
             individual[i].ISTransposition();
         }
@@ -43,7 +43,7 @@ void Population::RISTrasposition()
     for (int i = 0; i < num; i++)
     {
         double prob = rand() % 100 / 100;
-        if (prob < MUTATION_RATE)
+        if (prob < RIS_TRANS_RATE)
         {
             individual[i].RISTransposition();
         }
