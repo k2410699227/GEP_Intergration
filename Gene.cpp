@@ -502,10 +502,10 @@ string Gene::decodeWithDc()
 
 double Gene::geneExpressing(unordered_map<char, double> termToValue)
 {
-	// vector<char>validSegment = {'/','a','-','a','a'};
+	// vector<char>validSegment = {'*','/','a','a','-','*','a','a','a'};
 	// vector<char>validSegment = this->validGene();
 	vector<pair<char, double>> temp; //以(表达式，数值)的格式储存当前各节点的信息
-	for (auto v : validGene())		 //初始化各节点信息
+	for (auto v : this->validGene())		 //初始化各节点信息
 	{
 		if (isTerm(v))
 			temp.push_back(pair<char, double>(v, termToValue[v])); //终结符的值为真实值
@@ -546,6 +546,7 @@ double Gene::geneExpressing(unordered_map<char, double> termToValue)
 			this->deadly = true;
 			return 0;
 		}
+		nonTerm->first = Terminator[0];		//已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
 		nonTerm->second = res;
 
 		nonTerm = --(--temp.end());

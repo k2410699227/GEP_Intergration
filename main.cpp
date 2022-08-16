@@ -13,15 +13,17 @@ int num_index = 0;		 // 个体索引
 string excellGene = "";	 // 基因
 string excellInfix = ""; // 中缀表达式
 double maxFitness = 0.0; // 最大适宜度
-unordered_map<char, double> termToValue;
-void clearOutputFile();
+// unordered_map<char, double> termToValue;
 
 int main()
 {
-	termToValue.insert(make_pair('a',1.2));
+	// termToValue.insert(make_pair('a',1.2));
 	// termToValue.insert(make_pair('b',6.4));
 	// Gene g;
-	// g.geneExpressing(termToValue);
+	// double res = g.geneExpressing(termToValue);
+	// cout<<res<<endl;
+	// return 0;
+
 	//获取样本数据
 	DataSource file;
 	srand((int)time(0));
