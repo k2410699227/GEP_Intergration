@@ -149,10 +149,10 @@ int Individual::index_rand()
 {
 	return rand() % GENE_NUM;
 }
-void Individual::mutation()
+void Individual::mutation(double rate)
 {
 	for(int i =0;i<GENE_NUM;i++){
-		gene[i].mutation();
+		gene[i].mutation(rate);
 	}
 }
 void Individual::ISTransposition()

@@ -14,7 +14,7 @@ public:
     ~Individual();
     Individual &operator=(const Individual &ind);
     void initialize();
-    void mutation();
+    void mutation(double rate);
     void ISTransposition();
     void RISTransposition();
     void geneTransposition();

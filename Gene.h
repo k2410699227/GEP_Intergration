@@ -15,7 +15,7 @@ public:
     Gene &operator=(const Gene &obj);
     ~Gene();
     void initialize();
-    void mutation();
+    void mutation(double rate);
     void transposition(const std::string &str);
     char getRandomElement();
     char getTerminator();

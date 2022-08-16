@@ -22,9 +22,15 @@ void Population::initialize()
 }
 void Population::mutation()
 {
+    double sumOfFit = 0.0,rate = 0.0;
+    for (int i = 0; i < INDIVIDUAL_NUM; i++)
+    {
+        sumOfFit += individual[i].getFitness();
+    }
     for (int i = 0; i < num; i++)
     {
-        individual[i].mutation();
+        rate = 1 - individual[i].getFitness()/sumOfFit;
+        individual[i].mutation(rate);
     }
 }
 void Population::ISTransposition()
@@ -148,6 +154,7 @@ void Population::evolution()
     section.push_back(std::pair<double, double>(temp, 1.0));
     std::vector<std::string> context = {};
     // 保留最优个体，其余进行轮盘赌（包括最优个体）
+    //string bestOne = bestIndiv();
     context.push_back(bestIndiv());
     for (int i = 0; i < INDIVIDUAL_NUM - 1; i++)
     {
@@ -176,6 +183,7 @@ void Population::evolution()
     this->onePointRecombination();
     this->twoPointRecombination();
     this->geneRecombination();
+    //context.push_back(bestOne);
     for (int i = 0; i < num; i++)
     {
         individual[i].recalculate();
