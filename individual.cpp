@@ -29,7 +29,7 @@ void Individual::initialize()
 	{
 		gene[i].initialize();
 	}
-	caculate();
+	calculate();
 	fit();
 }
 
@@ -140,7 +140,7 @@ void Individual::recalculate()
 	result.clear();
 	fitness = 0.0;
 	// 计算表达式数值
-	caculate();
+	calculate();
 	// 计算拟合误差
 	fit();
 }

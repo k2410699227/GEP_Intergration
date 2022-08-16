@@ -52,10 +52,10 @@ public:
     static vector<double> dependent() { return dependentVar; }
 
     /** 返回验证自变量数据 */
-    static vector<unordered_map<char, double>> indepenValidation() { return indepenValidation; }
+    static vector<unordered_map<char, double>> getIndepenValidation() { return indepenValidation; }
 
     /** 返回验证因变量数据 */
-    static vector<double> depenValidation() { return depenValidation; }
+    static vector<double> getDepenValidation() { return depenValidation; }
 
     static int sampleCount() { return dependentVar.size(); }
 };
