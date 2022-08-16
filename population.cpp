@@ -148,9 +148,11 @@ void Population::evolution()
     }
     section.push_back(std::pair<double, double>(temp, 1.0));
     std::vector<pair<std::string, double>> context = {};
-
-    for (int i = 0; i < INDIVIDUAL_NUM; i++)
-    {
+    // 保留最优个体，其余进行轮盘赌（包括最优个体）
+    string bestOne = bestIndiv();
+    context.push_back(pair<std::string,double>(bestOne,1.0));
+    for (int i = 0; i < INDIVIDUAL_NUM - 1; i++)
+    {    
         // 生成0~1间的随机算子
         double prob = rand() / double(RAND_MAX);
         for (int j = 0; j < INDIVIDUAL_NUM; j++)
@@ -177,11 +179,13 @@ void Population::evolution()
     this->onePointRecombination();
     this->twoPointRecombination();
     this->geneRecombination();
+    individual[0].modifyContent(pair<std::string,double>(bestOne,1.0));
     for (int i = 0; i < num; i++)
     {
         individual[i].recalculate();
     }
 }
+
 
 bool Population::excellentIndiv(double &maxValue, int &index, string &content,
                                 string &contentWithDc)
@@ -229,7 +233,7 @@ void Population::display() const
 {
     for (int i = 0; i < num; ++i)
     {
-        std::cout << "[" << setiosflags(ios::left) << setw(2);
+        std::cout << "[" << setiosflags(ios::right) << setw(2);
         cout.fill('0');
         cout << i + 1 << "] " << individual[i].showContent() << endl;
     }
