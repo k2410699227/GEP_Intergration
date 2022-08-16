@@ -25,7 +25,7 @@ const int GENE_NUM = 3;
 const char CONNET = '+';
 // population parameter
 const int INDIVIDUAL_NUM = 100;
-const int GENERATION = 500;
+const int GENERATION = 5000;
 const double MUTATION_RATE = 0.044;
 const double ONE_POINT_COMBA_RATE = 0.3;
 const double TWO_POINT_COMBA_RATE = 0.3;
