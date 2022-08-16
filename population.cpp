@@ -22,15 +22,9 @@ void Population::initialize()
 }
 void Population::mutation()
 {
-    double sumOfFit = 0.0, rate = 0.0;
-    for (int i = 0; i < INDIVIDUAL_NUM; i++)
-    {
-        sumOfFit += individual[i].getFitness();
-    }
     for (int i = 0; i < num; i++)
     {
-        rate = 1 - individual[i].getFitness() / sumOfFit;
-        individual[i].mutation(rate);
+        individual[i].mutation();
     }
 }
 void Population::ISTransposition()

@@ -103,12 +103,12 @@ char Gene::getFunction()
 	return Function[ran];
 }
 
-void Gene::mutation(double mutation_rate)
+void Gene::mutation(double evo)
 {
 	for(int i =0;i<gene_len;i++){
 		char ch;
 		double prob = rand() % 100 / 100;
-		if(prob < mutation_rate){
+		if(prob < evo*MUTATION_RATE){
 			if (i < HEAD_LEN)
 				ch = getRandomElement();
 			else
