@@ -105,13 +105,18 @@ char Gene::getFunction()
 
 void Gene::mutation()
 {
-	int index = rand() % gene_len;
-	char ch;
-	if (index < HEAD_LEN)
-		ch = getRandomElement();
-	else
-		ch = getTerminator();
-	text[index] = ch;
+	for(int i =0;i<gene_len;i++){
+		char ch;
+		double prob = rand() % 100 / 100;
+		if(prob < MUTATION_RATE){
+			if (i < HEAD_LEN)
+				ch = getRandomElement();
+			else
+				ch = getTerminator();
+			text[i] = ch;
+		}
+	}
+	
 }
 
 void Gene::transposition(const string &str)
