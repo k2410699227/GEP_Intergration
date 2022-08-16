@@ -154,7 +154,7 @@ void Population::evolution()
     section.push_back(std::pair<double, double>(temp, 1.0));
     std::vector<std::string> context = {};
     // 保留最优个体，其余进行轮盘赌（包括最优个体）
-    //string bestOne = bestIndiv();
+    string bestOne = bestIndiv();
     context.push_back(bestIndiv());
     for (int i = 0; i < INDIVIDUAL_NUM - 1; i++)
     {
@@ -183,7 +183,8 @@ void Population::evolution()
     this->onePointRecombination();
     this->twoPointRecombination();
     this->geneRecombination();
-    //context.push_back(bestOne);
+    individual[0].modifyContent(bestOne);
+    individual[0].setDeadly(false);
     for (int i = 0; i < num; i++)
     {
         individual[i].recalculate();
