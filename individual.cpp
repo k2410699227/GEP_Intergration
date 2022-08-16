@@ -151,8 +151,9 @@ int Individual::index_rand()
 }
 void Individual::mutation()
 {
-	int index = index_rand();
-	gene[index].mutation();
+	for(int i =0;i<GENE_NUM;i++){
+		gene[i].mutation();
+	}
 }
 void Individual::ISTransposition()
 {

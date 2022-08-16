@@ -24,11 +24,7 @@ void Population::mutation()
 {
     for (int i = 0; i < num; i++)
     {
-        double prob = rand() % 100 / 100;
-        if (prob < MUTATION_RATE)
-        {
-            individual[i].mutation();
-        }
+        individual[i].mutation();
     }
 }
 void Population::ISTransposition()
