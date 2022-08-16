@@ -16,6 +16,11 @@ private:
     /** 因变量数据 */
     static vector<double> dependentVar;
 
+    /** 验证用自变量数据 */
+    static vector<unordered_map<char, double>> indepenValidation;
+    /** 验证用因变量数据 */
+    static vector<double> depenValidation;
+
     /** 用空格分割字符串*/
     void split(const std::string &input_str, std::vector<std::string> &output, const char *delim);
 
@@ -45,6 +50,12 @@ public:
 
     /** 返回因变量数据 */
     static vector<double> dependent() { return dependentVar; }
+
+    /** 返回验证自变量数据 */
+    static vector<unordered_map<char, double>> indepenValidation() { return indepenValidation; }
+
+    /** 返回验证因变量数据 */
+    static vector<double> depenValidation() { return depenValidation; }
 
     static int sampleCount() { return dependentVar.size(); }
 };

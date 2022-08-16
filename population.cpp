@@ -194,7 +194,7 @@ bool Population::excellentIndiv(double &maxValue, int &index, string &content,
     // 找寻适宜度最高的个体
     for (int i = 1; i < INDIVIDUAL_NUM; i++)
     {
-        if (individual[i].getFitness() >= temp)
+        if ((individual[i].getFitness() >= temp)&&(!individual[i].isDeadly()))
         {
             temp = individual[i].getFitness();
             idx = i;
@@ -218,7 +218,7 @@ string Population::bestIndiv()
     int idx = 0;
     for (int i = 1; i < INDIVIDUAL_NUM; i++)
     {
-        if (individual[i].getFitness() >= temp)
+        if ((individual[i].getFitness() >= temp)&&(!individual[i].isDeadly()))
         {
             temp = individual[i].getFitness();
             idx = i;

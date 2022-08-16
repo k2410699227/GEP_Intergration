@@ -23,7 +23,7 @@ public:
     std::string content();
     void recombanation();
     void modifyContent(string content);
-    void caculate();
+    void calculate();
     void recalculate();
     void fit();
     static inline int getLength() { return len; }

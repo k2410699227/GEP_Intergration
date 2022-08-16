@@ -33,7 +33,7 @@ void Individual::initialize()
 	fit();
 }
 
-void Individual::caculate()
+void Individual::calculate()
 {
 	std::vector<std::vector<double>> param = {};
 	for (int i = 0; i < GENE_NUM; i++)
