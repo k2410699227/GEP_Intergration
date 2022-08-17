@@ -37,7 +37,12 @@ Gene::Gene(const Gene &obj) : text(obj.text), dc_value(obj.dc_value), deadly(fal
 
 void Gene::initialize()
 {
-	for (int i = 0; i < HEAD_LEN; i++)
+	if(Allow_Single_Gene)	//判断是否支持单符号基因
+		text += getRandomElement();
+	else
+		text += getFunction();
+
+	for (int i = 1; i < HEAD_LEN; i++)
 	{
 		text += getRandomElement();
 	}
@@ -109,7 +114,9 @@ void Gene::mutation(double evo)
 		char ch;
 		double prob = rand() % 100 / 100;
 		if(prob < evo*MUTATION_RATE){
-			if (i < HEAD_LEN)
+			if((i==0)&&!Allow_Single_Gene)	//不支持单符号基因
+				ch = getFunction();
+			else if (i < HEAD_LEN)
 				ch = getRandomElement();
 			else
 				ch = getTerminator();
