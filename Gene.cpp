@@ -550,8 +550,9 @@ double Gene::geneExpressing(unordered_map<char, double> termToValue)
 		}
 		if (isinf(res)||isnan(res)) //除数为零，表达式无意义，标记为致死基因
 		{
-			this->deadly = true;
-			return 0;
+			// this->deadly = true;
+			// return 0;
+			res = 0.0;
 		}
 		nonTerm->first = Terminator[0];		//已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
 		nonTerm->second = res;
