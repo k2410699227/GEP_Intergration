@@ -36,6 +36,36 @@ namespace CaculatiOperation{
     bool smaller(double a,double b){
         return a<b;
     }
+    double twoAnd(double a,double b){
+        if(a>0&&b>0)
+            return 1;
+        return 0;
+    }
+    double twoOR(double a,double b){
+        if(a>0 || b > 0)
+            return 1;
+        return 0;
+    }
+    double twoXor(double a,double b){
+        if(a>0 && b>0)
+            return 0;
+        else if(a<0 && b<0)
+            return 0;
+        else
+            return 1;
+    }
+    double twoBigger(double a,double b){
+        if(a > b)
+            return 1;
+        else
+            return 0;
+    }
+    double twoSmaller(double a,double b){
+        if(a < b)
+            return 1;
+        else
+            return 0;
+    }
     /* bool twoAnd(double a,double b){
         if(a > 0)
     } */
@@ -46,6 +76,12 @@ namespace CaculatiOperation{
             case '-':
             case '*':
             case '/':
+            case '>':
+            case '<':
+            case '=':
+            case '&':
+            case '|':
+            case 'X':
                 return 2;
                 break;
             default:
@@ -66,9 +102,19 @@ namespace CaculatiOperation{
             break;
         case '*':
             return twoMultiply(a,b);
-            break;;
+            break; 
         case '/':
             return twoDivide(a,b);
+        case '<':
+            return twoBigger(a,b);
+        case '>':
+            return twoSmaller(a,b);
+        case '&':
+            return twoAnd(a,b);
+        case '|':
+            return twoOR(a,b);
+        case 'X':
+            return twoXor(a,b);
         default:
             break;
         }
@@ -83,6 +129,12 @@ namespace CaculatiOperation{
         case '-':
         case '*':
         case '/':
+        case '>':
+        case '<':
+        case '=':
+        case '&':
+        case '|':
+        case 'X':
             return a+ch+b;
             break;
         default:
