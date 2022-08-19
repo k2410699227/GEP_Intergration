@@ -3,17 +3,17 @@
 #include <string>
 
 // gene parameter
-const int HEAD_LEN = 7;
+const int HEAD_LEN = 5;
 /* 默认采用绝对误差，flase即为相对误差 */
 const bool AbsoluteError = true;
 /* 选择范围 */
-const double RANGE = 1000.0;
+const double RANGE = 100.0;
 // 可选函数集: +、-、*、/、<、 >、&(AND)、|(OR)、 X(XOR)、S(sin)、C(cos)、T(tan)、E(exp)、L(log10)、Q(sqrt)
 const char Function[] = {'-', '+', '*', '/'}; //,'>','<','&','|','X','^'};
-const char Terminator[] = {'a','b','c','d','e','f','g','h','i','j'};
+const char Terminator[] = {'a','b','c','d'};//,'e','f','g','h','i','j'};
 const bool Allow_Single_Gene = false;   //是否支持单符号基因
 /* 分类阈值*/
-const bool CLASSIFICATION = false;
+const bool CLASSIFICATION = true;
 const double THRESHOLD = 0.5;
 //连接符号
 const char CONN = '+';
@@ -22,7 +22,7 @@ const int DC_LEN = 10;
 const double DC_MAX_VALUE = 10.0;
 const double DC_MIN_VALUE = 0.0;
 // individual parameter
-const int GENE_NUM = 3;
+const int GENE_NUM = 5;
 const char CONNET = '+';
 // population parameter
 const int INDIVIDUAL_NUM = 100;

@@ -46,11 +46,11 @@ int main()
 		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 		{
 			num_generaton = i + 1;
-			if (maxFitness == RANGE * DataSource::dependent().size())
+			if (maxFitness == RANGE * DataSource::dependent().size()||(maxFitness==DataSource::sampleCount()&&CLASSIFICATION))
 			{
 				for (auto i : parent.getIndividual()[num_index - 1].getResult())
 					cout << i << endl;
-				cout << parent.getIndividual()[num_index - 1].showContent();
+				// cout << parent.getIndividual()[num_index - 1].showContent();
 				break;
 			}
 		}
