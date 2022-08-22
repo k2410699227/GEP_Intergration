@@ -12,7 +12,6 @@ int num_index = 0;		 // 个体索引
 string excellGene = "";	 // 基因
 string excellInfix = ""; // 中缀表达式
 double maxFitness = 0.0; // 最大适宜度
-// unordered_map<char, double> termToValue;
 
 int main()
 {
