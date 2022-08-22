@@ -1,4 +1,4 @@
-import pandas
+
 
 origin = open("Algerian_forest_fires_dataset_UPDATE.csv", 'r+')
 inputFile = open("input.txt", "w+")
@@ -12,3 +12,4 @@ for i, o in enumerate(origin.readlines()):
         print(' '.join(line[3:-1]), classes[line[-1]], file=evaluationFile)
     else:
         print(' '.join(line[3:-1]), file=inputFile)
+        print(classes[line[-1]], file=outputFile)
