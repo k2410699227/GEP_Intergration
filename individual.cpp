@@ -38,17 +38,27 @@ void Individual::calculate()
 	std::vector<std::vector<double>> param = {};
 	for (int i = 0; i < GENE_NUM; i++)
 	{
-		//判断是否有致死基因
-		if (gene[i].isDeadly())
-			this->deadly = true;
+		//合并各基因无效样本的索引值
+		allInvalidSamples.insert(gene[i].getInvalidSamples().begin(), gene[i].getInvalidSamples().end());
 		param.push_back(gene[i].expressionValue());
+	}
+	//当无效样本数大于样本总数的一半时，标记为致死个体
+	if (allInvalidSamples.size() > DataSource::sampleCount() / 2)
+	{
+		this->setDeadly(true);
+		return;
 	}
 
 	int len = DataSource::sampleCount();
 	for (int i = 0; i < len; ++i)
 	{
 		double value = 0.0;
-		double a = 0.0;
+		if (allInvalidSamples.find(i) != allInvalidSamples.end())
+		{
+			result.push_back(0.0);
+			continue;
+		}
+			
 		for (int j = 0; j < GENE_NUM; j++)
 		{
 			switch (CONNET)
@@ -93,6 +103,8 @@ void Individual::fit()
 		int t = 0;
 		for (int i = 0; i < num; i++)
 		{
+			if (allInvalidSamples.find(i) != allInvalidSamples.end())
+				continue;
 			t += (result[i] == DataSource::dependent()[i]) ? 1 : 0;
 		}
 		fitness = t > (num / 2) ? t : 1;
@@ -102,8 +114,11 @@ void Individual::fit()
 		for (int i = 0; i < num; i++)
 		{
 			double temp = 0.0;
+			if (allInvalidSamples.find(i) != allInvalidSamples.end())	//无效样本，不需要计算
+				continue;
 			if (AbsoluteError)
 			{
+				
 				// 采用绝对误差：选择范围 - |适应度值 - 目标值|
 				temp = RANGE - abs(result[i] - DataSource::dependent()[i]);
 			}
@@ -117,10 +132,13 @@ void Individual::fit()
 
 			fitness += temp;
 		}
+		fitness = fitness*(1-allInvalidSamples.size()/DataSource::sampleCount());
+		this->allInvalidSamples.clear();
 	}
+
 }
 
-void Individual::modifyContent(pair<std::string,double>content)
+void Individual::modifyContent(pair<std::string, double> content)
 {
 	evolutionRatio = content.second;
 	string text[GENE_NUM];
@@ -128,7 +146,6 @@ void Individual::modifyContent(pair<std::string,double>content)
 	{
 		text[i] = content.first.substr(i * Gene::getLength(), Gene::getLength());
 		gene[i].setContent(text[i]);
-		gene[i].setDeadly(false); //重置致死性
 	}
 }
 void Individual::recalculate()
@@ -152,7 +169,8 @@ int Individual::index_rand()
 }
 void Individual::mutation()
 {
-	for(int i =0;i<GENE_NUM;i++){
+	for (int i = 0; i < GENE_NUM; i++)
+	{
 		gene[i].mutation(evolutionRatio);
 	}
 }
@@ -233,7 +251,7 @@ std::string Individual::showContent() const
 	{
 		str = str + gene[i].getContent() + " ";
 	}
-	if(this->deadly)
+	if (this->deadly)
 		str = str + "  dead";
 	else
 		str = str + " [" + std::to_string(fitness) + "]";

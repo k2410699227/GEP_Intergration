@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <unordered_set>
 #include "parameter.h"
 #include "dataSource.h"
 class Individual
@@ -50,6 +51,8 @@ private:
     bool deadly = false;
     //进化系数（进化的程度）
     double evolutionRatio;
+    //记录无效样本索引
+    unordered_set<int> allInvalidSamples;
 };
 
 #endif
