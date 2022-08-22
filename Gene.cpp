@@ -511,6 +511,7 @@ double Gene::geneExpressing(unordered_map<char, double> termToValue)
 {
 	// vector<char>validSegment = {'*','/','a','a','-','*','a','a','a'};
 	// vector<char>validSegment = this->validGene();
+	bool invalidSample = false;	//标志此样本是否有效
 	vector<pair<char, double>> temp; //以(表达式，数值)的格式储存当前各节点的信息
 	for (auto v : this->validGene())		 //初始化各节点信息
 	{
@@ -548,10 +549,9 @@ double Gene::geneExpressing(unordered_map<char, double> termToValue)
 		default:
 			break;
 		}
-		if (isinf(res)||isnan(res)) //除数为零，表达式无意义，标记为致死基因
+		if (isinf(res)||isnan(res)) //除数为零，表达式无意义，记录无效样本数
 		{
-			// this->deadly = true;
-			// return 0;
+			invalidSample = true;
 			res = 0.0;
 		}
 		nonTerm->first = Terminator[0];		//已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
@@ -560,6 +560,61 @@ double Gene::geneExpressing(unordered_map<char, double> termToValue)
 		nonTerm = --(--temp.end());
 		term = --temp.end();
 	}
+	if(invalidSample)
+	{
+		this->invalidSampleCount += 1;
+		return 0.0;
+	}
+		
+	return temp.begin()->second;
+}
+
+std::string Gene::toExpression()
+{
+	vector<pair<char, std::string>> temp; //以(符号，表达式字符串)的格式储存当前各节点的信息
+	for (auto v : this->validGene())		 //初始化各节点信息
+	{
+		std::string s;
+		s.append(1,v);
+		temp.push_back(pair<char, std::string>(v, s));
+	}
+
+	auto nonTerm = --temp.end(), term = --temp.end();
+
+	while (temp.size() != 1)
+	{
+		while (isTerm(nonTerm->first))
+			--nonTerm;
+		std::string res = "";
+		switch (paramNum(nonTerm->first))
+		{
+		case 1:
+			res = getExpression(nonTerm->first, (term--)->second);
+			temp.pop_back();
+			break;
+		case 2:
+			// if(nonTerm->first=='/')
+			res = getExpression(nonTerm->first, (term--)->second, (term--)->second);
+			temp.pop_back();
+			temp.pop_back();
+			break;
+		case 3:
+			res = getExpression(nonTerm->first, (term--)->second, (term--)->second, (term--)->second);
+			temp.pop_back();
+			temp.pop_back();
+			temp.pop_back();
+			break;
+		default:
+			break;
+		}
+		
+		nonTerm->first = Terminator[0];		//已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
+		nonTerm->second = res;
+
+		nonTerm = --(--temp.end());
+		term = --temp.end();
+	}
+		
 	return temp.begin()->second;
 }
 

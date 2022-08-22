@@ -246,9 +246,9 @@ string Individual::infixExpressionWithDc()
 	for (int i = 0; i < GENE_NUM; i++)
 	{
 		if (i < GENE_NUM - 1)
-			expression = expression + gene[i].decodeWithDc() + ' ' + CONN + ' ';
+			expression = expression + gene[i].toExpression() + ' ' + CONN + ' ';
 		else
-			expression = expression + gene[i].decodeWithDc();
+			expression = expression + gene[i].toExpression();
 	}
 	return expression;
 }

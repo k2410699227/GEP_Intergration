@@ -49,6 +49,7 @@ public:
     double geneExpressing(unordered_map<char, double>);
     bool isDeadly() { return deadly; }
     void setDeadly(bool status) { this->deadly = status; } //重置致死状态
+    std::string toExpression();
 
 private:
     std::string text;    // gene content
@@ -59,6 +60,7 @@ private:
     static double *dc_array;
     vector<double> result;
     bool deadly = false;
+    int invalidSampleCount = 0;
 };
 
 #endif

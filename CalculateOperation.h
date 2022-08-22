@@ -1,3 +1,5 @@
+#ifndef CALCULATEOPERATION_H
+#define CALCULATEOPERATION_H
 #include <string>
 namespace CaculatiOperation{
     double twoAdd(double a,double b){
@@ -122,23 +124,15 @@ namespace CaculatiOperation{
     //三目运算
     double calculation(char ch,double a,double b,double c){}
     //返回用于校验的表达式字符串
-    std::string showString(char ch,std::string a,std::string b){
-        switch (ch)
-        {
-        case '+':
-        case '-':
-        case '*':
-        case '/':
-        case '>':
-        case '<':
-        case '=':
-        case '&':
-        case '|':
-        case 'X':
-            return a+ch+b;
-            break;
-        default:
-            break;
-        }
+    std::string getExpression(char ch,std::string a,std::string b){
+        return '('+a+ch+b+')';
     }
+    std::string getExpression(char ch,std::string a){
+        std::string res = "";
+        return "("+ch+a+")";
+    }
+    std::string getExpression(char ch,std::string a,std::string b,std::string c){};
+    
 };
+
+#endif
