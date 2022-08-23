@@ -58,7 +58,7 @@ void Individual::calculate()
 			result.push_back(0.0);
 			continue;
 		}
-			
+
 		for (int j = 0; j < GENE_NUM; j++)
 		{
 			switch (CONNET)
@@ -107,18 +107,22 @@ void Individual::fit()
 				continue;
 			t += (result[i] == DataSource::dependent()[i]) ? 1 : 0;
 		}
-		fitness = t > (num / 2) ? t : 1;
+		//分类适应度计算
+		if (t > (num / 2))
+			fitness = t / (1 - allInvalidSamples.size() / DataSource::sampleCount());
+		else
+			fitness = 1;
 	}
 	else
 	{
 		for (int i = 0; i < num; i++)
 		{
 			double temp = 0.0;
-			if (allInvalidSamples.find(i) != allInvalidSamples.end())	//无效样本，不需要计算
+			if (allInvalidSamples.find(i) != allInvalidSamples.end()) //无效样本，不需要计算
 				continue;
 			if (AbsoluteError)
 			{
-				
+
 				// 采用绝对误差：选择范围 - |适应度值 - 目标值|
 				temp = RANGE - abs(result[i] - DataSource::dependent()[i]);
 			}
@@ -132,10 +136,9 @@ void Individual::fit()
 
 			fitness += temp;
 		}
-		fitness = fitness*(1-allInvalidSamples.size()/DataSource::sampleCount());
-		this->allInvalidSamples.clear();
+		fitness = fitness / (1 - allInvalidSamples.size() / DataSource::sampleCount());
 	}
-
+	this->allInvalidSamples.clear(); //清除无效样本记录
 }
 
 void Individual::modifyContent(pair<std::string, double> content)
