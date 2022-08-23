@@ -109,7 +109,10 @@ void Individual::fit()
 		}
 		//分类适应度计算
 		if (t > (num / 2))
-			fitness = t / (1 - allInvalidSamples.size() / DataSource::sampleCount());
+		{
+			int f = t / (1.0 - (double)allInvalidSamples.size() / (double)DataSource::sampleCount());
+			fitness = f;
+		}
 		else
 			fitness = 1;
 	}
@@ -136,7 +139,7 @@ void Individual::fit()
 
 			fitness += temp;
 		}
-		fitness = fitness / (1 - allInvalidSamples.size() / DataSource::sampleCount());
+		fitness = fitness / (1 - (double)allInvalidSamples.size() / (double)DataSource::sampleCount());
 	}
 }
 
@@ -273,7 +276,7 @@ std::string Individual::showContent() const
 		str = str + "  dead";
 	else
 		str = str + " [" + std::to_string(fitness) + "]";
-	return str;
+	return str + ' ' + std::to_string(this->allInvalidSamples.size());
 }
 
 string Individual::infixExpressionWithDc()
