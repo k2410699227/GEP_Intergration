@@ -6,10 +6,11 @@ invalid = 0
 for line in evaluationFile.readlines():
     indep = [eval(k) for k in line.strip().split()]
     dependent = indep[-1]
-    a,b,c,d,e,f,g,h,i,j = indep[0:10]
+    # a,b,c,d,e,f,g,h,i,j = indep[0:10]   #Forest_fire
+    a,b,c,d = indep[0:4]    #Iris
     
     try:
-        result = (j/j) + ((i/e)+j) + (j-c) + (h*j) + (h-j)
+        result = (d-((a+c)*(c+c))) + b + (((c-a)*a)*(c-d)) + c + (a*(d/d))
 
         if result > 0.5 and dependent == 1:
             count += 1

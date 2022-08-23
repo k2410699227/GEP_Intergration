@@ -6,7 +6,7 @@ outputFile = open("output.txt", "w+")
 evaluationFile = open("evaluation.txt", "w+")
 
 originData = originFile.readlines()
-classes = dict({'Iris-setosa': 1, 'Iris-versicolor': 0, 'Iris-virginica': 0})
+classes = dict({'Iris-setosa': 0, 'Iris-versicolor': 1, 'Iris-virginica': 0})
 for i, o in enumerate(originData):
     line = o.strip().split(',')
 

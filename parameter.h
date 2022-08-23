@@ -10,7 +10,7 @@ const bool AbsoluteError = true;
 const double RANGE = 100.0;
 // 可选函数集: +、-、*、/、<、 >、&(AND)、|(OR)、 X(XOR)、S(sin)、C(cos)、T(tan)、E(exp)、L(log10)、Q(sqrt)
 const char Function[] = {'-', '+', '*', '/'}; //,'>','<','&','|','X','^'};
-const char Terminator[] = {'a','b','c','d'};//,'e','f','g','h','i','j'};
+const char Terminator[] = {'a','b','c','d','e','f','g','h','i','j'};
 const bool Allow_Single_Gene = true;   //是否支持单符号基因
 /* 分类阈值*/
 const bool CLASSIFICATION = true;
@@ -25,8 +25,8 @@ const double DC_MIN_VALUE = 0.0;
 const int GENE_NUM = 5;
 const char CONNET = '+';
 // population parameter
-const int INDIVIDUAL_NUM = 30;
-const int GENERATION = 10;
+const int INDIVIDUAL_NUM = 100;
+const int GENERATION = 50;
 const double MUTATION_RATE = 0.044;
 const double ONE_POINT_COMBA_RATE = 0.3;
 const double TWO_POINT_COMBA_RATE = 0.3;

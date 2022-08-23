@@ -138,7 +138,6 @@ void Individual::fit()
 		}
 		fitness = fitness / (1 - allInvalidSamples.size() / DataSource::sampleCount());
 	}
-	this->allInvalidSamples.clear(); //清除无效样本记录
 }
 
 void Individual::modifyContent(pair<std::string, double> content)
@@ -159,6 +158,7 @@ void Individual::recalculate()
 	}
 
 	result.clear();
+	this->allInvalidSamples.clear(); //清除无效样本记录
 	fitness = 0.0;
 	// 计算表达式数值
 	calculate();
@@ -228,20 +228,24 @@ void Individual::geneTransposition()
 		int index1 = 0, index2 = 0;
 		while (index1 == index2)
 		{
-			index1 = index_rand();//gene choose
-			index2 = index_rand();//position choose
+			index1 = index_rand(); // gene choose
+			index2 = index_rand(); // position choose
 		}
-		if(index1 < index2){
-			Gene temp(gene[index1]); 
-			for(int i = index1;i<index2;i++){
-				gene[i] = gene[i+1];
+		if (index1 < index2)
+		{
+			Gene temp(gene[index1]);
+			for (int i = index1; i < index2; i++)
+			{
+				gene[i] = gene[i + 1];
 			}
 			gene[index2] = temp;
 		}
-		else{
+		else
+		{
 			Gene temp(gene[index1]);
-			for(int i = index2;i<index1;i++){
-				gene[i+1] = gene[i];
+			for (int i = index2; i < index1; i++)
+			{
+				gene[i + 1] = gene[i];
 			}
 			gene[index2] = temp;
 		}

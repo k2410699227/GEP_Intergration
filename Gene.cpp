@@ -36,7 +36,7 @@ Gene::Gene(const Gene &obj) : text(obj.text), dc_value(obj.dc_value)
 
 void Gene::initialize()
 {
-	if(Allow_Single_Gene)	//判断是否支持单符号基因
+	if (Allow_Single_Gene) //判断是否支持单符号基因
 		text += getRandomElement();
 	else
 		text += getFunction();
@@ -109,11 +109,13 @@ char Gene::getFunction()
 
 void Gene::mutation(double evo)
 {
-	for(int i =0;i<gene_len;i++){
+	for (int i = 0; i < gene_len; i++)
+	{
 		char ch;
 		double prob = rand() % 100 / 100;
-		if(prob < evo*MUTATION_RATE){
-			if((i==0)&&!Allow_Single_Gene)	//不支持单符号基因
+		if (prob < evo * MUTATION_RATE)
+		{
+			if ((i == 0) && !Allow_Single_Gene) //不支持单符号基因
 				ch = getFunction();
 			else if (i < HEAD_LEN)
 				ch = getRandomElement();
@@ -122,7 +124,6 @@ void Gene::mutation(double evo)
 			text[i] = ch;
 		}
 	}
-	
 }
 
 void Gene::transposition(const string &str)
@@ -508,10 +509,10 @@ string Gene::decodeWithDc()
 
 double Gene::geneExpressing(int index)
 {
-	this->invalidSamples.clear();
-	unordered_map<char, double>termToValue = DataSource::independent()[index];
+
+	unordered_map<char, double> termToValue = DataSource::independent()[index];
 	vector<pair<char, double>> temp; //以(表达式，数值)的格式储存当前各节点的信息
-	for (auto v : this->validGene())		 //初始化各节点信息
+	for (auto v : this->validGene()) //初始化各节点信息
 	{
 		if (isTerm(v))
 			temp.push_back(pair<char, double>(v, termToValue[v])); //终结符的值为真实值
@@ -547,28 +548,28 @@ double Gene::geneExpressing(int index)
 		default:
 			break;
 		}
-		if (isinf(res)||isnan(res)) //除数为零，表达式无意义，记录无效样本的索引
+		if (isinf(res) || isnan(res)) //除数为零，表达式无意义，记录无效样本的索引
 		{
 			this->invalidSamples.insert(index);
 			return 0.0;
 		}
-		nonTerm->first = Terminator[0];		//已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
+		nonTerm->first = Terminator[0]; //已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
 		nonTerm->second = res;
 
 		nonTerm = --(--temp.end());
 		term = --temp.end();
 	}
-		
+
 	return temp.begin()->second;
 }
 
 std::string Gene::toExpression()
 {
 	vector<pair<char, std::string>> temp; //以(符号，表达式字符串)的格式储存当前各节点的信息
-	for (auto v : this->validGene())		 //初始化各节点信息
+	for (auto v : this->validGene())	  //初始化各节点信息
 	{
 		std::string s;
-		s.append(1,v);
+		s.append(1, v);
 		temp.push_back(pair<char, std::string>(v, s));
 	}
 
@@ -600,20 +601,21 @@ std::string Gene::toExpression()
 		default:
 			break;
 		}
-		
-		nonTerm->first = Terminator[0];		//已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
+
+		nonTerm->first = Terminator[0]; //已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
 		nonTerm->second = res;
 
 		nonTerm = --(--temp.end());
 		term = --temp.end();
 	}
-		
+
 	return temp.begin()->second;
 }
 
 void Gene::update()
 {
 	result.clear();
+	this->invalidSamples.clear(); //清除无效样本记录
 
 	// 生成并存储Dc域数据
 	if (IS_OPEN_DC)
