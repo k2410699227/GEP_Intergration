@@ -14,8 +14,7 @@ int Gene::gene_len = 0;
 
 Gene::Gene(const string &str)
 	: text(str),
-	  tree(NULL),
-	  deadly(false)
+	  tree(NULL)
 {
 	int m = maxParameter();
 	tail_len = HEAD_LEN * (m - 1) + 1;
@@ -31,7 +30,7 @@ Gene &Gene::operator=(const Gene &obj)
 	}
 	return *this;
 }
-Gene::Gene(const Gene &obj) : text(obj.text), dc_value(obj.dc_value), deadly(false)
+Gene::Gene(const Gene &obj) : text(obj.text), dc_value(obj.dc_value)
 {
 }
 
@@ -62,7 +61,7 @@ void Gene::initialize()
 	int len_inden = DataSource::sampleCount();
 	for (int i = 0; i < len_inden; i++)
 	{
-		double value_practise = geneExpressing(DataSource::independent()[i]);
+		double value_practise = geneExpressing(i);
 		result.push_back(value_practise);
 	}
 }
@@ -507,10 +506,10 @@ string Gene::decodeWithDc()
 	return expression;
 }
 
-double Gene::geneExpressing(unordered_map<char, double> termToValue)
+double Gene::geneExpressing(int index)
 {
-	// vector<char>validSegment = {'*','/','a','a','-','*','a','a','a'};
-	// vector<char>validSegment = this->validGene();
+	this->invalidSamples.clear();
+	unordered_map<char, double>termToValue = DataSource::independent()[index];
 	vector<pair<char, double>> temp; //以(表达式，数值)的格式储存当前各节点的信息
 	for (auto v : this->validGene())		 //初始化各节点信息
 	{
@@ -548,11 +547,10 @@ double Gene::geneExpressing(unordered_map<char, double> termToValue)
 		default:
 			break;
 		}
-		if (isinf(res)||isnan(res)) //除数为零，表达式无意义，标记为致死基因
+		if (isinf(res)||isnan(res)) //除数为零，表达式无意义，记录无效样本的索引
 		{
-			// this->deadly = true;
-			// return 0;
-			res = 0.0;
+			this->invalidSamples.insert(index);
+			return 0.0;
 		}
 		nonTerm->first = Terminator[0];		//已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
 		nonTerm->second = res;
@@ -560,6 +558,56 @@ double Gene::geneExpressing(unordered_map<char, double> termToValue)
 		nonTerm = --(--temp.end());
 		term = --temp.end();
 	}
+		
+	return temp.begin()->second;
+}
+
+std::string Gene::toExpression()
+{
+	vector<pair<char, std::string>> temp; //以(符号，表达式字符串)的格式储存当前各节点的信息
+	for (auto v : this->validGene())		 //初始化各节点信息
+	{
+		std::string s;
+		s.append(1,v);
+		temp.push_back(pair<char, std::string>(v, s));
+	}
+
+	auto nonTerm = --temp.end(), term = --temp.end();
+
+	while (temp.size() != 1)
+	{
+		while (isTerm(nonTerm->first))
+			--nonTerm;
+		std::string res = "";
+		switch (paramNum(nonTerm->first))
+		{
+		case 1:
+			res = getExpression(nonTerm->first, (term--)->second);
+			temp.pop_back();
+			break;
+		case 2:
+			// if(nonTerm->first=='/')
+			res = getExpression(nonTerm->first, (term--)->second, (term--)->second);
+			temp.pop_back();
+			temp.pop_back();
+			break;
+		case 3:
+			res = getExpression(nonTerm->first, (term--)->second, (term--)->second, (term--)->second);
+			temp.pop_back();
+			temp.pop_back();
+			temp.pop_back();
+			break;
+		default:
+			break;
+		}
+		
+		nonTerm->first = Terminator[0];		//已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
+		nonTerm->second = res;
+
+		nonTerm = --(--temp.end());
+		term = --temp.end();
+	}
+		
 	return temp.begin()->second;
 }
 
@@ -579,7 +627,7 @@ void Gene::update()
 	int len_inden = DataSource::sampleCount();
 	for (int i = 0; i < len_inden; i++)
 	{
-		double value_practise = geneExpressing(DataSource::independent()[i]);
+		double value_practise = geneExpressing(i);
 		result.push_back(value_practise);
 	}
 }

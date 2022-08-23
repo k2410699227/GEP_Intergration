@@ -4,6 +4,7 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <unordered_set>
 #include "dataSource.h"
 #include "BinaryTree.h"
 using namespace std;
@@ -46,9 +47,9 @@ public:
     string decode();                                   //将进化出的层序表达式解码为中序表达
     string decodeWithDc();
     double calculate(queue<char> postfix, unordered_map<char, double> value); //计算基因的数值
-    double geneExpressing(unordered_map<char, double>);
-    bool isDeadly() { return deadly; }
-    void setDeadly(bool status) { this->deadly = status; } //重置致死状态
+    double geneExpressing(int i); //i为样本索引
+    std::string toExpression();
+    unordered_set<int> getInvalidSamples(){return this->invalidSamples;}
 
 private:
     std::string text;    // gene content
@@ -58,7 +59,7 @@ private:
     std::vector<double> dc_value;
     static double *dc_array;
     vector<double> result;
-    bool deadly = false;
+    unordered_set<int> invalidSamples;
 };
 
 #endif

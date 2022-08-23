@@ -2,7 +2,6 @@
 #include "dataSource.h"
 #include "parameter.h"
 #include "population.h"
-#include "Gene.h"
 #include <iostream>
 #include <unordered_map>
 using namespace std;
@@ -13,16 +12,9 @@ int num_index = 0;		 // 个体索引
 string excellGene = "";	 // 基因
 string excellInfix = ""; // 中缀表达式
 double maxFitness = 0.0; // 最大适宜度
-// unordered_map<char, double> termToValue;
 
 int main()
 {
-	// termToValue.insert(make_pair('a',1.2));
-	// termToValue.insert(make_pair('b',6.4));
-	// Gene g;
-	// double res = g.geneExpressing(termToValue);
-	// cout<<res<<endl;
-	// return 0;
 
 	//获取样本数据
 	DataSource file;
@@ -46,11 +38,11 @@ int main()
 		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 		{
 			num_generaton = i + 1;
-			if (maxFitness == RANGE * DataSource::dependent().size())
+			if (maxFitness == RANGE * DataSource::dependent().size() || (maxFitness == DataSource::sampleCount() && CLASSIFICATION))
 			{
-				for (auto i : parent.getIndividual()[num_index - 1].getResult())
-					cout << i << endl;
-				cout << parent.getIndividual()[num_index - 1].showContent();
+				// for (auto i : parent.getIndividual()[num_index - 1].getResult())
+				// 	cout << i << endl;
+				// cout << parent.getIndividual()[num_index - 1].showContent();
 				break;
 			}
 		}
