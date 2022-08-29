@@ -12,6 +12,7 @@ const double RANGE = 100.0;
 const char Function[] = {'-', '+', '*', '/'}; //,'>','<','&','|','X','^'};
 const char Terminator[] = {'a','b','c','d','e','f','g','h','i','j'};
 const bool Allow_Single_Gene = true;   //是否支持单符号基因
+const int Invalid_Sample_Ratio = 2;     //允许的最大无效样本比例，如2表示当无效样本比例超过1/2时，个体致死
 /* 分类阈值*/
 const bool CLASSIFICATION = true;
 const double THRESHOLD = 0.5;

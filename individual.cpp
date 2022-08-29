@@ -43,7 +43,7 @@ void Individual::calculate()
 		param.push_back(gene[i].expressionValue());
 	}
 	//当无效样本数大于样本总数的一半时，标记为致死个体
-	if (allInvalidSamples.size() > DataSource::sampleCount() / 2)
+	if (allInvalidSamples.size() > DataSource::sampleCount() / Invalid_Sample_Ratio)
 	{
 		this->setDeadly(true);
 		return;
