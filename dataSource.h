@@ -46,16 +46,16 @@ public:
     }
 
     /** 返回自变量数据 */
-    static vector<unordered_map<char, double>> independent() { return independentVar; }
+    static vector<unordered_map<char, double>>& independent() { return independentVar; }
 
     /** 返回因变量数据 */
-    static vector<double> dependent() { return dependentVar; }
+    static vector<double>& dependent() { return dependentVar; }
 
     /** 返回验证自变量数据 */
-    static vector<unordered_map<char, double>> getIndepenValidation() { return indepenValidation; }
+    static vector<unordered_map<char, double>>& getIndepenValidation() { return indepenValidation; }
 
     /** 返回验证因变量数据 */
-    static vector<double> getDepenValidation() { return depenValidation; }
+    static vector<double>& getDepenValidation() { return depenValidation; }
 
     static int sampleCount() { return dependentVar.size(); }
 };
