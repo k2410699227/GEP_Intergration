@@ -41,15 +41,15 @@ public:
     int priority(char ch);
     void update();
 
-    vector<char> validGene(); //返回有效基因片段
+    std::string validGene(); //返回有效基因片段
 
     std::queue<char> infix2postfix(string expression); //中序转为后序表达式
     string decode();                                   //将进化出的层序表达式解码为中序表达
     string decodeWithDc();
-    double calculate(queue<char> postfix, unordered_map<char, double> value); //计算基因的数值
-    double geneExpressing(int i); //i为样本索引
+    double calculate(queue<char> postfix, unordered_map<char, double> value);                    //计算基因的数值
+    double geneExpressing(int i, string validSegment, unordered_map<char, double> &termToValue); // i为样本索引
     std::string toExpression();
-    unordered_set<int> getInvalidSamples(){return this->invalidSamples;}
+    unordered_set<int> getInvalidSamples() { return this->invalidSamples; }
 
 private:
     std::string text;    // gene content

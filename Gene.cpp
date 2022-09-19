@@ -61,7 +61,7 @@ void Gene::initialize()
 	int len_inden = DataSource::sampleCount();
 	for (int i = 0; i < len_inden; i++)
 	{
-		double value_practise = geneExpressing(i);
+		double value_practise = geneExpressing(i, this->validGene(), DataSource::independent()[i]);
 		result.push_back(value_practise);
 	}
 }
@@ -362,9 +362,9 @@ int Gene::priority(char ch)
 		return 2;
 }
 
-vector<char> Gene::validGene()
+string Gene::validGene()
 {
-	vector<char> validGene;
+	string validGene;
 	string::iterator e = text.begin();
 	string::iterator p = text.begin();
 	while (distance(p, text.begin()) <= HEAD_LEN)
@@ -507,12 +507,11 @@ string Gene::decodeWithDc()
 	return expression;
 }
 
-double Gene::geneExpressing(int index)
+double Gene::geneExpressing(int index, string validSegment, unordered_map<char, double> &termToValue)
 {
 
-	unordered_map<char, double> termToValue = DataSource::independent()[index];
 	vector<pair<char, double>> temp; //以(表达式，数值)的格式储存当前各节点的信息
-	for (auto v : this->validGene()) //初始化各节点信息
+	for (auto v : validSegment)		 //初始化各节点信息
 	{
 		if (isTerm(v))
 			temp.push_back(pair<char, double>(v, termToValue[v])); //终结符的值为真实值
@@ -629,7 +628,7 @@ void Gene::update()
 	int len_inden = DataSource::sampleCount();
 	for (int i = 0; i < len_inden; i++)
 	{
-		double value_practise = geneExpressing(i);
+		double value_practise = geneExpressing(i, this->validGene(), DataSource::independent()[i]);
 		result.push_back(value_practise);
 	}
 }
