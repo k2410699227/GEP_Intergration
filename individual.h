@@ -35,6 +35,7 @@ public:
     bool isDeadly() { return this->deadly; }
     void setDeadly(bool status) { deadly = status; }                       //重置致死性
     void setEvolutionRatio(double ratio) { this->evolutionRatio = ratio; } //设置进化系数
+    string getValidGenes()const;
 
 private:
     inline int index_rand();

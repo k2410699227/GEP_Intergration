@@ -224,6 +224,17 @@ std::string Individual::content()
 	return content;
 }
 
+std::string Individual::getValidGenes() const
+{
+	std::string res;
+	for (int i = 0; i < GENE_NUM; i++)
+	{
+		res += gene[i].validGene();
+		if (i < GENE_NUM - 1)
+			res += ' ';
+	}
+	return res;
+}
 void Individual::geneTransposition()
 {
 	if (GENE_NUM > 1)
