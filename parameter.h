@@ -27,7 +27,7 @@ const int GENE_NUM = 5;
 const char CONNET = '+';
 // population parameter
 const int INDIVIDUAL_NUM = 100;
-const int GENERATION = 50;
+const int GENERATION = 1000;
 const double MUTATION_RATE = 0.044;
 const double ONE_POINT_COMBA_RATE = 0.3;
 const double TWO_POINT_COMBA_RATE = 0.3;
@@ -42,5 +42,8 @@ const int RIS_ELEM_LEN[] = {1, 2, 3}; // random length set for RIS transposition
 const std::string PATH_INDEPENDENT = "./data/input.txt";
 /* 因变量存储文件 */
 const std::string PATH_DEPENDENT = "./data/output.txt";
-
+/* 因变量存储文件 */
+const std::string PATH_VALIDATION = "./data/evaluation.txt";
+const double targetAccuracy = 0.9;  //每个分类器在训练集上的准确率
+const int classifierCount = 1000;   //挑选分类器的数量
 #endif
