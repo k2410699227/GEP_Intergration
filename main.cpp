@@ -2,6 +2,7 @@
 #include "dataSource.h"
 #include "parameter.h"
 #include "population.h"
+#include "MultiGEP.h"
 #include <iostream>
 #include <unordered_map>
 using namespace std;
@@ -15,25 +16,28 @@ double maxFitness = 0.0; // 最大适宜度
 
 int main()
 {
-
+	clock_t start, finish;
+	start = clock();
+	MultiGEP myMultiGEP;
 	//获取样本数据
 	DataSource file;
 	srand((int)time(0));
 
 	/* =======================设置Dc域====================== */
 	Gene::DcInit();
-
+	unordered_set<string> qualifiedClassifier;
 	/* =======================迭代开始====================== */
 	Population parent(INDIVIDUAL_NUM);
 	// 初始化种群
 	parent.initialize();
 
-	for (int i = 0; i < GENERATION; i++)
+	for (int i = 0;; i++)
 	{
-
-		cout << "-----------------------Generation " << i + 1 << "------------------------" << endl;
+		if(!parent.pickTargetIndiv(qualifiedClassifier, classifierCount))	//挑选出足够个体后结束迭代
+			break;
+		cout << "-----------------------Generation " << i + 1 << "------------------------" << qualifiedClassifier.size() << endl;
 		cout << endl;
-		parent.display();
+		// parent.display();
 		cout << endl;
 		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 		{
@@ -46,6 +50,7 @@ int main()
 				break;
 			}
 		}
+		
 		parent.evolution();
 	}
 
@@ -54,14 +59,17 @@ int main()
 	// if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 	// 	num_generaton = GENERATION;
 	// cout << endl;
-	cout << endl
-		 << "iteration finished..." << endl;
-	cout << "best gene: " << endl;
-	cout << "No." << num_generaton << " generation, No." << num_index << " individual:" << endl;
-	cout << "gene: " << excellGene << endl;
-	cout << "infix expression: " << excellInfix << endl;
+
+	// cout << endl
+	// 	 << "iteration finished..." << endl;
+	// cout << "best gene: " << endl;
+	// cout << "No." << num_generaton << " generation, No." << num_index << " individual:" << endl;
+	// cout << "gene: " << excellGene << endl;
+	// cout << "infix expression: " << excellInfix << endl;
 
 	Gene::destroyDc();
-
+	finish = clock();
+	printf("运行时间为：%d \n筛选出 %d 个个体\n", (finish - start) / CLOCKS_PER_SEC, qualifiedClassifier.size());
+	myMultiGEP.evaluation(qualifiedClassifier, DataSource::getIndepenEvaluation(), DataSource::getDepenEvaluation());
 	return 0;
 }
