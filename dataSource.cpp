@@ -4,6 +4,9 @@
 
 vector<unordered_map<char, double>> DataSource::independentVar = {};
 vector<double> DataSource::dependentVar = {};
+vector<unordered_map<char, double>>DataSource::indepenEvaluation = {};
+vector<double>DataSource::depenEvaluation = {};
+
 DataSource::DataSource()
 {
     setDependentData();
@@ -41,6 +44,22 @@ void DataSource::setIndependentData()
             single[Terminator[i]] = temp[i];
         independentVar.push_back(single);
     }
+
+    text = getFileText(PATH_VALIDATION);
+    for (auto line : text)
+    {
+        vector<string> result;
+        //空格分割
+        split(line, result, " ");
+        assert(result.size() >= (sizeof(Terminator) / sizeof(char) + 1));
+
+        vector<double> temp = toDouble(result);
+        unordered_map<char, double> single;
+        for (int i = 0; i < temp.size() - 1; i++)
+            single[Terminator[i]] = temp[i];
+        indepenEvaluation.push_back(single);
+        depenEvaluation.emplace_back(temp.back());
+    }
 }
 
 void DataSource::setDependentData()
@@ -55,7 +74,7 @@ void DataSource::setDependentData()
     }
 }
 
-void DataSource::split(const std::string &input_str, std::vector<std::string> &output, const char *delim)
+void split(const std::string &input_str, std::vector<std::string> &output, const char *delim)
 {
     int pos = 0;
     int npos = 0;

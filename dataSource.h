@@ -8,6 +8,10 @@
 #include <unordered_map>
 #include <fstream>
 using namespace std;
+
+/** 分割字符串*/
+void split(const std::string &input_str, std::vector<std::string> &output, const char *delim);
+
 class DataSource
 {
 private:
@@ -17,13 +21,11 @@ private:
     static vector<double> dependentVar;
 
     /** 验证用自变量数据 */
-    static vector<unordered_map<char, double>> indepenValidation;
+    static vector<unordered_map<char, double>> indepenEvaluation;
     /** 验证用因变量数据 */
-    static vector<double> depenValidation;
+    static vector<double> depenEvaluation;
 
-    /** 用空格分割字符串*/
-    void split(const std::string &input_str, std::vector<std::string> &output, const char *delim);
-
+    
     /** 将字符串数组转为浮点数*/
     vector<double> toDouble(vector<string> &data);
 
@@ -52,10 +54,10 @@ public:
     static vector<double> &dependent() { return dependentVar; }
 
     /** 返回验证自变量数据 */
-    static vector<unordered_map<char, double>> &getIndepenValidation() { return indepenValidation; }
+    static vector<unordered_map<char, double>> &getIndepenEvaluation() { return indepenEvaluation; }
 
     /** 返回验证因变量数据 */
-    static vector<double> &getDepenValidation() { return depenValidation; }
+    static vector<double> &getDepenEvaluation() { return depenEvaluation; }
 
     static int sampleCount() { return dependentVar.size(); }
 };
