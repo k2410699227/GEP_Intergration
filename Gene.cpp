@@ -81,7 +81,6 @@ char Gene::getTerminator()
 	int length = sizeof(Terminator) / sizeof(char);
 	if (!IS_OPEN_DC)
 	{
-
 		int ran = rand() % length;
 		return Terminator[ran];
 	}
@@ -219,34 +218,6 @@ int Gene::maxParameter()
 	return count;
 }
 
-int Gene::parameterCount(char c)
-{
-	switch (c)
-	{
-	case '+':
-	case '-':
-	case '*':
-	case '/':
-	case '<':
-	case '>':
-	case '&':
-	case '|':
-	case 'X':
-		return 2;
-		break;
-	case '^': // false
-	case 'S': // sin
-	case 'C': // cos
-	case 'T': // tan
-	case 'Q': // sqrt
-	case 'E': // exp
-	case 'L': // log10
-		return 1;
-		break;
-	}
-	return 1;
-}
-
 double Gene::randDcValue()
 {
 	int index = rand() % DC_LEN;
@@ -269,84 +240,6 @@ void Gene::destroyDc()
 {
 	if (dc_array != nullptr)
 		delete[] dc_array;
-}
-
-//单参数函数值计算
-double Gene::mathExpression(char symbol, double value_r)
-{
-	double value = 0.0;
-	switch (symbol)
-	{
-	case '^':
-		value = value_r > 0.0 ? 0.0 : 1.0;
-	case 'S': // sin
-		value = sin(value_r);
-		break;
-	case 'C': // cos
-		value = cos(value_r);
-		break;
-	case 'T': // tan
-		value = tan(value_r);
-		break;
-	case 'Q': // sqrt
-		value = sqrt(fabs(value_r));
-		break;
-	case 'E': // exp
-		value = exp(value_r);
-		break;
-	case 'L': // log10
-		value = log10(fabs(value_r));
-		break;
-	default:
-		break;
-	}
-	if (isfinite(value) || isinf(value) || isnan(value))
-		value = 0.0;
-	return value;
-}
-
-//双参数函数输出值计算
-double Gene::mathExpression(double value_l, char symbol, double value_r)
-{
-	double value = 0.0;
-	switch (symbol)
-	{
-	case '+':
-		value = value_l + value_r;
-		break;
-	case '-':
-		value = value_l - value_r;
-		break;
-	case '*':
-		value = value_l * value_r;
-		break;
-	case '/':
-		if (value_l == 0.0)
-		{
-			value = 0.0;
-			break;
-		}
-		value = value_r / value_l;
-		break;
-	case '>':
-		value = value_l > value_r ? 1.0 : 0.0;
-		break;
-	case '<':
-		value = value_l < value_r ? 1.0 : 0.0;
-		break;
-	case '&':
-		value = (value_l > 0.0 && value_r > 0.0) ? 1.0 : 0.0;
-		break;
-	case '|':
-		value = (value_l == 0.0 && value_r == 0.0) ? 0.0 : 1.0;
-		break;
-	case 'X':
-		value = ((value_l > 0.0 && value_r > 0.0) || (value_l == 0.0 && value_r == 0.0)) ? 0.0 : 1.0;
-		break;
-	default:
-		break;
-	}
-	return value;
 }
 
 int Gene::priority(char ch)
@@ -383,79 +276,6 @@ string Gene::validGene()
 	return validGene;
 }
 
-std::queue<char> Gene::infix2postfix(string expression)
-{
-	// 先将字符串表达式依次入队
-	queue<char> temp;
-	for (string::iterator it = expression.begin(); it != expression.end(); ++it)
-	{
-		temp.push(*it);
-	}
-
-	queue<char> postfix;
-	stack<char> charStack;
-	while (!temp.empty())
-	{
-		// 弹出字符串队列的队头元素
-		char ch = temp.front();
-		temp.pop();
-		if (isTerm(ch))
-		{
-			// 如果是运算数 直接入队
-			postfix.push(ch);
-		}
-		else if (ch == '(')
-		{
-			// 如果是左括号 压入堆栈
-			charStack.push(ch);
-		}
-		else if (ch == ')')
-		{
-			// 如果是右括号 弹出栈顶运算符并输出 直到遇到左括号(出栈 不输出)
-			char elem;
-			while (!charStack.empty() && (elem = charStack.top()) != '(')
-			{
-				postfix.push(elem);
-				charStack.pop();
-			}
-			// 弹出左括号
-			if (!charStack.empty())
-				charStack.pop();
-		}
-		else if (isFunc(ch))
-		{
-			// 如果是运算符
-			// 如果堆栈为空，或栈顶运算符为左括号“(”，则直接将此运算符入栈
-			// 当优先级大于栈顶运算符时，则把它压栈；
-			// 当优先级小于或等于栈顶运算符时，将栈顶运算符弹出并输出；
-			// 再比较新的栈顶运算符，直到该运算符大于栈顶运算符优先级为止，然后将该运算符压栈
-			if (charStack.empty() || charStack.top() == '(')
-			{
-				charStack.push(ch);
-			}
-			else
-			{
-				int curPriority = priority(ch);
-				int topPriority = -1;
-				;
-				while (!charStack.empty() && curPriority <= (topPriority = priority(charStack.top())))
-				{
-					char c = charStack.top();
-					charStack.pop();
-					postfix.push(c);
-				}
-				charStack.push(ch);
-			}
-		}
-	}
-	// 最后弹出栈内剩余元素
-	while (!charStack.empty())
-	{
-		postfix.push(charStack.top());
-		charStack.pop();
-	}
-	return postfix;
-}
 
 double Gene::geneExpressing(int index, string validSegment, unordered_map<char, double> &termToValue)
 {
@@ -569,12 +389,6 @@ void Gene::update()
 	// 生成并存储Dc域数据
 	if (IS_OPEN_DC)
 		saveDcValue();
-
-	// // 解码表达式为中缀表达式
-	// string expression = decode();
-	// // 中缀转后缀
-	// queue<char> postfix_str = infix2postfix(expression);
-	// 后缀计算
 	int len_inden = DataSource::sampleCount();
 	for (int i = 0; i < len_inden; i++)
 	{
