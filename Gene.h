@@ -28,21 +28,15 @@ public:
     std::string getContent() { return text; }
     static void DcInit();
     int maxParameter();
-    //函数参数数量
-    int parameterCount(char);
     double randDcValue();
     void saveDcValue();
     vector<double> expressionValue() { return result; };
     static void destroyDc();
-    double mathExpression(char symbol, double value_r);
-    double mathExpression(double value_l, char symbol, double value_r);
     int sampleCount();
     int priority(char ch);
     void update();
 
     std::string validGene(); //返回有效基因片段
-
-    std::queue<char> infix2postfix(string expression); //中序转为后序表达式
     double geneExpressing(int i, string validSegment, unordered_map<char, double> &termToValue); // i为样本索引
     std::string toExpression();
     unordered_set<int> getInvalidSamples() { return this->invalidSamples; }
