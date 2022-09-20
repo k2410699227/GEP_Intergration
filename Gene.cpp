@@ -13,8 +13,7 @@ int Gene::tail_len = 0; // tail length
 int Gene::gene_len = 0;
 
 Gene::Gene(const string &str)
-	: text(str),
-	  tree(NULL)
+	: text(str)
 {
 	int m = maxParameter();
 	tail_len = HEAD_LEN * (m - 1) + 1;
@@ -458,55 +457,6 @@ std::queue<char> Gene::infix2postfix(string expression)
 	return postfix;
 }
 
-string Gene::decode()
-{
-	queue<char> queue = {};
-	int index = 0; // 基因片段字符串的下标索引
-	tree = new BinaryTree(text.at(index));
-	queue.push(text.at(index));
-	index++;
-	// 构造二叉树
-	while (!queue.empty())
-	{
-		char ch = queue.front();
-		queue.pop();
-		if (isTerm(ch))
-			continue;
-		else
-		{
-			int count = parameterCount(ch);
-			BinaryTreeNode *parent = tree->Find(ch);
-			for (int i = 0; i < count; i++)
-			{
-				char value = text.at(index);
-				if (count == 1)
-					tree->Insert(parent, value, false);
-				else
-					tree->Insert(parent, value);
-				index++;
-				queue.push(value);
-			}
-		}
-	}
-	// 中序遍历二叉树
-	string result = tree->Output();
-	delete tree;
-	return result;
-}
-
-string Gene::decodeWithDc()
-{
-	string expression = decode();
-	int flag = 0;
-	string::size_type index;
-	while ((index = expression.find('?')) != string::npos)
-	{
-		string temp = std::to_string(dc_value[flag++]);
-		expression.replace(expression.find('?'), 1, temp);
-	}
-	return expression;
-}
-
 double Gene::geneExpressing(int index, string validSegment, unordered_map<char, double> &termToValue)
 {
 
@@ -631,53 +581,4 @@ void Gene::update()
 		double value_practise = geneExpressing(i, this->validGene(), DataSource::independent()[i]);
 		result.push_back(value_practise);
 	}
-}
-double Gene::calculate(queue<char> postfix, unordered_map<char, double> value)
-{
-	stack<double> temp;
-	double result = 0.0;
-	int flag = 0;
-	char ch = postfix.front();
-	if (postfix.size() == 1) //单元素基因
-		return postfix.front();
-	while (!postfix.empty())
-	{
-		char ch = postfix.front();
-		if (isTerm(ch))
-		{
-			// 如果是“?”则从存储的Dc域数据中选择其值
-			if (IS_OPEN_DC && ch == '?')
-			{
-				temp.push(dc_value[flag++]);
-			}
-			else
-			{
-				// 若是数字则进栈
-				temp.push(value.at(ch));
-			}
-		}
-		else if (isFunc(ch))
-		{
-			// 如果是运算符 则弹出n个其需要的数字
-			int num = parameterCount(ch);
-			if (num == 1)
-			{
-				double value = temp.top();
-				temp.pop();
-				result = mathExpression(ch, value);
-			}
-			else if (num == 2)
-			{
-				double valuel = temp.top();
-				temp.pop();
-				double valuer = temp.top();
-				temp.pop();
-				result = mathExpression(valuel, ch, valuer);
-			}
-			// 运算结果进栈
-			temp.push(result);
-		}
-		postfix.pop();
-	}
-	return result;
 }
