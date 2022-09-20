@@ -27,19 +27,20 @@ int main()
 	Gene::DcInit();
 	unordered_set<string> qualifiedClassifier;
 	/* =======================迭代开始====================== */
-	Population parent(INDIVIDUAL_NUM);
+	Population *parent = new Population(INDIVIDUAL_NUM);
+	
 	// 初始化种群
-	parent.initialize();
+	parent->initialize();
 
 	for (int i = 0;; i++)
 	{
-		if(!parent.pickTargetIndiv(qualifiedClassifier, classifierCount))	//挑选出足够个体后结束迭代
+		if(!parent->pickTargetIndiv(qualifiedClassifier, classifierCount))	//挑选出足够个体后结束迭代
 			break;
 		cout << "-----------------------Generation " << i + 1 << "------------------------" << qualifiedClassifier.size() << endl;
 		cout << endl;
 		// parent.display();
 		cout << endl;
-		if (parent.excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
+		if (parent->excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 		{
 			num_generaton = i + 1;
 			if (maxFitness == RANGE * DataSource::dependent().size() || (maxFitness == DataSource::sampleCount() && CLASSIFICATION))
@@ -51,7 +52,7 @@ int main()
 			}
 		}
 		
-		parent.evolution();
+		parent->evolution();
 	}
 
 	// cout << "------------------------Generation " << GENERATION << "------------------------" << endl;
@@ -66,10 +67,10 @@ int main()
 	// cout << "No." << num_generaton << " generation, No." << num_index << " individual:" << endl;
 	// cout << "gene: " << excellGene << endl;
 	// cout << "infix expression: " << excellInfix << endl;
-
+	delete parent;
 	Gene::destroyDc();
 	finish = clock();
-	printf("运行时间为：%d \n筛选出 %d 个个体\n", (finish - start) / CLOCKS_PER_SEC, qualifiedClassifier.size());
+	printf("运行时间为: %d \n筛选出 %d 个个体\n", (finish - start) / CLOCKS_PER_SEC, qualifiedClassifier.size());
 	myMultiGEP.evaluation(qualifiedClassifier, DataSource::getIndepenEvaluation(), DataSource::getDepenEvaluation());
 	return 0;
 }
