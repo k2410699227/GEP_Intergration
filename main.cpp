@@ -5,6 +5,7 @@
 #include "MultiGEP.h"
 #include <iostream>
 #include <unordered_map>
+#include <string.h>
 using namespace std;
 
 /* 迭代过程中最优秀个体 */
@@ -14,8 +15,17 @@ string excellGene = "";	 // 基因
 string excellInfix = ""; // 中缀表达式
 double maxFitness = 0.0; // 最大适宜度
 
-int main()
-{
+int main(int argc, char *argv[])
+{//cout<<argc<<endl;
+	
+	for(int i = 0; i< argc; i++)
+	{
+		cout << argv[i] << endl;
+		if (strcmp(argv[i], "-a")==0)
+			targetAccuracy = atof(argv[i + 1]);
+	}
+	cout << targetAccuracy << endl;
+
 	clock_t start, finish;
 	start = clock();
 	MultiGEP myMultiGEP;
@@ -28,13 +38,13 @@ int main()
 	unordered_set<string> qualifiedClassifier;
 	/* =======================迭代开始====================== */
 	Population *parent = new Population(INDIVIDUAL_NUM);
-	
+
 	// 初始化种群
 	parent->initialize();
 
 	for (int i = 0;; i++)
 	{
-		if(!parent->pickTargetIndiv(qualifiedClassifier, classifierCount))	//挑选出足够个体后结束迭代
+		if (!parent->pickTargetIndiv(qualifiedClassifier, classifierCount)) //挑选出足够个体后结束迭代
 			break;
 		cout << "-----------------------Generation " << i + 1 << "------------------------" << qualifiedClassifier.size() << endl;
 		cout << endl;
@@ -51,7 +61,7 @@ int main()
 				break;
 			}
 		}
-		
+
 		parent->evolution();
 	}
 

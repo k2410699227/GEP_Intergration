@@ -1,5 +1,5 @@
 #include "MultiGEP.h"
-
+double targetAccuracy = 0.7;
 void MultiGEP::evaluation(unordered_set<string> &classifiers, vector<unordered_map<char, double>> &indepen, vector<double> &depen)
 {
     int accurate = 0;
