@@ -45,5 +45,6 @@ const std::string PATH_DEPENDENT = "./data/output.txt";
 /* 因变量存储文件 */
 const std::string PATH_VALIDATION = "./data/evaluation.txt";
 extern double targetAccuracy ;  //每个分类器在训练集上的准确率
-const int classifierCount = 10;   //挑选分类器的数量
+const int classifierCount = 1000;   //挑选分类器的数量
+const int leastGeneration = 50;     //判断是否需要重新开始的最小代数
 #endif

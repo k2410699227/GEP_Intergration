@@ -4,6 +4,7 @@
 #include "population.h"
 #include "MultiGEP.h"
 #include <iostream>
+#include <numeric>
 #include <unordered_map>
 #include <string.h>
 using namespace std;
@@ -16,12 +17,12 @@ string excellInfix = ""; // 中缀表达式
 double maxFitness = 0.0; // 最大适宜度
 
 int main(int argc, char *argv[])
-{//cout<<argc<<endl;
-	
-	for(int i = 0; i< argc; i++)
+{ // cout<<argc<<endl;
+
+	for (int i = 1; i < argc; i++)
 	{
 		cout << argv[i] << endl;
-		if (strcmp(argv[i], "-a")==0)
+		if (strcmp(argv[i], "-a") == 0)
 			targetAccuracy = atof(argv[i + 1]);
 	}
 	cout << targetAccuracy << endl;
@@ -40,16 +41,27 @@ int main(int argc, char *argv[])
 	Population *parent = new Population(INDIVIDUAL_NUM);
 
 	// 初始化种群
+	int individualCount = 0;
+	int newGeneration = 1;
 	parent->initialize();
-
+	vector<int> statistic;
 	for (int i = 0;; i++)
 	{
-		if (!parent->pickTargetIndiv(qualifiedClassifier, classifierCount)) //挑选出足够个体后结束迭代
+		int numOfPick = parent->pickTargetIndiv(qualifiedClassifier, classifierCount, individualCount) ;
+		if (numOfPick == -1) //挑选出足够个体后结束迭代
 			break;
-		cout << "-----------------------Generation " << i + 1 << "------------------------" << qualifiedClassifier.size() << endl;
-		cout << endl;
+		statistic.push_back(numOfPick);
+		newGeneration++;
+		if (newGeneration > leastGeneration)
+			if (accumulate(statistic.end() - 10, statistic.end(), 0) < INDIVIDUAL_NUM / 10) // 10代选取个体数之和<种群个体数十分之一
+			{
+				parent->reInitialize(); //重新初始化种群
+				newGeneration = 1;
+			}
+		cout << "-----------------------Generation " << i + 1 << "------------------------ " << qualifiedClassifier.size() << endl;
+		// cout << endl;
 		// parent.display();
-		cout << endl;
+		// cout << endl;
 		if (parent->excellentIndiv(maxFitness, num_index, excellGene, excellInfix))
 		{
 			num_generaton = i + 1;

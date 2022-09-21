@@ -26,6 +26,7 @@ void Population::reInitialize()
     delete[] this->individual;
     this->individual = new Individual[num];
     this->initialize();
+    cout<<"重新初始化"<<endl;
 }
 void Population::mutation()
 {
@@ -219,23 +220,23 @@ bool Population::excellentIndiv(double &maxValue, int &index, string &content,
     return false;
 }
 
-bool Population::pickTargetIndiv(unordered_set<string> &targetIndividual, int num)
+int Population::pickTargetIndiv(unordered_set<string> &targetIndividual, int num,int& allTimeCount)
 {
-    static int count = 0;
+    int preCount = allTimeCount;
     for (int i = 0; i < INDIVIDUAL_NUM; i++)
     {
-        if(count >= num)    //达到需要数目,返回false
-            return false;
+        if(allTimeCount >= num)    //达到需要数目,返回-1
+            return -1;
 
         if (individual[i].getFitness() >= targetAccuracy * DataSource::sampleCount())
         {
             
             if(targetIndividual.insert(individual[i].getValidGenes()).second)
-                count++;
+                allTimeCount++;
         }
     }
 
-    return true;
+    return allTimeCount - preCount;     //返回本次选取的个体数
 }
 
 string Population::bestIndiv()

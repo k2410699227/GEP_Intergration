@@ -15,7 +15,7 @@ public:
     void display() const;
     string bestIndiv();
     Individual *getIndividual() { return individual; }
-    bool pickTargetIndiv(unordered_set<string>&targetIndividual,int num);   //挑选符合预期的个体
+    int pickTargetIndiv(unordered_set<string>&targetIndividual,int num,int &invidualCount);   //挑选num个符合预期个体，已达预期个体数返回-1，否则返回选取个体数
 
 private:
     void mutation();
