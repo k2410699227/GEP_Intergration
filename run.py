@@ -7,7 +7,7 @@ import argparse
 duration = []
 accuracy = []
 round = 1
-acc = ''
+acc = ' -a '
 parser = argparse.ArgumentParser(description="your script description")        
 
 parser.add_argument('-r', type= int)
@@ -16,13 +16,14 @@ args = parser.parse_args()
 if args.r:
     round = args.r
 if args.a:
-    acc = args.a
+    acc += str(args.a)
+else:
+    acc = ''
 
 
 for i in range(0, round):
     print(i+1, end='\n')
-    lines = os.popen('./GeneExpressionProgramming -a '+str(acc)).readlines()
-    print(lines[1])
+    lines = os.popen('./GeneExpressionProgramming'+acc).readlines()
     accuracy.append(eval(lines[-1].split()[-1].split('%')[0])/100)
     duration.append(eval(lines[-3].split()[-1]))
 
