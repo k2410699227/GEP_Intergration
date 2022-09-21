@@ -9,6 +9,7 @@ public:
     Population(const int num);
     ~Population();
     void initialize();
+    void reInitialize();
     void evolution();
     bool excellentIndiv(double &, int &, string &, string &); //判断是否出现适应度更佳个体，并更新传入变量的个体信息
     void display() const;

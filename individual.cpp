@@ -17,7 +17,7 @@ Individual::Individual(const Individual &obj)
 
 Individual::~Individual()
 {
-	if (!gene)
+	if (gene != nullptr)
 	{
 		delete[] gene;
 	}

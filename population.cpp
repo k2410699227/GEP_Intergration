@@ -10,7 +10,7 @@ Population::Population(const int num) : num(num)
 }
 Population::~Population()
 {
-    if (!individual)
+    if (individual != nullptr)
         delete[] individual;
 }
 void Population::initialize()
@@ -19,6 +19,13 @@ void Population::initialize()
     {
         individual[i].initialize();
     }
+}
+
+void Population::reInitialize()
+{
+    delete[] this->individual;
+    this->individual = new Individual[num];
+    this->initialize();
 }
 void Population::mutation()
 {
