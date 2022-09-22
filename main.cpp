@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 	vector<int> statistic;
 	for (int i = 0;; i++)
 	{
-		int numOfPick = parent->pickTargetIndiv(qualifiedClassifier, classifierCount, individualCount) ;
+		int numOfPick = parent->pickTargetIndiv(qualifiedClassifier, classifierCount, individualCount);
 		if (numOfPick == -1) //挑选出足够个体后结束迭代
 			break;
 		statistic.push_back(numOfPick);
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 	delete parent;
 	Gene::destroyDc();
 	finish = clock();
-	printf("运行时间为: %d \n筛选出 %d 个个体\n", (finish - start) / CLOCKS_PER_SEC, qualifiedClassifier.size());
+	printf("运行时间为: %d \n筛选出 %d 个个体\n", (int)((finish - start) / CLOCKS_PER_SEC), (int)qualifiedClassifier.size());
 	myMultiGEP.evaluation(qualifiedClassifier, DataSource::getIndepenEvaluation(), DataSource::getDepenEvaluation());
 	return 0;
 }
