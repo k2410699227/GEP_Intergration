@@ -7,7 +7,7 @@
 #include "parameter.h"
 #include "CalculateOperation.h"
 using namespace std;
-using namespace CaculatiOperation;
+using namespace CalculateOperation;
 double *Gene::dc_array = nullptr;
 int Gene::tail_len = 0; // tail length
 int Gene::gene_len = 0;
@@ -325,7 +325,7 @@ double Gene::geneExpressing(int index, string validSegment, unordered_map<char, 
 		nonTerm->first = Terminator[0]; //已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
 		nonTerm->second = res;
 
-		nonTerm = --(--temp.end());
+		nonTerm = --temp.end();
 		term = --temp.end();
 	}
 
