@@ -1,5 +1,47 @@
 #include "MultiGEP.h"
 double targetAccuracy = 0.7;
+
+void MultiGEP::run()
+{
+    //获取样本数据
+	DataSource file;
+	srand((int)time(0));
+    
+	/* =======================迭代开始====================== */
+	Population *parent = new Population(INDIVIDUAL_NUM);
+
+	// 初始化种群
+	int individualCount = 0;
+	int newGeneration = 1;
+	parent->initialize();
+	vector<int> statistic;
+	for (int i = 0;; i++)
+	{
+		int numOfPick = parent->pickTargetIndiv(qualifiedClassifier, classifierCount, individualCount);
+		if (numOfPick == -1) //挑选出足够个体后结束迭代
+			break;
+		statistic.push_back(numOfPick);
+		newGeneration++;
+		if (newGeneration > leastGeneration)
+        {
+            parent->reInitialize();
+            newGeneration = 1;
+        }
+			// if (accumulate(statistic.end() - 10, statistic.end(), 0) < INDIVIDUAL_NUM / 10) // 10代选取个体数之和<种群个体数十分之一
+			// {
+			// 	parent->reInitialize(); //重新初始化种群
+			// 	newGeneration = 1;
+			// }
+		cout << "-----------------------Generation " << i + 1 << "------------------------ " << qualifiedClassifier.size() << endl;
+		
+		parent->evolution();
+	}
+
+	
+	delete parent;
+    evaluation(qualifiedClassifier, DataSource::getIndepenEvaluation(), DataSource::getDepenEvaluation());
+}
+
 void MultiGEP::evaluation(unordered_set<string> &classifiers, vector<unordered_map<char, double>> &indepen, vector<double> &depen)
 {
     int accurate = 0;
