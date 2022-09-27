@@ -10,7 +10,7 @@ void MultiGEP::evaluation(unordered_set<string> &classifiers, vector<unordered_m
             accurate += 1;
     }
 
-    printf("准确率为: %.2f%\n", (double)accurate / allCount * 100);
+    printf("准确率为: %.2f %c\n", (double)accurate / allCount * 100, '%');
 }
 
 bool MultiGEP::singleSample(unordered_set<string> &classifiers, unordered_map<char, double> &indepen, double &depen)
