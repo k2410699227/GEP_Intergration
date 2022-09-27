@@ -60,6 +60,10 @@ void DataSource::setIndependentData()
         indepenEvaluation.push_back(single);
         depenEvaluation.emplace_back(temp.back());
     }
+
+    independentVar.shrink_to_fit();
+    indepenEvaluation.shrink_to_fit();
+    depenEvaluation.shrink_to_fit();
 }
 
 void DataSource::setDependentData()
@@ -72,6 +76,7 @@ void DataSource::setDependentData()
         split(line, result, " ");
         dependentVar.push_back(atof(result[0].c_str()));
     }
+    dependentVar.shrink_to_fit();
 }
 
 void split(const std::string &input_str, std::vector<std::string> &output, const char *delim)

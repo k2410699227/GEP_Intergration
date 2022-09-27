@@ -45,6 +45,8 @@ public:
     {
         independentVar.clear();
         dependentVar.clear();
+        depenEvaluation.clear();
+        indepenEvaluation.clear();
     }
 
     /** 返回自变量数据 */
