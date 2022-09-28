@@ -10,8 +10,10 @@ using namespace std;
 class Gene
 {
 public:
+    Gene() {}
+    Gene(Parameter &p);
+    Gene(const string &str, Parameter &p);
     Gene(const Gene &obj);
-    Gene(const std::string &str = "");
     Gene &operator=(const Gene &obj);
     ~Gene();
     void initialize();
@@ -26,12 +28,9 @@ public:
     void setContent(const string &content) { text = content; }
     static inline int getLength() { return gene_len; }
     std::string getContent() { return text; }
-    static void DcInit();
+
     int maxParameter();
-    double randDcValue();
-    void saveDcValue();
-    vector<double> expressionValue() { return result; };
-    static void destroyDc();
+    vector<double> &expressionValue() { return result; };
     int sampleCount();
     int priority(char ch);
     void update();
@@ -42,11 +41,10 @@ public:
     unordered_set<int> &getInvalidSamples() { return this->invalidSamples; }
 
 private:
+    Parameter parameter;
     std::string text;    // gene content
     static int tail_len; // tail length
     static int gene_len;
-    std::vector<double> dc_value;
-    static double *dc_array;
     vector<double> result;
     unordered_set<int> invalidSamples;
 };

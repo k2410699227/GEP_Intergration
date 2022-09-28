@@ -24,8 +24,8 @@ private:
     static vector<unordered_map<char, double>> indepenEvaluation;
     /** 验证用因变量数据 */
     static vector<double> depenEvaluation;
+    Parameter parameter;
 
-    
     /** 将字符串数组转为浮点数*/
     vector<double> toDouble(vector<string> &data);
 
@@ -40,7 +40,7 @@ private:
 
 public:
     /**构造函数内初始化输入文件和输出文件*/
-    DataSource();
+    DataSource(Parameter &p);
     ~DataSource()
     {
         independentVar.clear();

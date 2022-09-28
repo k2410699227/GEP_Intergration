@@ -4,10 +4,11 @@
 
 vector<unordered_map<char, double>> DataSource::independentVar = {};
 vector<double> DataSource::dependentVar = {};
-vector<unordered_map<char, double>>DataSource::indepenEvaluation = {};
-vector<double>DataSource::depenEvaluation = {};
+vector<unordered_map<char, double>> DataSource::indepenEvaluation = {};
+vector<double> DataSource::depenEvaluation = {};
 
-DataSource::DataSource()
+DataSource::DataSource(Parameter &p)
+    : parameter(p)
 {
     setDependentData();
     setIndependentData();
@@ -30,33 +31,33 @@ vector<string> DataSource::getFileText(const string path)
 
 void DataSource::setIndependentData()
 {
-    vector<string> text = getFileText(PATH_INDEPENDENT);
+    vector<string> text = getFileText(parameter.PATH_INDEPENDENT);
     for (auto line : text)
     {
         vector<string> result;
         //空格分割
         split(line, result, " ");
-        assert(result.size() >= (sizeof(Terminator) / sizeof(char)));
+        assert(result.size() >= parameter.Terminator.size());
 
         vector<double> temp = toDouble(result);
         unordered_map<char, double> single;
         for (int i = 0; i < temp.size(); i++)
-            single[Terminator[i]] = temp[i];
+            single[parameter.Terminator[i]] = temp[i];
         independentVar.push_back(single);
     }
 
-    text = getFileText(PATH_VALIDATION);
+    text = getFileText(parameter.PATH_VALIDATION);
     for (auto line : text)
     {
         vector<string> result;
         //空格分割
         split(line, result, " ");
-        assert(result.size() >= (sizeof(Terminator) / sizeof(char) + 1));
+        assert(result.size() >= parameter.Terminator.size());
 
         vector<double> temp = toDouble(result);
         unordered_map<char, double> single;
         for (int i = 0; i < temp.size() - 1; i++)
-            single[Terminator[i]] = temp[i];
+            single[parameter.Terminator[i]] = temp[i];
         indepenEvaluation.push_back(single);
         depenEvaluation.emplace_back(temp.back());
     }
@@ -68,7 +69,7 @@ void DataSource::setIndependentData()
 
 void DataSource::setDependentData()
 {
-    vector<string> text = getFileText(PATH_DEPENDENT);
+    vector<string> text = getFileText(parameter.PATH_DEPENDENT);
     for (auto line : text)
     {
         vector<string> result;

@@ -8,16 +8,23 @@
 #include "CalculateOperation.h"
 using namespace std;
 using namespace CalculateOperation;
-double *Gene::dc_array = nullptr;
 int Gene::tail_len = 0; // tail length
 int Gene::gene_len = 0;
 
-Gene::Gene(const string &str)
-	: text(str)
+Gene::Gene(const string &str, Parameter &p)
+	: text(str), parameter(p)
 {
 	int m = maxParameter();
-	tail_len = HEAD_LEN * (m - 1) + 1;
-	gene_len = tail_len + HEAD_LEN;
+	tail_len = parameter.HEAD_LEN * (m - 1) + 1;
+	gene_len = tail_len + parameter.HEAD_LEN;
+}
+
+Gene::Gene(Parameter &p)
+{
+	this->parameter = p;
+	int m = maxParameter();
+	tail_len = parameter.HEAD_LEN * (m - 1) + 1;
+	gene_len = tail_len + parameter.HEAD_LEN;
 }
 
 Gene &Gene::operator=(const Gene &obj)
@@ -25,22 +32,24 @@ Gene &Gene::operator=(const Gene &obj)
 	if (this != &obj)
 	{
 		this->text = obj.text;
-		dc_value = obj.dc_value;
+		this->tail_len = obj.tail_len;
+		this->gene_len = obj.gene_len;
+		this->parameter = obj.parameter;
 	}
 	return *this;
 }
-Gene::Gene(const Gene &obj) : text(obj.text), dc_value(obj.dc_value)
+Gene::Gene(const Gene &obj) : text(obj.text)
 {
 }
 
 void Gene::initialize()
 {
-	if (Allow_Single_Gene) //判断是否支持单符号基因
+	if (parameter.Allow_Single_Gene) //判断是否支持单符号基因
 		text += getRandomElement();
 	else
 		text += getFunction();
 
-	for (int i = 1; i < HEAD_LEN; i++)
+	for (int i = 1; i < parameter.HEAD_LEN; i++)
 	{
 		text += getRandomElement();
 	}
@@ -48,15 +57,7 @@ void Gene::initialize()
 	{
 		text += getTerminator();
 	}
-	// dc next
-	if (IS_OPEN_DC)
-		saveDcValue();
 
-	// // 解码表达式为中缀表达式
-	// string expression = decode();
-	// // 中缀转后缀
-	// queue<char> postfix_str = infix2postfix(expression);
-	// 计算训练样本
 	int len_inden = DataSource::sampleCount();
 	for (int i = 0; i < len_inden; i++)
 	{
@@ -78,31 +79,17 @@ char Gene::getRandomElement()
 
 char Gene::getTerminator()
 {
-	int length = sizeof(Terminator) / sizeof(char);
-	if (!IS_OPEN_DC)
-	{
-		int ran = rand() % length;
-		return Terminator[ran];
-	}
-	else
-	{
-		// 如果开启了Dc域 长度加1
-		vector<char> dc_term;
-		for (int i = 0; i < length; i++)
-		{
-			dc_term.push_back(Terminator[i]);
-		}
-		dc_term.push_back('?');
-		int index = rand() % (length + 1);
-		return dc_term[index];
-	}
+	int length = parameter.Terminator.size();
+
+	int ran = rand() % length;
+	return parameter.Terminator[ran];
 }
 
 char Gene::getFunction()
 {
-	int length = sizeof(Function) / sizeof(char);
+	int length = parameter.Function.size();
 	int ran = rand() % length;
-	return Function[ran];
+	return parameter.Function[ran];
 }
 
 void Gene::mutation(double evo)
@@ -111,11 +98,11 @@ void Gene::mutation(double evo)
 	{
 		char ch;
 		double prob = rand() % 100 / 100;
-		if (prob < evo * MUTATION_RATE)
+		if (prob < evo * parameter.MUTATION_RATE)
 		{
-			if ((i == 0) && !Allow_Single_Gene) //不支持单符号基因
+			if ((i == 0) && !parameter.Allow_Single_Gene) //不支持单符号基因
 				ch = getFunction();
-			else if (i < HEAD_LEN)
+			else if (i < parameter.HEAD_LEN)
 				ch = getRandomElement();
 			else
 				ch = getTerminator();
@@ -128,7 +115,7 @@ void Gene::transposition(const string &str)
 {
 	int len = str.length();
 	// 先删除头部结尾处len个长度的字符
-	text.erase(HEAD_LEN - len, len);
+	text.erase(parameter.HEAD_LEN - len, len);
 	// 获取目前基因的头部长度
 	int curr_head_len = text.length() - tail_len;
 	// 产生除过头部首元素的随机位置
@@ -138,7 +125,7 @@ void Gene::transposition(const string &str)
 
 int Gene::findFunc(const int pos)
 {
-	for (int i = pos; i < HEAD_LEN; i++)
+	for (int i = pos; i < parameter.HEAD_LEN; i++)
 	{
 		if (isFunc(text.at(i)))
 			return i;
@@ -148,40 +135,22 @@ int Gene::findFunc(const int pos)
 
 bool Gene::isFunc(char elem)
 {
-	for (int i = 0; i < sizeof(Function) / sizeof(char); i++)
+	for (int i = 0; i < parameter.Function.size(); i++)
 	{
-		if (elem == Function[i])
+		if (elem == parameter.Function[i])
 			return true;
 	}
 	return false;
 }
 bool Gene::isTerm(char elem)
 {
-	for (int i = 0; i < sizeof(Terminator) / sizeof(char); i++)
+	for (int i = 0; i < parameter.Terminator.size(); i++)
 	{
-		if (elem == Terminator[i])
+		if (elem == parameter.Terminator[i])
 			return true;
 	}
-	if (IS_OPEN_DC && elem == '?')
-		return true;
 
 	return false;
-}
-void Gene::DcInit()
-{
-	if (IS_OPEN_DC)
-	{
-		// 分配Dc域内存
-		dc_array = new double[DC_LEN];
-		// 初始化Dc域元素数值大小
-		int minValue = int(DC_MIN_VALUE * 1000);
-		int maxValue = int(DC_MAX_VALUE * 1000);
-		for (int i = 0; i < DC_LEN; i++)
-		{
-			int value = (rand() % (maxValue - minValue + 1)) + minValue;
-			dc_array[i] = value / 1000.0;
-		}
-	}
 }
 
 int Gene::maxParameter()
@@ -189,9 +158,9 @@ int Gene::maxParameter()
 	//获取最大参数个数
 	int count = 0;
 
-	for (int i = 0; i < HEAD_LEN; i++)
+	for (int i = 0; i < parameter.HEAD_LEN; i++)
 	{
-		switch (Function[i])
+		switch (parameter.Function[i])
 		{
 		case '+':
 		case '-':
@@ -218,30 +187,6 @@ int Gene::maxParameter()
 	return count;
 }
 
-double Gene::randDcValue()
-{
-	int index = rand() % DC_LEN;
-	return dc_array[index];
-}
-
-void Gene::saveDcValue()
-{
-	for (string::iterator it = text.begin(); it != text.end(); ++it)
-	{
-		if (*it == '?')
-		{
-			double temp = randDcValue();
-			dc_value.push_back(temp);
-		}
-	}
-}
-
-void Gene::destroyDc()
-{
-	if (dc_array != nullptr)
-		delete[] dc_array;
-}
-
 int Gene::priority(char ch)
 {
 	if (ch == '+' || ch == '-')
@@ -259,7 +204,7 @@ string Gene::validGene()
 	string validGene;
 	string::iterator e = text.begin();
 	string::iterator p = text.begin();
-	while (distance(p, text.begin()) <= HEAD_LEN)
+	while (distance(p, text.begin()) <= parameter.HEAD_LEN)
 	{
 		e = e + (paramNum(*p));
 		p++;
@@ -275,7 +220,6 @@ string Gene::validGene()
 	validGene.push_back(*e);
 	return validGene;
 }
-
 
 double Gene::geneExpressing(int index, string validSegment, unordered_map<char, double> &termToValue)
 {
@@ -300,16 +244,22 @@ double Gene::geneExpressing(int index, string validSegment, unordered_map<char, 
 		{
 		case 1:
 			res = calculation(nonTerm->first, (term--)->second);
+			nonTerm->first = parameter.Terminator[0]; //已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
+			nonTerm->second = res;
 			temp.pop_back();
 			break;
 		case 2:
 			// if(nonTerm->first=='/')
 			res = calculation(nonTerm->first, (term--)->second, (term--)->second);
+			nonTerm->first = parameter.Terminator[0]; //已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
+			nonTerm->second = res;
 			temp.pop_back();
 			temp.pop_back();
 			break;
 		case 3:
 			res = calculation(nonTerm->first, (term--)->second, (term--)->second, (term--)->second);
+			nonTerm->first = parameter.Terminator[0]; //已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
+			nonTerm->second = res;
 			temp.pop_back();
 			temp.pop_back();
 			temp.pop_back();
@@ -322,8 +272,6 @@ double Gene::geneExpressing(int index, string validSegment, unordered_map<char, 
 			this->invalidSamples.insert(index);
 			return 0.0;
 		}
-		nonTerm->first = Terminator[0]; //已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
-		nonTerm->second = res;
 
 		nonTerm = --temp.end();
 		term = --temp.end();
@@ -371,7 +319,7 @@ std::string Gene::toExpression()
 			break;
 		}
 
-		nonTerm->first = Terminator[0]; //已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
+		nonTerm->first = parameter.Terminator[0]; //已计算出真实值的非终结符替换为第一位终结符，对计算结果无影响
 		nonTerm->second = res;
 
 		nonTerm = --(--temp.end());
@@ -386,9 +334,6 @@ void Gene::update()
 	result.clear();
 	this->invalidSamples.clear(); //清除无效样本记录
 
-	// 生成并存储Dc域数据
-	if (IS_OPEN_DC)
-		saveDcValue();
 	int len_inden = DataSource::sampleCount();
 	for (int i = 0; i < len_inden; i++)
 	{

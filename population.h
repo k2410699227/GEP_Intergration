@@ -6,7 +6,7 @@
 class Population
 {
 public:
-    Population(const int num);
+    Population(const int num, Parameter &p);
     ~Population();
     void initialize();
     void reInitialize();
@@ -15,7 +15,7 @@ public:
     void display() const;
     string bestIndiv();
     Individual *getIndividual() { return individual; }
-    int pickTargetIndiv(unordered_set<string>&targetIndividual,int num,int &invidualCount);   //挑选num个符合预期个体，已达预期个体数返回-1，否则返回选取个体数
+    int pickTargetIndiv(unordered_set<string> &targetIndividual, int num, int &invidualCount); //挑选num个符合预期个体，已达预期个体数返回-1，否则返回选取个体数
 
 private:
     void mutation();
@@ -26,6 +26,7 @@ private:
     void twoPointRecombination();
     void geneRecombination();
 
+    Parameter parameter;
     Individual *individual;
     int num;
 };

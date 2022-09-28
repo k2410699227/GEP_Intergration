@@ -4,41 +4,39 @@ double targetAccuracy = 0.7;
 void MultiGEP::run()
 {
     //获取样本数据
-	DataSource file;
-	srand((int)time(0));
-    
-	/* =======================迭代开始====================== */
-	Population *parent = new Population(INDIVIDUAL_NUM);
+    DataSource file(parameter);
+    srand((int)time(0));
+    /* =======================迭代开始====================== */
+    Population *parent = new Population(parameter.INDIVIDUAL_NUM, parameter);
 
-	// 初始化种群
-	int individualCount = 0;
-	int newGeneration = 1;
-	parent->initialize();
-	vector<int> statistic;
-	for (int i = 0;; i++)
-	{
-		int numOfPick = parent->pickTargetIndiv(qualifiedClassifier, classifierCount, individualCount);
-		if (numOfPick == -1) //挑选出足够个体后结束迭代
-			break;
-		statistic.push_back(numOfPick);
-		newGeneration++;
-		if (newGeneration > leastGeneration)
+    // 初始化种群
+    int individualCount = 0;
+    int newGeneration = 1;
+    parent->initialize();
+    vector<int> statistic;
+    for (int i = 0;; i++)
+    {
+        int numOfPick = parent->pickTargetIndiv(qualifiedClassifier, parameter.classifierCount, individualCount);
+        if (numOfPick == -1) //挑选出足够个体后结束迭代
+            break;
+        statistic.push_back(numOfPick);
+        newGeneration++;
+        if (newGeneration > parameter.leastGeneration)
         {
             parent->reInitialize();
             newGeneration = 1;
         }
-			// if (accumulate(statistic.end() - 10, statistic.end(), 0) < INDIVIDUAL_NUM / 10) // 10代选取个体数之和<种群个体数十分之一
-			// {
-			// 	parent->reInitialize(); //重新初始化种群
-			// 	newGeneration = 1;
-			// }
-		cout << "-----------------------Generation " << i + 1 << "------------------------ " << qualifiedClassifier.size() << endl;
-		
-		parent->evolution();
-	}
+        // if (accumulate(statistic.end() - 10, statistic.end(), 0) < INDIVIDUAL_NUM / 10) // 10代选取个体数之和<种群个体数十分之一
+        // {
+        // 	parent->reInitialize(); //重新初始化种群
+        // 	newGeneration = 1;
+        // }
+        cout << "-----------------------Generation " << i + 1 << "------------------------ " << qualifiedClassifier.size() << endl;
 
-	
-	delete parent;
+        parent->evolution();
+    }
+
+    delete parent;
     evaluation(qualifiedClassifier, DataSource::getIndepenEvaluation(), DataSource::getDepenEvaluation());
 }
 
@@ -80,7 +78,7 @@ bool MultiGEP::singleClassifier(string classifier, unordered_map<char, double> &
 
     for (auto g : genes)
     {
-        switch (CONNET)
+        switch (parameter.CONNET)
         {
         case '+':
             value += temp.geneExpressing(-1, g, indepen);
@@ -101,7 +99,19 @@ bool MultiGEP::singleClassifier(string classifier, unordered_map<char, double> &
         }
     }
 
-    double res = value > THRESHOLD ? 1.0 : 0.0;
+    double res = value > parameter.THRESHOLD ? 1.0 : 0.0;
 
     return res == depen ? true : false;
+}
+
+MultiGEP &MultiGEP::setClassifierCount(int num)
+{
+    this->parameter.classifierCount = num;
+    return *this;
+}
+
+MultiGEP &MultiGEP::setTargetAccuracy(double rate)
+{
+    this->parameter.targetAccuracy = rate;
+    return *this;
 }
