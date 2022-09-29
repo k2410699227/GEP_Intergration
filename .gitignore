@@ -9,3 +9,6 @@ CMakeCache.txt
 ./GeneExpressionProgramming
 GeneExpressionProgramming
 
+/Debug
+/.vs
+/lib/Debug

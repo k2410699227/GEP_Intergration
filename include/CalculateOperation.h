@@ -1,4 +1,4 @@
-#ifndef CALCULATEOPERATION_H
+﻿#ifndef CALCULATEOPERATION_H
 #define CALCULATEOPERATION_H
 #include <string>
 namespace CalculateOperation

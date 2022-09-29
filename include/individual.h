@@ -1,4 +1,4 @@
-#ifndef INDIVIDUAL_H
+﻿#ifndef INDIVIDUAL_H
 #define INDIVIDUAL_H
 #include "Gene.h"
 #include <string>

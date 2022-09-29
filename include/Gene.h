@@ -1,4 +1,4 @@
-#ifndef GENE_H
+﻿#ifndef GENE_H
 #define GENE_H
 #include <string>
 #include <vector>

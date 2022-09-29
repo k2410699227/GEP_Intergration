@@ -1,4 +1,4 @@
-#include "individual.h"
+﻿#include "individual.h"
 int Individual::len = 0;
 Individual::Individual(Parameter &p) : gene(nullptr)
 {
@@ -163,7 +163,7 @@ void Individual::fit()
 void Individual::modifyContent(pair<std::string, double> content)
 {
 	evolutionRatio = content.second;
-	string text[parameter.GENE_NUM];
+	string *text = new string[parameter.GENE_NUM];
 	for (int i = 0; i < parameter.GENE_NUM; i++)
 	{
 		text[i] = content.first.substr(i * Gene::getLength(), Gene::getLength());

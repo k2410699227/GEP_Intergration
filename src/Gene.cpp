@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <math.h>
 #include <stack>
 #include <vector>
@@ -158,9 +158,9 @@ int Gene::maxParameter()
 	//获取最大参数个数
 	int count = 0;
 
-	for (int i = 0; i < parameter.HEAD_LEN; i++)
+	for (auto f : this->parameter.Function)
 	{
-		switch (parameter.Function[i])
+		switch (f)
 		{
 		case '+':
 		case '-':
@@ -181,6 +181,8 @@ int Gene::maxParameter()
 		case 'E': // exp
 		case 'L': // log10
 			count = max(count, 1);
+			break;
+		default:
 			break;
 		}
 	}

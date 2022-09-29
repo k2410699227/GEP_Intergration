@@ -1,4 +1,4 @@
-#ifndef _PARAMETER_H_
+﻿#ifndef _PARAMETER_H_
 #define _PARAMETER_H_
 #include <string>
 #include <vector>

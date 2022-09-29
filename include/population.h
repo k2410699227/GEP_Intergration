@@ -1,4 +1,4 @@
-#ifndef POPULATION_H
+﻿#ifndef POPULATION_H
 #define POPULATION_H
 #include "individual.h"
 #include "parameter.h"

@@ -1,4 +1,4 @@
-#ifndef MULTIGEP_H
+﻿#ifndef MULTIGEP_H
 #define MULTIGEP_H
 #include "parameter.h"
 #include "dataSource.h"

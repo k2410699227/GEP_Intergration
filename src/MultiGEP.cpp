@@ -1,4 +1,4 @@
-#include "MultiGEP.h"
+﻿#include "MultiGEP.h"
 double targetAccuracy = 0.7;
 
 void MultiGEP::train()

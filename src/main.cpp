@@ -1,7 +1,8 @@
-#include <ctime>
+﻿#include <ctime>
 #include "MultiGEP.h"
 #include <iostream>
 #include <string.h>
+
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -20,16 +21,16 @@ int main(int argc, char *argv[])
 		.setConnetor('+')
 		.allowSingleGene(true)
 		.setMutationRate(0.044)
-		.setEvaluationSetPath("./data/evaluation.txt")
-		.setSaveModelPath("./data/save_model")
-		.setTrainSetPath("./data/train.txt")
-		.loadModel("./data/save_model")
+		.setEvaluationSetPath("E:\\VS Project\\GEP_Intergration\\data\\evaluation.txt")
+		.setSaveModelPath("E:\\VS Project\\GEP_Intergration\\data\\save_model")
+		.setTrainSetPath("E:\\VS Project\\GEP_Intergration\\data\\train.txt")
+		.loadModel("E:\\VS Project\\GEP_Intergration\\data\\save_model")
 		.train();
 		myMultiGEP.evaluation();
 		
 	
 	finish = clock();
 	printf("运行时间为: %d \n", (int)((finish - start) / CLOCKS_PER_SEC));
-
+	system("pause");
 	return 0;
 }
