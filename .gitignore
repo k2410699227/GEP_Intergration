@@ -8,6 +8,4 @@ CMakeFiles
 CMakeCache.txt
 ./GeneExpressionProgramming
 GeneExpressionProgramming
-include
-src
-lib
+
