@@ -38,7 +38,7 @@ Gene &Gene::operator=(const Gene &obj)
 	}
 	return *this;
 }
-Gene::Gene(const Gene &obj) : text(obj.text)
+Gene::Gene(const Gene &obj) : text(obj.text), parameter(obj.parameter)
 {
 }
 
