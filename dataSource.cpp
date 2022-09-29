@@ -10,23 +10,6 @@ vector<double> DataSource::depenEvaluation = {};
 DataSource::DataSource(Parameter &p)
     : parameter(p)
 {
-    setEvaluationData();
-    setTrainData();
-    assert(independentVar.size() == dependentVar.size());
-}
-
-vector<string> DataSource::getFileText(const string path)
-{
-    ifstream inFile;
-    vector<string> res;
-    inFile.open(path);
-    string s;
-    while (getline(inFile, s))
-    {
-        res.push_back(s);
-    }
-    inFile.close();
-    return res;
 }
 
 void DataSource::setTrainData()
@@ -49,6 +32,7 @@ void DataSource::setTrainData()
 
     independentVar.shrink_to_fit();
     dependentVar.shrink_to_fit();
+    assert(independentVar.size() == dependentVar.size());
 }
 
 void DataSource::setEvaluationData()
@@ -70,6 +54,17 @@ void DataSource::setEvaluationData()
     }
     indepenEvaluation.shrink_to_fit();
     depenEvaluation.shrink_to_fit();
+    assert(indepenEvaluation.size() == depenEvaluation.size());
+}
+
+vector<double> toDouble(vector<string> &data)
+{
+    vector<double> temp;
+    for (auto it : data)
+    {
+        temp.push_back(atof(it.c_str()));
+    }
+    return temp;
 }
 
 void split(const std::string &input_str, std::vector<std::string> &output, const char *delim)
@@ -86,12 +81,16 @@ void split(const std::string &input_str, std::vector<std::string> &output, const
     output.push_back(input_str.substr(pos, input_str.length() - pos));
 }
 
-vector<double> DataSource::toDouble(vector<string> &data)
+vector<string> getFileText(const string path)
 {
-    vector<double> temp;
-    for (auto it : data)
+    ifstream inFile;
+    vector<string> res;
+    inFile.open(path);
+    string s;
+    while (getline(inFile, s))
     {
-        temp.push_back(atof(it.c_str()));
+        res.push_back(s);
     }
-    return temp;
+    inFile.close();
+    return res;
 }

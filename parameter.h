@@ -23,7 +23,7 @@ public:
     // 可选函数集: +、-、*、/、<、 >、&(AND)、|(OR)、 X(XOR)、S(sin)、C(cos)、T(tan)、E(exp)、L(log10)、Q(sqrt)
     std::vector<char> Function;    // {'-', '+', '*', '/'},'>','<','&','|','X','^'};
     std::vector<char> Terminator;  //终结符号集合
-    bool Allow_Single_Gene = true; //是否支持单符号基因
+    bool Allow_Single_Gene = false; //是否支持单符号基因
     int Invalid_Sample_Ratio = 2;  //允许的最大无效样本比例，如2表示当无效样本比例超过1/2时，个体致死
 
     /* 分类阈值*/
@@ -52,12 +52,10 @@ public:
     double RIS_TRANS_RATE = 0.1;
     std::vector<int> RIS_ELEM_LEN; // random length set for RIS transposition
 
-    /* 自变量存储文件 */
-    std::string PATH_INDEPENDENT = "./data/input.txt";
-    /* 因变量存储文件 */
-    std::string PATH_DEPENDENT = "./data/output.txt";
-    /* 因变量存储文件 */
-    std::string PATH_VALIDATION = "./data/evaluation.txt";
+    /* 训练集存储文件 */
+    std::string PATH_TRAIN = "";
+    /* 测试集存储文件 */
+    std::string PATH_EVALUATION = "";
     double targetAccuracy = 0.7; //每个分类器在训练集上的准确率
     int classifierCount = 100;   //挑选分类器的数量
     int leastGeneration = 50;    //判断是否需要重新开始的最小代数

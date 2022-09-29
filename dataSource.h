@@ -12,6 +12,11 @@ using namespace std;
 /** 分割字符串*/
 void split(const std::string &input_str, std::vector<std::string> &output, const char *delim);
 
+/** 将字符串数组转为浮点数*/
+vector<double> toDouble(vector<string> &data);
+
+/** 从参数中指定的路径获取文件内容*/
+vector<string> getFileText(const string path);
 class DataSource
 {
 private:
@@ -26,18 +31,6 @@ private:
     static vector<double> depenEvaluation;
     Parameter parameter;
 
-    /** 将字符串数组转为浮点数*/
-    vector<double> toDouble(vector<string> &data);
-
-    /** 从参数中指定的路径获取文件内容*/
-    vector<string> getFileText(const string path);
-
-    /** 解析自变量数据*/
-    void setTrainData();
-
-    /** 解析因变量数据*/
-    void setEvaluationData();
-
 public:
     /**构造函数内初始化输入文件和输出文件*/
     DataSource(Parameter &p);
@@ -48,6 +41,12 @@ public:
         depenEvaluation.clear();
         indepenEvaluation.clear();
     }
+
+    /** 解析自变量数据*/
+    void setTrainData();
+
+    /** 解析因变量数据*/
+    void setEvaluationData();
 
     /** 返回自变量数据 */
     static vector<unordered_map<char, double>> &independent() { return independentVar; }

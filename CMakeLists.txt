@@ -25,9 +25,10 @@ aux_source_directory(./ SourcePath)
 #               CalculateOperation.h)
 # 将源代码添加到此项目的可执行文件。
 add_executable (GeneExpressionProgramming ${SourcePath})  
-# add_library(GEP SHARED ${SourcePath}) #编译静态库
-# set(LIBRARY_OUTPUT_PATH ../)
+add_library(GEP  ${SourcePath}) #编译静态库
+set(LIBRARY_OUTPUT_PATH ../)
 set(EXECUTABLE_OUTPUT_PATH ../)
+
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET GeneExpressionProgramming PROPERTY CXX_STANDARD 11)
 endif()

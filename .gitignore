@@ -8,5 +8,6 @@ CMakeFiles
 CMakeCache.txt
 ./GeneExpressionProgramming
 GeneExpressionProgramming
-accuracy- -a 0.8-100.png
-duration- -a 0.8-100.png
+include
+src
+lib

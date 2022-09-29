@@ -74,7 +74,8 @@ void Individual::calculate()
 			result.push_back(0.0);
 			continue;
 		}
-
+		if (parameter.CONNET == '*' || parameter.CONNET == '/')
+			value = 1.0;
 		for (int j = 0; j < parameter.GENE_NUM; j++)
 		{
 			switch (parameter.CONNET)
