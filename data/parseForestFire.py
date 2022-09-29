@@ -1,8 +1,7 @@
 
 
 origin = open("Algerian_forest_fires_dataset_UPDATE.csv", 'r+')
-inputFile = open("input.txt", "w+")
-outputFile = open("output.txt", "w+")
+trainFile = open("train.txt", "w+")
 evaluationFile = open("evaluation.txt", "w+")
 classes = dict({'fire': 1, 'not fire': 0})
 
@@ -11,5 +10,5 @@ for i, o in enumerate(origin.readlines()):
     if (i + 1) % 4 == 0:
         print(' '.join(line[3:-1]), classes[line[-1]], file=evaluationFile)
     else:
-        print(' '.join(line[3:-1]), file=inputFile)
-        print(classes[line[-1]], file=outputFile)
+        print(' '.join(line[3:-1]), classes[line[-1]], file=trainFile)
+        

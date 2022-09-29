@@ -33,10 +33,10 @@ private:
     vector<string> getFileText(const string path);
 
     /** 解析自变量数据*/
-    void setIndependentData();
+    void setTrainData();
 
     /** 解析因变量数据*/
-    void setDependentData();
+    void setEvaluationData();
 
 public:
     /**构造函数内初始化输入文件和输出文件*/

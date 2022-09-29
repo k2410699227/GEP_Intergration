@@ -10,8 +10,8 @@ vector<double> DataSource::depenEvaluation = {};
 DataSource::DataSource(Parameter &p)
     : parameter(p)
 {
-    setDependentData();
-    setIndependentData();
+    setEvaluationData();
+    setTrainData();
     assert(independentVar.size() == dependentVar.size());
 }
 
@@ -29,30 +29,37 @@ vector<string> DataSource::getFileText(const string path)
     return res;
 }
 
-void DataSource::setIndependentData()
+void DataSource::setTrainData()
 {
-    vector<string> text = getFileText(parameter.PATH_INDEPENDENT);
+    vector<string> text = getFileText(parameter.PATH_TRAIN);
     for (auto line : text)
     {
         vector<string> result;
         //空格分割
         split(line, result, " ");
-        assert(result.size() >= parameter.Terminator.size());
+        assert(result.size() == parameter.Terminator.size() + 1);
 
         vector<double> temp = toDouble(result);
         unordered_map<char, double> single;
-        for (int i = 0; i < temp.size(); i++)
+        for (int i = 0; i < temp.size() - 1; i++)
             single[parameter.Terminator[i]] = temp[i];
         independentVar.push_back(single);
+        dependentVar.push_back(atof(result.back().c_str()));
     }
 
-    text = getFileText(parameter.PATH_VALIDATION);
+    independentVar.shrink_to_fit();
+    dependentVar.shrink_to_fit();
+}
+
+void DataSource::setEvaluationData()
+{
+    vector<string> text = getFileText(parameter.PATH_EVALUATION);
     for (auto line : text)
     {
         vector<string> result;
         //空格分割
         split(line, result, " ");
-        assert(result.size() >= parameter.Terminator.size());
+        assert(result.size() == parameter.Terminator.size() + 1);
 
         vector<double> temp = toDouble(result);
         unordered_map<char, double> single;
@@ -61,23 +68,8 @@ void DataSource::setIndependentData()
         indepenEvaluation.push_back(single);
         depenEvaluation.emplace_back(temp.back());
     }
-
-    independentVar.shrink_to_fit();
     indepenEvaluation.shrink_to_fit();
     depenEvaluation.shrink_to_fit();
-}
-
-void DataSource::setDependentData()
-{
-    vector<string> text = getFileText(parameter.PATH_DEPENDENT);
-    for (auto line : text)
-    {
-        vector<string> result;
-        //空格分割
-        split(line, result, " ");
-        dependentVar.push_back(atof(result[0].c_str()));
-    }
-    dependentVar.shrink_to_fit();
 }
 
 void split(const std::string &input_str, std::vector<std::string> &output, const char *delim)
