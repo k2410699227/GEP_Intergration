@@ -28,7 +28,7 @@ aux_source_directory(./src SourcePath)
 add_executable (GeneExpressionProgramming ${SourcePath})  
 add_library(GEP STATIC ${SourcePath}) #编译静态库
 set(LIBRARY_OUTPUT_PATH ../lib)
-set(EXECUTABLE_OUTPUT_PATH ../)
+set(EXECUTABLE_OUTPUT_PATH ./)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET GeneExpressionProgramming PROPERTY CXX_STANDARD 11)
